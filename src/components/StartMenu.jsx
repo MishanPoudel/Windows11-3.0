@@ -1,7 +1,11 @@
 import React from "react";
 import Power from "./Power";
+import { useLocation } from "react-router-dom";
+import { generateInitials } from "./UserProfile";
 
 function StartMenu({ toggleStart, toggleMenu, isStartOpen }) {
+  const location = useLocation();
+  const name = location.state && location.state.name;
   return (
     <>
       <section
@@ -214,19 +218,28 @@ function StartMenu({ toggleStart, toggleMenu, isStartOpen }) {
         </div>
         <div id="footer-start-section">
           <div className="nome-utente-start-section">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="rgba(0, 0, 0, 1);"
-            >
-              <path d="M12 2C6.579 2 2 6.579 2 12s4.579 10 10 10 10-4.579 10-10S17.421 2 12 2zm0 5c1.727 0 3 1.272 3 3s-1.273 3-3 3c-1.726 0-3-1.272-3-3s1.274-3 3-3zm-5.106 9.772c.897-1.32 2.393-2.2 4.106-2.2h2c1.714 0 3.209.88 4.106 2.2C15.828 18.14 14.015 19 12 19s-3.828-.86-5.106-2.228z"></path>
-            </svg>
-            <span>username</span>
+            <div className="avatar placeholder">
+              <div className="bg-blue-500 text-white rounded-full w-8">
+                {name ? (
+                  <div className="text-white text-4xl font-normal">
+                    {generateInitials(name)}
+                  </div>
+                ) : (
+                  <div className="avatar">
+                    <div className="w-auto rounded-full">
+                      <img
+                        src="https://giffiles.alphacoders.com/532/53236.gif"
+                        alt="Profile"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div>{name ? name : "User"}</div>
           </div>
           <div className="spegni-pc-start-section">
-            <Power toggleMenu={toggleMenu} toggleStart={toggleStart}/>
+            <Power toggleMenu={toggleMenu} toggleStart={toggleStart} />
           </div>
         </div>
       </section>
