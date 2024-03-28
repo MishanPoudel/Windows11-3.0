@@ -1,10 +1,14 @@
 import React from "react";
-import LogOutBtn from "../auth/LogOutBtn";
+import { useNavigate } from "react-router-dom";
 
 function Power({ toggleMenu, toggleStart }) {
+  const navigate = useNavigate();
   function handleClick() {
     toggleMenu();
     toggleStart();
+  }
+  function handleSleep() {
+    navigate("/");
   }
 
   return (
@@ -23,13 +27,13 @@ function Power({ toggleMenu, toggleStart }) {
       </button>
       <ul className="dropdown-content z-[1] menu p-2 shadow rounded-box w-52 bg-neutral-800 border-black border-2 border-opacity-10">
         <li>
-          <button onClick={handleClick}>Sleep</button>
+          <button onClick={handleSleep}>Sleep</button>
         </li>
         <li>
           <button onClick={handleClick}>Shut Down</button>
         </li>
         <li>
-          <LogOutBtn />
+          <button onClick={handleClick}>Restart</button>
         </li>
       </ul>
     </div>
