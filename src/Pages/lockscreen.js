@@ -1,14 +1,7 @@
-import React, { useState } from "react";
-import Register from "../auth/Register";
-import Login from "../auth/Login";
+import React from "react";
+import Login from "../components/Login";
 
 function Lockscreen() {
-  const [login, setLogin] = useState(true);
-
-  const toggleLogin = () => {
-    setLogin(!login);
-  };
-
   return (
     <>
       <div
@@ -20,11 +13,7 @@ function Lockscreen() {
         }}
       ></div>
       <div className="absolute left-0 top-0 h-screen w-full flex flex-col items-center z-10">
-        {login ? (
-          <Login toggleLogin={toggleLogin} />
-        ) : (
-          <Register toggleLogin={toggleLogin} />
-        )}
+        <Login />
       </div>
     </>
   );
