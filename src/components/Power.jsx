@@ -9,7 +9,6 @@ function Power({ toggleStart }) {
   function handleSleep() {
     setTimeout(() => {
       navigate("/");
-      
     }, 1000);
   }
 
