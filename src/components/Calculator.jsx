@@ -16,11 +16,11 @@ const Calculator = ({ isAppOpen, toggleCalculator }) => {
     const display = document.getElementById("display");
     try {
       const result = eval(display.value);
-      setClick((prevClick) => prevClick + 1); // Increment click count
+      setClick((prevClick) => prevClick + 1);
 
       if (click === 0 || click === 4) {
         display.value = "Hello World";
-        setClick(1); // Reset click count
+        setClick(1);
       } else {
         if (result !== undefined && !isNaN(result)) {
           display.value = result;
@@ -68,7 +68,7 @@ const Calculator = ({ isAppOpen, toggleCalculator }) => {
   };
 
   return (
-    <div className={`${isAppOpen ? "" : "hidden"} z-30`}>
+    <div className={`${isAppOpen ? "" : "hidden"} z-30 absolute`}>
       <Draggable handle=".title-bar" nodeRef={explorerRef}>
         <div
           ref={explorerRef}
@@ -78,7 +78,10 @@ const Calculator = ({ isAppOpen, toggleCalculator }) => {
             <div className="text-white h-9 flex justify-between select-none">
               <div className="m-1 ml-4 font-normal">Calculator</div>
               <div className="flex">
-                <div className="material-symbols-outlined hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-xl">
+                <div
+                  className="material-symbols-outlined hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-xl"
+                  onClick={toggleCalculator}
+                >
                   minimize
                 </div>
                 <div className="material-symbols-outlined hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-sm">
