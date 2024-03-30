@@ -8,7 +8,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Lockscreen />} />
-        <Route path="/main" element={<Main />} />
+        <Route path="/:name" element={<Main />} />
       </Routes>
     </Router>
   );
