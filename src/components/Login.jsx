@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {UserProfile} from "./UserProfile";
+import { UserProfile } from "./UserProfile";
 
 function Login({ toggleLogin }) {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  localStorage.setItem("name", name);
 
   async function login(e) {
     e.preventDefault();
     try {
       if (password === "demo") {
-        // Redirect to "/main" with the name in the state
-        navigate("/main", { state: { name } });
+        navigate(`/${name}`);
       } else {
         setError("Failed to log in. Please check your password.");
         setTimeout(() => {
@@ -65,6 +65,7 @@ function Login({ toggleLogin }) {
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter your name"
             style={{ caretColor: "transparent" }}
+            required
           />
 
           <input
