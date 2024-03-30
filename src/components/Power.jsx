@@ -1,14 +1,16 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-function Power({ toggleMenu, toggleStart }) {
+function Power({ toggleStart }) {
   const navigate = useNavigate();
   function handleClick() {
-    toggleMenu();
     toggleStart();
   }
   function handleSleep() {
-    navigate("/");
+    setTimeout(() => {
+      navigate("/");
+      
+    }, 1000);
   }
 
   return (
