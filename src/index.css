@@ -7,6 +7,7 @@ body {
   background-repeat: no-repeat;
   overflow: hidden;
   background-size: cover;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 .context-menu {
   position: fixed;
