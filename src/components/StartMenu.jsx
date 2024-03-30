@@ -1,11 +1,11 @@
 import React from "react";
 import Power from "./Power";
-import { useLocation } from "react-router-dom";
 import { generateInitials } from "./UserProfile";
+import { useParams } from "react-router-dom";
 
 function StartMenu({ toggleStart, toggleMenu, isStartOpen }) {
-  const location = useLocation();
-  const name = location.state && location.state.name;
+  // const name = localStorage.getItem('name');
+  const { name } = useParams();
   return (
     <>
       <section
@@ -220,23 +220,16 @@ function StartMenu({ toggleStart, toggleMenu, isStartOpen }) {
           <div className="nome-utente-start-section">
             <div className="avatar placeholder">
               <div className="bg-blue-500 text-white rounded-full w-8">
-                {name ? (
-                  <div className="text-white text-4xl font-normal">
+                {name && (
+                  <div className="text-white text-xl font-normal">
                     {generateInitials(name)}
-                  </div>
-                ) : (
-                  <div className="avatar">
-                    <div className="w-auto rounded-full">
-                      <img
-                        src="https://giffiles.alphacoders.com/532/53236.gif"
-                        alt="Profile"
-                      />
-                    </div>
                   </div>
                 )}
               </div>
             </div>
-            <div>{name ? name : "User"}</div>
+            <div>
+              {name ? <div className="capitalize">{name}</div> : "User"}
+            </div>
           </div>
           <div className="spegni-pc-start-section">
             <Power toggleMenu={toggleMenu} toggleStart={toggleStart} />
