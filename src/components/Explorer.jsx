@@ -77,7 +77,7 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
               <div className="flex items-center">
                 <div className="flex items-center justify-center w-24 h-full text-xs gap-1 border-neutral-700 border-r-[1.5px] opacity-45">
                   <img
-                    src="/images/icons/new.png"
+                    src="/images/options/new.png"
                     alt="new"
                     className="w-5 h-5"
                   />
@@ -88,32 +88,32 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                 </div>
                 <div className="flex h-full w-72 justify-around items-center border-neutral-700 border-r-[1.5px] opacity-45">
                   <img
-                    src="/images/icons/cut.png"
+                    src="/images/options/cut.png"
                     alt="cut"
                     className="h-5 w-5"
                   />
                   <img
-                    src="/images/icons/copy.png"
+                    src="/images/options/copy.png"
                     alt="copy"
                     className="h-5 w-5"
                   />
                   <img
-                    src="/images/icons/paste.png"
+                    src="/images/options/paste.png"
                     alt="paste"
                     className="h-7 w-7"
                   />
                   <img
-                    src="/images/icons/rename.png"
+                    src="/images/options/rename.png"
                     alt="rename"
                     className="h-5 w-5"
                   />
                   <img
-                    src="/images/icons/share.png"
+                    src="/images/options/share.png"
                     alt="share"
                     className="h-5 w-5"
                   />
                   <img
-                    src="/images/icons/delete.png"
+                    src="/images/options/delete.png"
                     alt="delete"
                     className="h-5 w-5"
                   />
@@ -121,7 +121,7 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                 <div className="flex h-full items-center w-72 justify-around border-neutral-700 border-r-[1.5px]">
                   <div className="flex items-center justify-center h-full text-xs gap-1 opacity-45">
                     <img
-                      src="/images/icons/sort.png"
+                      src="/images/options/sort.png"
                       alt="sort"
                       className="w-5 h-5"
                     />
@@ -130,9 +130,9 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                       expand_more
                     </div>
                   </div>
-                  <div className="flex items-center justify-center h-full text-xs gap-1">
+                  <div className="flex items-center justify-center h-full text-xs gap-1 opacity-80">
                     <img
-                      src="/images/icons/view.png"
+                      src="/images/options/view.png"
                       alt="view"
                       className="w-5 h-5"
                     />
@@ -141,9 +141,9 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                       expand_more
                     </div>
                   </div>
-                  <div className="flex items-center justify-center h-full text-xs gap-1">
+                  <div className="flex items-center justify-center h-full text-xs gap-1 opacity-80">
                     <img
-                      src="/images/icons/filter.png"
+                      src="/images/options/filter.png"
                       alt="filter"
                       className="w-5 h-5"
                     />
@@ -154,14 +154,14 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                   </div>
                 </div>
                 <img
-                  src="/images/icons/dots.png"
+                  src="/images/options/dots.png"
                   alt="dots"
                   className="w-3.5 h-3.5 ml-4"
                 />
               </div>
               <div className="flex items-center mr-8 text-xs">
                 <img
-                  src="/images/icons/details.png"
+                  src="/images/options/details.png"
                   alt="details"
                   className="w-5 h-5 mr-1"
                 />
@@ -169,15 +169,124 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
               </div>
             </div>
             <div className="flex flex-row h-full bg-neutral-900">
-              <div className="w-40 h-[100vh] pt-2 border-neutral-700 border-r-[1.5px]">
-                this is a sidebar
+              <div className="w-40 h-[100vh] pt-2 border-neutral-700 border-r-[1.5px] px-[2px]">
+                <div className="border-b-[1.5px] border-neutral-700 h-20">
+                  <div className="flex items-center justify-center mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                    <img
+                      src="/images/options/details.png"
+                      alt="details"
+                      className="w-5 h-5 mr-1"
+                    />
+                    Home
+                  </div>
+                  <div className="flex items-center justify-center mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                    <img
+                      src="/images/options/details.png"
+                      alt="details"
+                      className="w-5 h-5 mr-1"
+                    />
+                    Gallery
+                  </div>
+                </div>
+                <div className="mt-3.5 border-b-[1.5px] border-neutral-700 h-52">
+                  <div className="flex relative items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                    <img
+                      src="/images/folders/Desktop.ico"
+                      alt="details"
+                      className="w-5 h-5 mr-1"
+                    />
+                    Desktop
+                    <span class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
+                      keep
+                    </span>
+                  </div>
+                  <div className="flex relative items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                    <img
+                      src="/images/folders/Downloads.ico"
+                      alt="details"
+                      className="w-5 h-5 mr-1"
+                    />
+                    Downloads
+                    <span class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
+                      keep
+                    </span>
+                  </div>
+                  <div className="flex relative items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                    <img
+                      src="/images/folders/Documents.ico"
+                      alt="details"
+                      className="w-5 h-5 mr-1"
+                    />
+                    <span class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
+                      keep
+                    </span>
+                    Documents
+                  </div>
+                  <div className="flex relative items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                    <img
+                      src="/images/folders/Photos.ico"
+                      alt="details"
+                      className="w-5 h-5 mr-1"
+                    />
+                    Pictures
+                    <span class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
+                      keep
+                    </span>
+                  </div>
+                  <div className="flex relative items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                    <img
+                      src="/images/folders/Music.ico"
+                      alt="details"
+                      className="w-5 h-5 mr-1"
+                    />
+                    Music
+                    <span class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
+                      keep
+                    </span>
+                  </div>
+                  <div className="flex relative items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                    <img
+                      src="/images/folders/Videos.ico"
+                      alt="details"
+                      className="w-5 h-5 mr-1"
+                    />
+                    Videos
+                    <span class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
+                      keep
+                    </span>
+                  </div>
+                </div>
+                <div className="mt-3.5 border-b-[1.5px] border-neutral-700 h-52">
+                  <div className="flex items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm relative">
+                    <img
+                      src="/images/options/details.png"
+                      alt="details"
+                      className="w-5 h-5 mr-1"
+                    />
+                    This PC
+                    <div class="material-symbols-outlined absolute left-2 text-lg opacity-30">
+                      chevron_right
+                    </div>
+                  </div>
+                  <div className="flex items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm relative">
+                    <img
+                      src="/images/options/details.png"
+                      alt="details"
+                      className="w-5 h-5 mr-1"
+                    />
+                    Network
+                    <div class="material-symbols-outlined absolute left-2 text-lg opacity-30">
+                      chevron_right
+                    </div>
+                  </div>
+                </div>
               </div>
               <div className="border-0 ml-5 mt-2">this is content area</div>
             </div>
 
-            <div className="absolute bottom-0 h-5 bg-neutral-900 w-full text-xs py-1">
-              <div className="flex items-center justify-center w-16 border-r-[1.5px] h-full">
-                5 items
+            <div className="absolute bottom-0 h-5 bg-neutral-900 w-full text-xs py-1 pl-2">
+              <div className="flex items-center justify-center w-16 border-r-[1.5px] h-full text-xs font-light">
+                25 items
               </div>
             </div>
           </div>
