@@ -73,7 +73,7 @@ export default function Taskbar({ toggleStart, toggleExplorer }) {
               <div>{formatTime(currentTime)}</div>
               <div>{formatDate(currentTime)}</div>
             </div>
-            <span className="material-symbols-outlined text-xl ml-2">
+            <span className="material-symbols-outlined text-xl ml-1">
               notifications
             </span>
           </div>
