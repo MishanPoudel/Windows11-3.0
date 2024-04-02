@@ -30,7 +30,14 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
           <div className="content text-white select-none">
             <div className="absolute bg-neutral-800 top-[6.5px] h-[2em] left-[6px] w-60 rounded-t-lg flex">
               <div className="flex justify-between items-center w-full">
-                <div className="pl-2 text-sm">Home</div>
+                <div className="pl-2 text-xs flex">
+                  <img
+                    src="/images/folders/home.png"
+                    alt="details"
+                    className="w-5 h-5 mr-2"
+                  />
+                  Home
+                </div>
                 <div className="material-symbols-outlined hover:bg-neutral-800 m-0.5 w-6 rounded-md flex justify-center items-center text-lg">
                   close
                 </div>
@@ -173,7 +180,7 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                 <div className="border-b-[1.5px] border-neutral-700 h-20">
                   <div className="flex items-center justify-center mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
                     <img
-                      src="/images/options/details.png"
+                      src="/images/folders/home.png"
                       alt="details"
                       className="w-5 h-5 mr-1"
                     />
@@ -181,7 +188,7 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                   </div>
                   <div className="flex items-center justify-center mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
                     <img
-                      src="/images/options/details.png"
+                      src="/images/folders/gallery.png"
                       alt="details"
                       className="w-5 h-5 mr-1"
                     />
@@ -189,7 +196,7 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                   </div>
                 </div>
                 <div className="mt-3.5 border-b-[1.5px] border-neutral-700 h-52">
-                  <div className="flex relative items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                  <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
                     <img
                       src="/images/folders/Desktop.ico"
                       alt="details"
@@ -200,7 +207,7 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                       keep
                     </span>
                   </div>
-                  <div className="flex relative items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                  <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
                     <img
                       src="/images/folders/Downloads.ico"
                       alt="details"
@@ -211,7 +218,7 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                       keep
                     </span>
                   </div>
-                  <div className="flex relative items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                  <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
                     <img
                       src="/images/folders/Documents.ico"
                       alt="details"
@@ -222,7 +229,7 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                     </span>
                     Documents
                   </div>
-                  <div className="flex relative items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                  <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
                     <img
                       src="/images/folders/Photos.ico"
                       alt="details"
@@ -233,7 +240,7 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                       keep
                     </span>
                   </div>
-                  <div className="flex relative items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                  <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
                     <img
                       src="/images/folders/Music.ico"
                       alt="details"
@@ -244,7 +251,7 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                       keep
                     </span>
                   </div>
-                  <div className="flex relative items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                  <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
                     <img
                       src="/images/folders/Videos.ico"
                       alt="details"
@@ -259,9 +266,9 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                 <div className="mt-3.5 border-b-[1.5px] border-neutral-700 h-52">
                   <div className="flex items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm relative">
                     <img
-                      src="/images/options/details.png"
+                      src="/images/folders/Computer.ico"
                       alt="details"
-                      className="w-5 h-5 mr-1"
+                      className="w-4 h-4 mr-1"
                     />
                     This PC
                     <div class="material-symbols-outlined absolute left-2 text-lg opacity-30">
@@ -270,9 +277,9 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                   </div>
                   <div className="flex items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm relative">
                     <img
-                      src="/images/options/details.png"
+                      src="/images/folders/Network.ico"
                       alt="details"
-                      className="w-5 h-5 mr-1"
+                      className="w-4 h-4 mr-1"
                     />
                     Network
                     <div class="material-symbols-outlined absolute left-2 text-lg opacity-30">
@@ -281,12 +288,138 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                   </div>
                 </div>
               </div>
-              <div className="border-0 ml-5 mt-2">this is content area</div>
+              <div className="border-0 ml-5 mt-2">
+                <div className="flex items-center hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
+                  <div className="material-symbols-outlined text-2xl font-extralight">
+                    expand_more
+                  </div>
+                  <div className="text-xs ml-3 mr-4">Quick access</div>
+                </div>
+                <div className="h-32 w-[87vh] mr-32 grid grid-cols-3 grid-rows-2">
+                  <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
+                    <img
+                      src="/images/folders/Desktop.ico"
+                      alt="Desktop"
+                      className="w-14 h-14 mr-4"
+                    />
+                    <div className="text-xs">
+                      Desktop
+                      <div>
+                        <div className="font-light opacity-50">
+                          Stored Locally
+                        </div>
+                        <span class="material-symbols-outlined text-sm opacity-40 rotate-45">
+                          keep
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
+                    <img
+                      src="/images/folders/Downloads.ico"
+                      alt="Downloads"
+                      className="w-14 h-14 mr-4"
+                    />
+                    <div className="text-xs">
+                      Downloads
+                      <div>
+                        <div className="font-light opacity-50">
+                          Stored Locally
+                        </div>
+                        <span class="material-symbols-outlined text-sm opacity-40 rotate-45">
+                          keep
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
+                    <img
+                      src="/images/folders/Documents.ico"
+                      alt="Documents"
+                      className="w-14 h-14 mr-4"
+                    />
+                    <div className="text-xs">
+                      Documents
+                      <div>
+                        <div className="font-light opacity-50">
+                          Stored Locally
+                        </div>
+                        <span class="material-symbols-outlined text-sm opacity-40 rotate-45">
+                          keep
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
+                    <img
+                      src="/images/folders/Photos.ico"
+                      alt="Pictures"
+                      className="w-14 h-14 mr-4"
+                    />
+                    <div className="text-xs">
+                      Pictures
+                      <div>
+                        <div className="font-light opacity-50">
+                          Stored Locally
+                        </div>
+                        <span class="material-symbols-outlined text-sm opacity-40 rotate-45">
+                          keep
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
+                    <img
+                      src="/images/folders/Music.ico"
+                      alt="Music"
+                      className="w-14 h-14 mr-4"
+                    />
+                    <div className="text-xs">
+                      Music
+                      <div>
+                        <div className="font-light opacity-50">
+                          Stored Locally
+                        </div>
+                        <span class="material-symbols-outlined text-sm opacity-40 rotate-45">
+                          keep
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
+                    <img
+                      src="/images/folders/Videos.ico"
+                      alt="Videos"
+                      className="w-14 h-14 mr-4"
+                    />
+                    <div className="text-xs">
+                      Videos
+                      <div>
+                        <div className="font-light opacity-50">
+                          Stored Locally
+                        </div>
+                        <span class="material-symbols-outlined text-sm opacity-40 rotate-45">
+                          keep
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
+                  <div className="material-symbols-outlined text-2xl font-extralight">
+                    expand_more
+                  </div>
+                  <div className="text-xs ml-3 mr-4">Favourites</div>
+                </div>
+                <div className="text-xs m-2 ml-9 opacity-50 font-light">
+                  After you've favorutied some files, we'll show theme here.
+                </div>
+              </div>
             </div>
 
             <div className="absolute bottom-0 h-5 bg-neutral-900 w-full text-xs py-1 pl-2">
-              <div className="flex items-center justify-center w-16 border-r-[1.5px] h-full text-xs font-light">
-                25 items
+              <div className="flex items-center justify-center w-16 border-r-[1.5px] h-full text-xs font-extralight">
+                6 items
               </div>
             </div>
           </div>
