@@ -1,9 +1,13 @@
 import React, { useRef } from "react";
 import Draggable from "react-draggable";
-import Chrome from "./Chrome";
+import { generateInitials } from "./UserProfile";
+import { useParams } from "react-router-dom";
 
 function Browser({ isAppOpen, toggleBrowser }) {
   const explorerRef = useRef(null);
+  const homeUrl = "https://www.google.com/webhp?igu=1";
+  const { name } = useParams();
+
   return (
     <>
       <div className={`${isAppOpen ? "" : "hidden"} z-30 absolute`}>
@@ -34,7 +38,7 @@ function Browser({ isAppOpen, toggleBrowser }) {
             <div className="content text-white select-none text-center">
               <div className="absolute bg-neutral-800 top-[6.5px] h-[2em] left-[6px] w-60 rounded-t-lg flex">
                 <div className="flex justify-between items-center w-full">
-                  <div className="pl-2 text-sm">this iswhat it is</div>
+                  <div className="pl-2 text-sm">New Tab</div>
                   <div className="material-symbols-outlined hover:bg-neutral-800 m-0.5 w-6 rounded-md flex justify-center items-center text-lg">
                     close
                   </div>
@@ -43,11 +47,48 @@ function Browser({ isAppOpen, toggleBrowser }) {
                   add
                 </div>
               </div>
-              <div className="bg-neutral-800 w-full h-10 border-neutral-700 border-b-[1.5px] mt-1">
-                jhsdf
+              <div className="flex bg-neutral-800 w-full h-10 border-neutral-700 border-b-[1.5px] mt-1">
+                <div className="flex py-1 w-28 justify-around">
+                  <div class="material-symbols-outlined font-extralight text-xl opacity-45">
+                    arrow_back
+                  </div>
+                  <div class="material-symbols-outlined font-extralight text-xl opacity-45">
+                    arrow_forward
+                  </div>
+                  <div class="material-symbols-outlined font-extralight text-xl hover:bg-neutral-600 rounded-xl hover:bg-opacity-50">
+                    refresh
+                  </div>
+                </div>
+                <div className="w-[48vw] my-1.5 rounded-xl bg-neutral-700 relative">
+                  <div className="opacity-50">Search Google or type a URL</div>
+                  <div class="absolute right-2 top-0 text-lg opacity-80 material-symbols-outlined">
+                    star
+                  </div>
+                </div>
+                <div className="avatar placeholder flex justify-center items-center ml-6">
+                  <div className="bg-blue-500 text-white rounded-full w-6 h-6">
+                    {name && (
+                      <div className="text-white text-md font-normal">
+                        {generateInitials(name)}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <img
+                  src="/images/options/dots.png"
+                  alt="dots"
+                  className="h-4 w-4 rotate-90 m-2.5 opacity-60"
+                />
               </div>
               <div className="h-[50em]">
-                <Chrome />
+                <div className="h-full w-full flex flex-col flex-grow">
+                  <iframe
+                    src={homeUrl}
+                    className="flex-grow"
+                    id="chrome-screen"
+                    title="Chrome Url"
+                  ></iframe>
+                </div>
               </div>
             </div>
           </div>
