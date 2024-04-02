@@ -30,9 +30,9 @@ function RightClick() {
             <div className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center">
               <div></div>
               <div className="justify-center">View</div>
-              <span className="material-symbols-outlined rotate-[-90deg] justify-end">
+              <div className="material-symbols-outlined rotate-[-90deg] justify-end">
                 expand_more
-              </span>
+              </div>
             </div>
             <div className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center">
               sort by

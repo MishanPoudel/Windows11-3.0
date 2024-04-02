@@ -203,9 +203,9 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                       className="w-5 h-5 mr-1"
                     />
                     Desktop
-                    <span class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
+                    <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
                       keep
-                    </span>
+                    </div>
                   </div>
                   <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
                     <img
@@ -214,9 +214,9 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                       className="w-5 h-5 mr-1"
                     />
                     Downloads
-                    <span class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
+                    <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
                       keep
-                    </span>
+                    </div>
                   </div>
                   <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
                     <img
@@ -224,9 +224,9 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                       alt="details"
                       className="w-5 h-5 mr-1"
                     />
-                    <span class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
+                    <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
                       keep
-                    </span>
+                    </div>
                     Documents
                   </div>
                   <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
@@ -236,9 +236,9 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                       className="w-5 h-5 mr-1"
                     />
                     Pictures
-                    <span class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
+                    <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
                       keep
-                    </span>
+                    </div>
                   </div>
                   <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
                     <img
@@ -247,9 +247,9 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                       className="w-5 h-5 mr-1"
                     />
                     Music
-                    <span class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
+                    <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
                       keep
-                    </span>
+                    </div>
                   </div>
                   <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
                     <img
@@ -258,9 +258,9 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                       className="w-5 h-5 mr-1"
                     />
                     Videos
-                    <span class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
+                    <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
                       keep
-                    </span>
+                    </div>
                   </div>
                 </div>
                 <div className="mt-3.5 border-b-[1.5px] border-neutral-700 h-52">
@@ -308,9 +308,9 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                         <div className="font-light opacity-50">
                           Stored Locally
                         </div>
-                        <span class="material-symbols-outlined text-sm opacity-40 rotate-45">
+                        <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
                           keep
-                        </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -326,9 +326,9 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                         <div className="font-light opacity-50">
                           Stored Locally
                         </div>
-                        <span class="material-symbols-outlined text-sm opacity-40 rotate-45">
+                        <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
                           keep
-                        </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -344,9 +344,9 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                         <div className="font-light opacity-50">
                           Stored Locally
                         </div>
-                        <span class="material-symbols-outlined text-sm opacity-40 rotate-45">
+                        <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
                           keep
-                        </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -362,9 +362,9 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                         <div className="font-light opacity-50">
                           Stored Locally
                         </div>
-                        <span class="material-symbols-outlined text-sm opacity-40 rotate-45">
+                        <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
                           keep
-                        </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -380,9 +380,9 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                         <div className="font-light opacity-50">
                           Stored Locally
                         </div>
-                        <span class="material-symbols-outlined text-sm opacity-40 rotate-45">
+                        <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
                           keep
-                        </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -398,9 +398,9 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                         <div className="font-light opacity-50">
                           Stored Locally
                         </div>
-                        <span class="material-symbols-outlined text-sm opacity-40 rotate-45">
+                        <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
                           keep
-                        </span>
+                        </div>
                       </div>
                     </div>
                   </div>

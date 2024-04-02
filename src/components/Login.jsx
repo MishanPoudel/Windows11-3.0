@@ -50,7 +50,7 @@ function Login({ toggleLogin }) {
               d="M6 18L18 6M6 6l12 12"
             />
           </svg>
-          <span>{error}</span>
+          <div>{error}</div>
         </div>
       )}
       <form onSubmit={login}>
@@ -89,7 +89,7 @@ function Login({ toggleLogin }) {
             className="text-white mt-3 text-sm btn btn-ghost hover:text-black"
             onClick={toggleLogin}
           >
-            Don't have an account? <span className="underline">Register</span>
+            Don't have an account? <div className="underline">Register</div>
           </div>
         </div>
       </form>

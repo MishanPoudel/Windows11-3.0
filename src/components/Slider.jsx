@@ -91,7 +91,7 @@ export default function Slider({ isMenuOpen, toggleMenu, setIsMenuOpen }) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <span className="material-symbols-outlined">search</span>
+            <div className="material-symbols-outlined">search</div>
           </a>
           <a
             href="https://i.pinimg.com/564x/3a/08/4e/3a084e04a46b5f0cdf09fec54659dc07.jpg"
@@ -99,7 +99,7 @@ export default function Slider({ isMenuOpen, toggleMenu, setIsMenuOpen }) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <span className="material-symbols-outlined">photo_camera</span>
+            <div className="material-symbols-outlined">photo_camera</div>
           </a>
         </div>
       </div>
