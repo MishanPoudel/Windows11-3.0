@@ -97,7 +97,7 @@ const Calculator = ({ isAppOpen, toggleCalculator }) => {
             </div>
           </div>
           <div className="content text-white select-none text-center flex justify-center">
-            <div className="top-[10px] bg-gradient-to-r from-blue-500 to-pink-500 mx-auto p-20 rounded-xl shadow-lg text-black wp">
+            <div className="top-[10px] bg-gradient-to-r from-blue-500 to-pink-500 mx-auto p-20 shadow-lg text-black wp">
               <input
                 type="text"
                 id="display"
@@ -105,14 +105,14 @@ const Calculator = ({ isAppOpen, toggleCalculator }) => {
               />
               <div className="grid grid-cols-4 gap-4">
                 <div
-                  className={`text-white col-span-4 text-center text-2xl ${
+                  className={`text-white col-div-4 text-center text-2xl ${
                     submit ? "" : "hidden"
                   }`}
                 >
                   {showResult}
                 </div>
                 <button
-                  className={`btn btn-success col-span-2 text-white ${
+                  className={`btn btn-success col-div-2 text-white ${
                     submit ? "" : "hidden"
                   }`}
                   onClick={handleYesClick}
@@ -120,7 +120,7 @@ const Calculator = ({ isAppOpen, toggleCalculator }) => {
                   YES
                 </button>
                 <button
-                  className={`btn btn-error col-span-2 text-white ${
+                  className={`btn btn-error col-div-2 text-white ${
                     submit ? "" : "hidden"
                   }`}
                   onClick={handleNoClick}
