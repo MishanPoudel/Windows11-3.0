@@ -6,32 +6,39 @@ function Login({ toggleLogin }) {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   localStorage.setItem("name", name);
 
   async function login(e) {
     e.preventDefault();
     try {
-      if (password === "demo") {
+      setLoading(true);
+      // Simulating a delay for demonstration purposes
+      setTimeout(() => {
         navigate(`/${name}`);
-      } else {
-        setError("Failed to log in. Please check your password.");
-        setTimeout(() => {
-          setError("");
-        }, 2000);
-      }
+        setLoading(false);
+      }, 3000);
     } catch (err) {
       console.error(err);
-      setError("Failed to log in. Please check your password.");
+      setError("Failed to log in. Please try again later.");
       setTimeout(() => {
         setError("");
       }, 2000);
+      setLoading(false);
     }
   }
 
   return (
     <>
-      {error && (
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 top-36">
+          <div className="inline-block animate-spin rounded-full border-4 border-solid border-current border-e-transparent h-8 w-8">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      )}
+      {!loading && error && (
         <div
           role="alert"
           className="absolute top-0 left-0 w-full bg-red-500 text-white text-center py-2"
@@ -68,31 +75,45 @@ function Login({ toggleLogin }) {
             required
           />
 
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Password"
-            className="input bg-opacity-30 w-full max-w-xs focus:outline-none border-[0.5px] border-b-white mt-4 placeholder-white opacity-100::placeholder"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            required
-            autoComplete="current-password"
-          />
+          {!loading && (
+            <>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Password"
+                className="input bg-opacity-30 w-full max-w-xs focus:outline-none border-[0.5px] border-b-white mt-4 placeholder-white opacity-100::placeholder"
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+                required
+                autoComplete="current-password"
+              />
+              <div
+                className="text-white mt-3 text-sm btn btn-ghost hover:text-black"
+                onClick={toggleLogin}
+              >
+                I forgot my PIN
+              </div>
+            </>
+          )}
+
           <button
             type="submit"
             className="hidden btn bg-blue-500 text-white mt-4 px-4 py-2 rounded-md"
           >
             Login
           </button>
-          <div
-            className="text-white mt-3 text-sm btn btn-ghost hover:text-black"
-            onClick={toggleLogin}
-          >
-            Don't have an account? <div className="underline">Register</div>
-          </div>
         </div>
       </form>
+      <div className="absolute flex gap-9 text-white bottom-5 right-12 select-none">
+        <span className="material-symbols-outlined text-3xl">wifi</span>
+        <span className="material-symbols-outlined text-3xl">
+          accessibility
+        </span>
+        <span className="material-symbols-outlined text-3xl">
+          power_settings_new
+        </span>
+      </div>
     </>
   );
 }
