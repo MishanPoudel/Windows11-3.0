@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Draggable from "react-draggable";
 
-function VsCode({ isAppOpen, toggleVsCode }) {
+function VsCode({ isAppOpen, toggleVsCode, bounds }) {
   const [contentLoaded, setContentLoaded] = useState(false);
 
   useEffect(() => {
@@ -12,9 +12,9 @@ function VsCode({ isAppOpen, toggleVsCode }) {
 
   return (
     <>
-      <div className={`${isAppOpen ? "" : "hidden"} absolute z-30`}>
-        <Draggable handle=".title-bar">
-          <div className="window bg-black h-[45rem] w-[70.5rem] rounded-xl overflow-hidden border-neutral-700 border-[1.5px] font-semibold">
+      <div className={`${isAppOpen ? "" : "hidden"} z-30 w-full h-screen pointer-events-none absolute`}>
+        <Draggable handle=".title-bar" bounds={bounds}>
+          <div className="window bg-black h-[45rem] w-[70.5rem] rounded-xl overflow-hidden border-neutral-700 border-[1.5px] font-semibold pointer-events-auto">
             <div className="title-bar">
               <div className="text-white h-9 flex justify-between select-none">
                 <div className="m-1 ml-4 font-normal">Visual Studio Code</div>
