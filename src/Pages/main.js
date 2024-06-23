@@ -15,6 +15,7 @@ function Main() {
   const [isCalculatorOpen, setisCalculatorOpen] = useState(false);
   const [isVsCodeOpen, setisVsCodeOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [aboutMe, setAboutMe] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -23,8 +24,9 @@ function Main() {
   const toggleStart = () => {
     setisStartOpen(!isStartOpen);
   };
-  const toggleExplorer = () => {
+  const toggleExplorer = (input) => {
     setisExplorerOpen(!isExplorerOpen);
+    setAboutMe(input);
   };
   const toggleBrowser = () => {
     setisBrowserOpen(!isBrowserOpen);
@@ -36,11 +38,20 @@ function Main() {
     setisVsCodeOpen(!isVsCodeOpen);
   };
 
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
+  const bounds = {
+    left: 0,
+    top: 0,
+    right: screenWidth-1128,
+    bottom: screenHeight-624,
+  };
+
   return (
     <>
       <div className="relative h-screen">
         <div className="relative h-full w-full top-0 left-0 z-10 text-white">
-          <RightClick />
+          <RightClick option={true} />
           <div className="grid grid-cols-2 h-[80vh] grid-rows-8 gap-2 absolute top-2 left-2">
             <div className="row-start-1">
               <div
@@ -58,7 +69,12 @@ function Main() {
               </div>
             </div>
             <div className="row-start-2">
-              <div className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2 select-none">
+              <div
+                className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2 select-none"
+                onDoubleClick={() => {
+                  toggleExplorer(false);
+                }}
+              >
                 <img
                   src="/images/apps/folder.png"
                   alt="edge"
@@ -82,7 +98,10 @@ function Main() {
               </div>
             </div>
             <div className="row-start-4">
-              <div className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2 select-none">
+              <div
+                className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2 select-none"
+                onDoubleClick={toggleBrowser}
+              >
                 <img
                   src="/images/apps/edge.png"
                   alt="edge"
@@ -129,16 +148,27 @@ function Main() {
           className={`absolute top-0 flex justify-center items-center w-full h-full`}
         >
           <StartMenu isStartOpen={isStartOpen} toggleStart={toggleStart} />
-          <Browser isAppOpen={isBrowserOpen} toggleBrowser={toggleBrowser} />
+          <Browser
+            isAppOpen={isBrowserOpen}
+            toggleBrowser={toggleBrowser}
+            bounds={bounds}
+          />
           <Explorer
             toggleExplorer={toggleExplorer}
             isExplorerOpen={isExplorerOpen}
+            aboutMe={aboutMe}
+            bounds={bounds}
           />
           <Calculator
+            bounds={bounds}
             isAppOpen={isCalculatorOpen}
             toggleCalculator={toggleCalculator}
           />
-          <VsCode isAppOpen={isVsCodeOpen} toggleVsCode={toggleVsCode} />
+          <VsCode
+            isAppOpen={isVsCodeOpen}
+            toggleVsCode={toggleVsCode}
+            bounds={bounds}
+          />
         </div>
         <Taskbar toggleStart={toggleStart} toggleExplorer={toggleExplorer} />
       </div>
