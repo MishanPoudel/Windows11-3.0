@@ -24,7 +24,7 @@ export default function Taskbar({ toggleStart, toggleExplorer }) {
     <>
       <div className="fixed bottom-0 flex justify-between w-full h-[3.2rem] bg-neutral-800 border-t-[0.2px] border-neutral-700 select-none pointer-events-auto py-[0.2rem] text-white z-50">
         <div className="w-[15%]"></div>
-        <div className="flex justify-center grow items-center">
+        <div className="flex justify-center w-auto items-center">
           <div
             className="flex justify-center items-center font-semibold text-sm hover:bg-neutral-700 my-1 h-full rounded-md px-1 w-11"
             onClick={toggleStart}
@@ -37,7 +37,7 @@ export default function Taskbar({ toggleStart, toggleExplorer }) {
           </div>
           <div
             className="flex justify-center items-center font-semibold text-sm hover:bg-neutral-700 my-1 h-full rounded-md px-1 w-11"
-            onClick={toggleExplorer}
+            onClick={()=>{toggleExplorer(true)}}
           >
             <img
               src="/images/apps/explorer.png"
