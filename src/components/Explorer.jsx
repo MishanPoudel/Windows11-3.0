@@ -1,15 +1,27 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
+import AboutMe from "./AboutMe";
 
-const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
+const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds }) => {
+  const [page, setPage] = useState("About Me");
+  const [icon, setIcon] = useState(null);
   const explorerRef = useRef(null);
 
+  useEffect(() => {
+    if (page === "About Me") setIcon("me");
+    else if (page === "Education") setIcon("edu");
+    else if (page === "Skills") setIcon("skills");
+    else if (page === "Projects") setIcon("projects");
+    else if (page === "Resume") setIcon("resume");
+    else setIcon("home");
+  }, [page]);
+
   return (
-    <div className={`${isExplorerOpen ? "" : "hidden"} z-30`}>
-      <Draggable handle=".title-bar" nodeRef={explorerRef}>
+    <div className={`${isExplorerOpen ? "" : "hidden"} z-30 w-full h-screen pointer-events-none absolute`}>
+      <Draggable handle=".title-bar" nodeRef={explorerRef} bounds={bounds}>
         <div
           ref={explorerRef}
-          className="window bg-black h-[39rem] w-[70.5rem] rounded-xl overflow-hidden border-neutral-700 border-[1.5px]"
+          className="window bg-black h-[39rem] w-[70.5rem] rounded-xl overflow-hidden border-neutral-700 border-[1.5px] pointer-events-auto"
         >
           <div className="title-bar">
             <div className="text-white h-9 w-full flex justify-end select-none">
@@ -32,11 +44,11 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
               <div className="flex justify-between items-center w-full">
                 <div className="pl-2 text-xs flex">
                   <img
-                    src="/images/folders/home.png"
-                    alt="details"
+                    src={`/images/folders/${icon}.png`}
+                    alt="main icons"
                     className="w-5 h-5 mr-2"
                   />
-                  Home
+                  {page === null ? "Home" : page}
                 </div>
                 <div className="material-symbols-outlined hover:bg-neutral-800 m-0.5 w-6 rounded-md flex justify-center items-center text-lg">
                   close
@@ -68,13 +80,15 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                 <div class="material-symbols-outlined font-extralight">
                   navigate_next
                 </div>
-                <div>Home</div>
+                <div> {page === null ? "Home" : page}</div>
                 <div class="material-symbols-outlined font-extralight">
                   navigate_next
                 </div>
               </div>
               <div className="flex justify-between bg-neutral-700 bg-opacity-50 my-1.5 rounded-md items-center text-sm px-4 mr-3 w-[19.3em]">
-                <div className="opacity-80">Search Home</div>
+                <div className="opacity-80">
+                  Search {page === null ? "Home" : page}
+                </div>
                 <div class="material-symbols-outlined font-extralight text-sm">
                   search
                 </div>
@@ -175,253 +189,347 @@ const Explorer = ({ isExplorerOpen, toggleExplorer }) => {
                 Details
               </div>
             </div>
-            <div className="flex flex-row h-full bg-neutral-900">
-              <div className="w-40 h-[100vh] pt-2 border-neutral-700 border-r-[1.5px] px-[2px]">
-                <div className="border-b-[1.5px] border-neutral-700 h-20">
-                  <div className="flex items-center justify-center mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
-                    <img
-                      src="/images/folders/home.png"
-                      alt="details"
-                      className="w-5 h-5 mr-1"
-                    />
-                    Home
+            {aboutMe === true ? (
+              <>
+                <div className="flex flex-row h-full bg-neutral-900">
+                  <div className="w-40 h-[100vh] pt-2 border-neutral-700 border-r-[1.5px] px-[2px]">
+                    <div className="border-b-[1.5px] border-neutral-700 h-20">
+                      <div className="flex items-center justify-center mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                        <img
+                          src="/images/folders/home.png"
+                          alt="details"
+                          className="w-5 h-5 mr-1"
+                        />
+                        Home
+                      </div>
+                      <div className="flex items-center justify-center mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                        <img
+                          src="/images/folders/gallery.png"
+                          alt="details"
+                          className="w-5 h-5 mr-1"
+                        />
+                        Gallery
+                      </div>
+                    </div>
+                    <div className="mt-3.5 border-b-[1.5px] border-neutral-700 h-52">
+                      <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                        <img
+                          src="/images/folders/Desktop.ico"
+                          alt="details"
+                          className="w-5 h-5 mr-1"
+                        />
+                        Desktop
+                        <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
+                          keep
+                        </div>
+                      </div>
+                      <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                        <img
+                          src="/images/folders/Downloads.ico"
+                          alt="details"
+                          className="w-5 h-5 mr-1"
+                        />
+                        Downloads
+                        <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
+                          keep
+                        </div>
+                      </div>
+                      <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                        <img
+                          src="/images/folders/Documents.ico"
+                          alt="details"
+                          className="w-5 h-5 mr-1"
+                        />
+                        <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
+                          keep
+                        </div>
+                        Documents
+                      </div>
+                      <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                        <img
+                          src="/images/folders/Photos.ico"
+                          alt="details"
+                          className="w-5 h-5 mr-1"
+                        />
+                        Pictures
+                        <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
+                          keep
+                        </div>
+                      </div>
+                      <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                        <img
+                          src="/images/folders/Music.ico"
+                          alt="details"
+                          className="w-5 h-5 mr-1"
+                        />
+                        Music
+                        <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
+                          keep
+                        </div>
+                      </div>
+                      <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                        <img
+                          src="/images/folders/Videos.ico"
+                          alt="details"
+                          className="w-5 h-5 mr-1"
+                        />
+                        Videos
+                        <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
+                          keep
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-3.5 border-b-[1.5px] border-neutral-700 h-52">
+                      <div className="flex items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm relative">
+                        <img
+                          src="/images/folders/Computer.ico"
+                          alt="details"
+                          className="w-4 h-4 mr-1"
+                        />
+                        This PC
+                        <div class="material-symbols-outlined absolute left-2 text-lg opacity-30">
+                          chevron_right
+                        </div>
+                      </div>
+                      <div className="flex items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm relative">
+                        <img
+                          src="/images/folders/Network.ico"
+                          alt="details"
+                          className="w-4 h-4 mr-1"
+                        />
+                        Network
+                        <div class="material-symbols-outlined absolute left-2 text-lg opacity-30">
+                          chevron_right
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-center mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
-                    <img
-                      src="/images/folders/gallery.png"
-                      alt="details"
-                      className="w-5 h-5 mr-1"
-                    />
-                    Gallery
+                  <div className="border-0 ml-5 mt-2">
+                    <div className="flex items-center hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
+                      <div className="material-symbols-outlined text-2xl font-extralight">
+                        expand_more
+                      </div>
+                      <div className="text-xs ml-3 mr-4">Quick access</div>
+                    </div>
+                    <div className="h-32 w-[87vh] mr-32 grid grid-cols-3 grid-rows-2">
+                      <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
+                        <img
+                          src="/images/folders/Desktop.ico"
+                          alt="Desktop"
+                          className="w-14 h-14 mr-4"
+                        />
+                        <div className="text-xs">
+                          Desktop
+                          <div>
+                            <div className="font-light opacity-50">
+                              Stored Locally
+                            </div>
+                            <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
+                              keep
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
+                        <img
+                          src="/images/folders/Downloads.ico"
+                          alt="Downloads"
+                          className="w-14 h-14 mr-4"
+                        />
+                        <div className="text-xs">
+                          Downloads
+                          <div>
+                            <div className="font-light opacity-50">
+                              Stored Locally
+                            </div>
+                            <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
+                              keep
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
+                        <img
+                          src="/images/folders/Documents.ico"
+                          alt="Documents"
+                          className="w-14 h-14 mr-4"
+                        />
+                        <div className="text-xs">
+                          Documents
+                          <div>
+                            <div className="font-light opacity-50">
+                              Stored Locally
+                            </div>
+                            <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
+                              keep
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
+                        <img
+                          src="/images/folders/Photos.ico"
+                          alt="Pictures"
+                          className="w-14 h-14 mr-4"
+                        />
+                        <div className="text-xs">
+                          Pictures
+                          <div>
+                            <div className="font-light opacity-50">
+                              Stored Locally
+                            </div>
+                            <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
+                              keep
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
+                        <img
+                          src="/images/folders/Music.ico"
+                          alt="Music"
+                          className="w-14 h-14 mr-4"
+                        />
+                        <div className="text-xs">
+                          Music
+                          <div>
+                            <div className="font-light opacity-50">
+                              Stored Locally
+                            </div>
+                            <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
+                              keep
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
+                        <img
+                          src="/images/folders/Videos.ico"
+                          alt="Videos"
+                          className="w-14 h-14 mr-4"
+                        />
+                        <div className="text-xs">
+                          Videos
+                          <div>
+                            <div className="font-light opacity-50">
+                              Stored Locally
+                            </div>
+                            <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
+                              keep
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
+                      <div className="material-symbols-outlined text-2xl font-extralight">
+                        expand_more
+                      </div>
+                      <div className="text-xs ml-3 mr-4">Favourites</div>
+                    </div>
+                    <div className="text-xs m-2 ml-9 opacity-50 font-light">
+                      After you've favourited some files, we'll show theme here.
+                    </div>
                   </div>
                 </div>
-                <div className="mt-3.5 border-b-[1.5px] border-neutral-700 h-52">
-                  <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
-                    <img
-                      src="/images/folders/Desktop.ico"
-                      alt="details"
-                      className="w-5 h-5 mr-1"
-                    />
-                    Desktop
-                    <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
-                      keep
-                    </div>
-                  </div>
-                  <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
-                    <img
-                      src="/images/folders/Downloads.ico"
-                      alt="details"
-                      className="w-5 h-5 mr-1"
-                    />
-                    Downloads
-                    <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
-                      keep
-                    </div>
-                  </div>
-                  <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
-                    <img
-                      src="/images/folders/Documents.ico"
-                      alt="details"
-                      className="w-5 h-5 mr-1"
-                    />
-                    <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
-                      keep
-                    </div>
-                    Documents
-                  </div>
-                  <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
-                    <img
-                      src="/images/folders/Photos.ico"
-                      alt="details"
-                      className="w-5 h-5 mr-1"
-                    />
-                    Pictures
-                    <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
-                      keep
-                    </div>
-                  </div>
-                  <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
-                    <img
-                      src="/images/folders/Music.ico"
-                      alt="details"
-                      className="w-5 h-5 mr-1"
-                    />
-                    Music
-                    <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
-                      keep
-                    </div>
-                  </div>
-                  <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
-                    <img
-                      src="/images/folders/Videos.ico"
-                      alt="details"
-                      className="w-5 h-5 mr-1"
-                    />
-                    Videos
-                    <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
-                      keep
-                    </div>
+                <div className="absolute bottom-0 h-5 bg-neutral-900 w-full text-xs py-1 pl-2">
+                  <div className="flex items-center justify-center w-16 border-r-[1.5px] h-full text-xs font-extralight">
+                    6 items
                   </div>
                 </div>
-                <div className="mt-3.5 border-b-[1.5px] border-neutral-700 h-52">
-                  <div className="flex items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm relative">
+              </>
+            ) : (
+              <div className="flex flex-row h-full bg-neutral-900">
+                <div className="w-40 h-[100vh] pt-2 border-neutral-700 border-r-[1.5px] px-[2px]">
+                  <div
+                    className={`flex items-center pl-2.5 mr-8 text-xs w-full h-8 rounded-sm ${
+                      page === "About Me"
+                        ? "bg-gray-200 bg-opacity-80 text-neutral-900"
+                        : "hover:bg-neutral-700 text-white"
+                    }`}
+                    onClick={() => {
+                      setPage("About Me");
+                    }}
+                  >
                     <img
-                      src="/images/folders/Computer.ico"
-                      alt="details"
-                      className="w-4 h-4 mr-1"
+                      src="/images/folders/me.png"
+                      alt="me"
+                      className="w-5 h-5 mr-2.5"
                     />
-                    This PC
-                    <div class="material-symbols-outlined absolute left-2 text-lg opacity-30">
-                      chevron_right
-                    </div>
+                    About Me
                   </div>
-                  <div className="flex items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm relative">
+                  <div
+                    className={`flex items-center pl-2.5 mr-8 text-xs w-full h-8 rounded-sm ${
+                      page === "Education"
+                        ? "bg-gray-200 bg-opacity-80 text-neutral-900"
+                        : "hover:bg-neutral-700 text-white"
+                    }`}
+                    onClick={() => {
+                      setPage("Education");
+                    }}
+                  >
                     <img
-                      src="/images/folders/Network.ico"
-                      alt="details"
-                      className="w-4 h-4 mr-1"
+                      src="/images/folders/edu.png"
+                      alt="edu"
+                      className="w-5 h-5 mr-2.5"
                     />
-                    Network
-                    <div class="material-symbols-outlined absolute left-2 text-lg opacity-30">
-                      chevron_right
-                    </div>
+                    Education
+                  </div>
+                  <div
+                    className={`flex items-center pl-2.5 mr-8 text-xs w-full h-8 rounded-sm ${
+                      page === "Skills"
+                        ? "bg-gray-200 bg-opacity-80 text-neutral-900"
+                        : "hover:bg-neutral-700 text-white"
+                    }`}
+                    onClick={() => {
+                      setPage("Skills");
+                    }}
+                  >
+                    <img
+                      src="/images/folders/skills.png"
+                      alt="skills"
+                      className="w-5 h-5 mr-2.5"
+                    />
+                    Skills
+                  </div>
+                  <div
+                    className={`flex items-center pl-2.5 mr-8 text-xs w-full h-8 rounded-sm ${
+                      page === "Projects"
+                        ? "bg-gray-200 bg-opacity-80 text-neutral-900"
+                        : "hover:bg-neutral-700 text-white"
+                    }`}
+                    onClick={() => {
+                      setPage("Projects");
+                    }}
+                  >
+                    <img
+                      src="/images/folders/projects.png"
+                      alt="Projects"
+                      className="w-5 h-5 mr-2.5"
+                    />
+                    Projects
+                  </div>
+                  <div
+                    className={`flex items-center pl-2.5 mr-8 text-xs w-full h-8 rounded-sm ${
+                      page === "Resume"
+                        ? "bg-gray-200 bg-opacity-80 text-neutral-900"
+                        : "hover:bg-neutral-700 text-white"
+                    }`}
+                    onClick={() => {
+                      setPage("Resume");
+                    }}
+                  >
+                    <img
+                      src="/images/folders/resume.png"
+                      alt="Resume"
+                      className="w-5 h-5 mr-2.5"
+                    />
+                    Resume
                   </div>
                 </div>
+                <AboutMe page={page} />
               </div>
-              <div className="border-0 ml-5 mt-2">
-                <div className="flex items-center hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
-                  <div className="material-symbols-outlined text-2xl font-extralight">
-                    expand_more
-                  </div>
-                  <div className="text-xs ml-3 mr-4">Quick access</div>
-                </div>
-                <div className="h-32 w-[87vh] mr-32 grid grid-cols-3 grid-rows-2">
-                  <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
-                    <img
-                      src="/images/folders/Desktop.ico"
-                      alt="Desktop"
-                      className="w-14 h-14 mr-4"
-                    />
-                    <div className="text-xs">
-                      Desktop
-                      <div>
-                        <div className="font-light opacity-50">
-                          Stored Locally
-                        </div>
-                        <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
-                          keep
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
-                    <img
-                      src="/images/folders/Downloads.ico"
-                      alt="Downloads"
-                      className="w-14 h-14 mr-4"
-                    />
-                    <div className="text-xs">
-                      Downloads
-                      <div>
-                        <div className="font-light opacity-50">
-                          Stored Locally
-                        </div>
-                        <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
-                          keep
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
-                    <img
-                      src="/images/folders/Documents.ico"
-                      alt="Documents"
-                      className="w-14 h-14 mr-4"
-                    />
-                    <div className="text-xs">
-                      Documents
-                      <div>
-                        <div className="font-light opacity-50">
-                          Stored Locally
-                        </div>
-                        <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
-                          keep
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
-                    <img
-                      src="/images/folders/Photos.ico"
-                      alt="Pictures"
-                      className="w-14 h-14 mr-4"
-                    />
-                    <div className="text-xs">
-                      Pictures
-                      <div>
-                        <div className="font-light opacity-50">
-                          Stored Locally
-                        </div>
-                        <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
-                          keep
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
-                    <img
-                      src="/images/folders/Music.ico"
-                      alt="Music"
-                      className="w-14 h-14 mr-4"
-                    />
-                    <div className="text-xs">
-                      Music
-                      <div>
-                        <div className="font-light opacity-50">
-                          Stored Locally
-                        </div>
-                        <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
-                          keep
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
-                    <img
-                      src="/images/folders/Videos.ico"
-                      alt="Videos"
-                      className="w-14 h-14 mr-4"
-                    />
-                    <div className="text-xs">
-                      Videos
-                      <div>
-                        <div className="font-light opacity-50">
-                          Stored Locally
-                        </div>
-                        <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
-                          keep
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
-                  <div className="material-symbols-outlined text-2xl font-extralight">
-                    expand_more
-                  </div>
-                  <div className="text-xs ml-3 mr-4">Favourites</div>
-                </div>
-                <div className="text-xs m-2 ml-9 opacity-50 font-light">
-                  After you've favorutied some files, we'll show theme here.
-                </div>
-              </div>
-            </div>
-
-            <div className="absolute bottom-0 h-5 bg-neutral-900 w-full text-xs py-1 pl-2">
-              <div className="flex items-center justify-center w-16 border-r-[1.5px] h-full text-xs font-extralight">
-                6 items
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </Draggable>
