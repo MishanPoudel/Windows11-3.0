@@ -2,22 +2,30 @@ import React, { useRef } from "react";
 import Draggable from "react-draggable";
 import { generateInitials } from "./UserProfile";
 import { useParams } from "react-router-dom";
+import RightClick from "./RightClick";
 
-function Browser({ isAppOpen, toggleBrowser }) {
+function Browser({ isAppOpen, toggleBrowser, bounds }) {
   const explorerRef = useRef(null);
   const homeUrl = "https://www.google.com/webhp?igu=1";
   const { name } = useParams();
 
   return (
     <>
-      <div className={`${isAppOpen ? "" : "hidden"} z-30 absolute`}>
-        <Draggable handle=".title-bar" nodeRef={explorerRef}>
+      <div
+        className={`${
+          isAppOpen ? "" : "hidden"
+        } z-30 w-full h-screen pointer-events-none absolute`}
+      >
+        <Draggable handle=".title-bar" nodeRef={explorerRef} bounds={bounds}>
           <div
             ref={explorerRef}
-            className="window bg-black h-[45rem] w-[70.5rem] rounded-xl overflow-hidden border-neutral-700 border-[1.5px]"
+            className="window bg-black h-[45rem] w-[70.5rem] rounded-xl overflow-hidden border-neutral-700 border-[1.5px] pointer-events-auto"
           >
             <div className="title-bar">
               <div className="text-white h-9 w-full flex justify-end select-none">
+                <div className="h-full w-full">
+                  <RightClick />
+                </div>
                 <div
                   className="material-symbols-outlined hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-xl"
                   onClick={toggleBrowser}
