@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-export default function Taskbar({ toggleStart, toggleExplorer }) {
+export default function Taskbar({
+  toggleStart,
+  toggleExplorer,
+  toggleBrowser,
+}) {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -37,7 +41,9 @@ export default function Taskbar({ toggleStart, toggleExplorer }) {
           </div>
           <div
             className="flex justify-center items-center font-semibold text-sm hover:bg-neutral-700 my-1 h-full rounded-md px-1 w-11"
-            onClick={()=>{toggleExplorer(true)}}
+            onClick={() => {
+              toggleExplorer(true);
+            }}
           >
             <img
               src="/images/apps/explorer.png"
@@ -45,7 +51,10 @@ export default function Taskbar({ toggleStart, toggleExplorer }) {
               className="h-7"
             />
           </div>
-          <div className="flex justify-center items-center font-semibold text-sm hover:bg-neutral-700 my-1 h-full rounded-md px-1 w-11">
+          <div
+            className="flex justify-center items-center font-semibold text-sm hover:bg-neutral-700 my-1 h-full rounded-md px-1 w-11"
+            onClick={toggleBrowser}
+          >
             <img
               src="/images/apps/edge.png"
               alt="windows_logo"
