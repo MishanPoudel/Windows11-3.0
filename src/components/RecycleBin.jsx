@@ -298,7 +298,7 @@ const RecycleBin = ({ isRecycleOpen, toggleRecycle, bounds }) => {
             </div>
             <div className="absolute bottom-0 h-5 bg-neutral-900 w-full text-xs py-1 pl-2">
               <div className="flex items-center justify-center w-16 border-r-[1.5px] h-full text-xs font-extralight">
-                6 items
+                0 items
               </div>
             </div>
           </div>

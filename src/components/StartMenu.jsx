@@ -19,6 +19,7 @@ function StartMenu({ toggleStart, toggleMenu, isStartOpen }) {
             type="text"
             id="cerca-input-start"
             placeholder="Search for apps, settings, and documents"
+            disabled={isStartOpen ? false : true}
           />
         </div>
         <div className="padding-start">

@@ -11,7 +11,15 @@ function RightClick({ option }) {
     event.preventDefault();
     const x = event.clientX;
     const y = event.clientY;
-    setContextMenuPosition({ x, y });
+    const menuWidth = 240; 
+    const menuHeight = 290; 
+
+    const newX =
+      x + menuWidth > window.innerWidth ? window.innerWidth - menuWidth : x;
+    const newY =
+      y + menuHeight > window.innerHeight ? window.innerHeight - menuHeight : y;
+
+    setContextMenuPosition({ x: newX, y: newY });
     setShowContextMenu(true);
   };
 
@@ -24,7 +32,11 @@ function RightClick({ option }) {
       {showContextMenu && (
         <div
           className="context-menu"
-          style={{ left: contextMenuPosition.x, top: contextMenuPosition.y }}
+          style={{
+            left: contextMenuPosition.x,
+            top: contextMenuPosition.y,
+            position: "absolute",
+          }}
         >
           <div className="w-[15rem] bg-neutral-800 border-[1px] border-neutral-700 rounded-xl p-1.5">
             {option ? (
@@ -91,7 +103,7 @@ function RightClick({ option }) {
                 <div className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center justify-between px-1">
                   <div>
                     <div></div>
-                    <div className="justify-center">View</div>
+                    <div className="justify-center">Meow</div>
                   </div>
                   <div className="material-symbols-outlined rotate-[-90deg] justify-end opacity-50 font-extralight">
                     expand_more
@@ -100,7 +112,7 @@ function RightClick({ option }) {
                 <div className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center justify-between px-1">
                   <div>
                     <div></div>
-                    <div className="justify-center">Sort by</div>
+                    <div className="justify-center">Meow</div>
                   </div>
                   <div className="material-symbols-outlined rotate-[-90deg] justify-end opacity-50 font-extralight">
                     expand_more
@@ -112,14 +124,14 @@ function RightClick({ option }) {
                 >
                   <div>
                     <div></div>
-                    <div className="justify-center">Refresh</div>
+                    <div className="justify-center">Meow</div>
                   </div>
                 </div>
                 <div className="divider m-0"></div>
                 <div className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center justify-between px-1">
                   <div>
                     <div></div>
-                    <div className="justify-center">New</div>
+                    <div className="justify-center">Meow</div>
                   </div>
                   <div className="material-symbols-outlined rotate-[-90deg] justify-end opacity-50 font-extralight">
                     expand_more
@@ -129,13 +141,13 @@ function RightClick({ option }) {
                 <div className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center justify-between px-1">
                   <div>
                     <div></div>
-                    <div className="justify-center">Display Settings</div>
+                    <div className="justify-center">Meow</div>
                   </div>
                 </div>
                 <div className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center justify-between px-1">
                   <div>
                     <div></div>
-                    <div className="justify-center">Personalize</div>
+                    <div className="justify-center">Meow</div>
                   </div>
                 </div>
                 <div className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center justify-between px-1">
@@ -154,6 +166,7 @@ function RightClick({ option }) {
         id="content"
         onContextMenu={handleContextMenu}
         onClick={handleClick}
+        className="w-full h-full"
       ></div>
     </div>
   );

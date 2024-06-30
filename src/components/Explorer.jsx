@@ -8,13 +8,13 @@ const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds }) => {
   const explorerRef = useRef(null);
 
   useEffect(() => {
-    if (page === "About Me") setIcon("me");
+    if (aboutMe === true) setIcon("home");
     else if (page === "Education") setIcon("edu");
     else if (page === "Skills") setIcon("skills");
     else if (page === "Projects") setIcon("projects");
     else if (page === "Resume") setIcon("resume");
-    else setIcon("home");
-  }, [page]);
+    else setIcon("me");
+  }, [page, aboutMe]);
 
   return (
     <div
@@ -84,14 +84,14 @@ const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds }) => {
                 <div class="material-symbols-outlined font-extralight">
                   navigate_next
                 </div>
-                <div> {page === null ? "Home" : page}</div>
+                <div> {aboutMe === true ? "Home" : page}</div>
                 <div class="material-symbols-outlined font-extralight">
                   navigate_next
                 </div>
               </div>
               <div className="flex justify-between bg-neutral-700 bg-opacity-50 my-1.5 rounded-md items-center text-sm px-4 mr-3 w-[19.3em]">
                 <div className="opacity-80">
-                  Search {page === null ? "Home" : page}
+                  Search {aboutMe === true ? "Home" : page}
                 </div>
                 <div class="material-symbols-outlined font-extralight text-sm">
                   search
