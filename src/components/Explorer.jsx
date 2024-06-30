@@ -17,7 +17,11 @@ const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds }) => {
   }, [page]);
 
   return (
-    <div className={`${isExplorerOpen ? "" : "hidden"} z-30 w-full h-screen pointer-events-none absolute`}>
+    <div
+      className={`${
+        isExplorerOpen ? "" : "hidden"
+      } z-30 w-full h-screen pointer-events-none absolute`}
+    >
       <Draggable handle=".title-bar" nodeRef={explorerRef} bounds={bounds}>
         <div
           ref={explorerRef}
@@ -48,7 +52,7 @@ const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds }) => {
                     alt="main icons"
                     className="w-5 h-5 mr-2"
                   />
-                  {page === null ? "Home" : page}
+                  {aboutMe === true ? "Home" : page}
                 </div>
                 <div className="material-symbols-outlined hover:bg-neutral-800 m-0.5 w-6 rounded-md flex justify-center items-center text-lg">
                   close
