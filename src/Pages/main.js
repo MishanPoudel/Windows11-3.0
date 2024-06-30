@@ -7,35 +7,36 @@ import Browser from "../components/Browser";
 import Calculator from "../components/Calculator";
 import VsCode from "../components/VsCode";
 import Slider from "../components/Slider";
+import RecycleBin from "../components/RecycleBin";
 
 function Main() {
-  const [isStartOpen, setisStartOpen] = useState(false);
-  const [isExplorerOpen, setisExplorerOpen] = useState(false);
-  const [isBrowserOpen, setisBrowserOpen] = useState(false);
-  const [isCalculatorOpen, setisCalculatorOpen] = useState(false);
-  const [isVsCodeOpen, setisVsCodeOpen] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [aboutMe, setAboutMe] = useState(false);
+  const [windows, setWindows] = useState({
+    menu: false,
+    start: false,
+    explorer: false,
+    browser: false,
+    calculator: false,
+    vscode: false,
+    recycle: false,
+  });
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const [aboutMe, setAboutMe] = useState(null);
 
-  const toggleStart = () => {
-    setisStartOpen(!isStartOpen);
-  };
-  const toggleExplorer = (input) => {
-    setisExplorerOpen(!isExplorerOpen);
-    setAboutMe(input);
-  };
-  const toggleBrowser = () => {
-    setisBrowserOpen(!isBrowserOpen);
-  };
-  const toggleCalculator = () => {
-    setisCalculatorOpen(!isCalculatorOpen);
-  };
-  const toggleVsCode = () => {
-    setisVsCodeOpen(!isVsCodeOpen);
+  const toggleWindow = (window, input = null) => {
+    setWindows({
+      menu: false,
+      start: false,
+      explorer: false,
+      browser: false,
+      calculator: false,
+      vscode: false,
+      recycle: false,
+      [window]: !windows[window],
+    });
+
+    if (window === "explorer" && input !== null) {
+      setAboutMe(input);
+    }
   };
 
   const screenWidth = window.innerWidth;
@@ -43,8 +44,8 @@ function Main() {
   const bounds = {
     left: 0,
     top: 0,
-    right: screenWidth-1128,
-    bottom: screenHeight-624,
+    right: screenWidth - 1128,
+    bottom: screenHeight - 624,
   };
 
   return (
@@ -56,7 +57,7 @@ function Main() {
             <div className="row-start-1">
               <div
                 className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2 select-none"
-                onDoubleClick={toggleBrowser}
+                onDoubleClick={() => toggleWindow("browser")}
               >
                 <img
                   src="/images/apps/chrome.png"
@@ -71,22 +72,21 @@ function Main() {
             <div className="row-start-2">
               <div
                 className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2 select-none"
-                onDoubleClick={() => {
-                  toggleExplorer(false);
-                }}
+                onDoubleClick={() => toggleWindow("explorer", false)}
               >
                 <img
                   src="/images/apps/folder.png"
                   alt="edge"
                   className="w-18 h-18"
                 />
-                <div className="text-balance text-center text-sm">
-                  About Mishan
-                </div>
+                <div className="text-balance text-center text-sm">About Me</div>
               </div>
             </div>
             <div className="row-start-3">
-              <div className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2 select-none">
+              <div
+                className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2 select-none"
+                onDoubleClick={() => toggleWindow("recycle")}
+              >
                 <img
                   src="/images/apps/recyclebin.png"
                   alt="edge"
@@ -100,7 +100,7 @@ function Main() {
             <div className="row-start-4">
               <div
                 className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2 select-none"
-                onDoubleClick={toggleBrowser}
+                onDoubleClick={() => toggleWindow("browser")}
               >
                 <img
                   src="/images/apps/edge.png"
@@ -115,7 +115,7 @@ function Main() {
             <div className="row-start-5">
               <div
                 className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2 select-none"
-                onDoubleClick={toggleCalculator}
+                onDoubleClick={() => toggleWindow("calculator")}
               >
                 <img
                   src="/images/apps/calculator.png"
@@ -130,7 +130,7 @@ function Main() {
             <div className="row-start-6">
               <div
                 className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2 select-none"
-                onDoubleClick={toggleVsCode}
+                onDoubleClick={() => toggleWindow("vscode")}
               >
                 <img
                   src="https://laaouatni.github.io/w11CSS/images/vs-code.ico"
@@ -147,35 +147,47 @@ function Main() {
         <div
           className={`absolute top-0 flex justify-center items-center w-full h-full`}
         >
-          <StartMenu isStartOpen={isStartOpen} toggleStart={toggleStart} />
+          <StartMenu
+            isStartOpen={windows.start}
+            toggleStart={() => toggleWindow("start")}
+          />
           <Browser
-            isAppOpen={isBrowserOpen}
-            toggleBrowser={toggleBrowser}
+            isAppOpen={windows.browser}
+            toggleBrowser={() => toggleWindow("browser")}
             bounds={bounds}
           />
           <Explorer
-            toggleExplorer={toggleExplorer}
-            isExplorerOpen={isExplorerOpen}
+            isExplorerOpen={windows.explorer}
+            toggleExplorer={(input) => toggleWindow("explorer", input)}
             aboutMe={aboutMe}
             bounds={bounds}
           />
-          <Calculator
+          <RecycleBin
+            isRecycleOpen={windows.recycle}
+            toggleRecycle={() => toggleWindow("recycle")}
             bounds={bounds}
-            isAppOpen={isCalculatorOpen}
-            toggleCalculator={toggleCalculator}
+          />
+          <Calculator
+            isAppOpen={windows.calculator}
+            toggleCalculator={() => toggleWindow("calculator")}
+            bounds={bounds}
           />
           <VsCode
-            isAppOpen={isVsCodeOpen}
-            toggleVsCode={toggleVsCode}
+            isAppOpen={windows.vscode}
+            toggleVsCode={() => toggleWindow("vscode")}
             bounds={bounds}
           />
         </div>
-        <Taskbar toggleStart={toggleStart} toggleExplorer={toggleExplorer} />
+        <Taskbar
+          toggleStart={() => toggleWindow("start")}
+          toggleExplorer={(input) => toggleWindow("explorer", input)}
+          toggleBrowser={() => toggleWindow("browser")}
+        />
       </div>
       <Slider
-        isMenuOpen={isMenuOpen}
-        setIsMenuOpen={setIsMenuOpen}
-        toggleMenu={toggleMenu}
+        isMenuOpen={windows.menu}
+        setIsMenuOpen={() => toggleWindow("menu")}
+        toggleMenu={() => toggleWindow("menu")}
       />
     </>
   );
