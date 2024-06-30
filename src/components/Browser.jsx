@@ -68,7 +68,12 @@ function Browser({ isAppOpen, toggleBrowser, bounds }) {
                   </div>
                 </div>
                 <div className="w-[48vw] my-1.5 rounded-xl bg-neutral-700 relative">
-                  <div className="opacity-50">Search Google or type a URL</div>
+                  <div className="opacity-50 text-left pl-3 flex items-center h-full">
+                    <span class="material-symbols-outlined text-[20px] pr-3">
+                      search
+                    </span>
+                    Search Google or type a URL
+                  </div>
                   <div class="absolute right-2 top-0 text-lg opacity-80 material-symbols-outlined">
                     star
                   </div>
