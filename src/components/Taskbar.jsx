@@ -26,7 +26,7 @@ export default function Taskbar({
   };
   return (
     <>
-      <div className="fixed bottom-0 flex justify-between w-full h-[3.2rem] bg-neutral-800 border-t-[0.2px] border-neutral-700 select-none pointer-events-auto py-[0.2rem] text-white z-50">
+      <div className="fixed bottom-0 flex justify-between w-full h-[3.2rem] bg-neutral-800 border-t-[0.2px] border-neutral-700 select-none pointer-events-auto py-[0.2rem] text-white z-40">
         <div className="w-[15%]"></div>
         <div className="flex justify-center w-auto items-center">
           <div
