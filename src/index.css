@@ -17,6 +17,9 @@ body {
   z-index: 999;
 }
 
+.cursor-custom {
+  cursor: url('https://assets.codepen.io/5356857/flashlight.svg') 10 10, none;
+}
 #content {
   height: 100vh;
 }
