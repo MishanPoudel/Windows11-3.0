@@ -8,6 +8,8 @@ import Calculator from "../components/Calculator";
 import VsCode from "../components/VsCode";
 import Slider from "../components/Slider";
 import RecycleBin from "../components/RecycleBin";
+import Apps from "../components/Apps";
+import Torch from "../components/Torch";
 
 function Main() {
   const [windows, setWindows] = useState({
@@ -18,9 +20,11 @@ function Main() {
     calculator: false,
     vscode: false,
     recycle: false,
+    app: false,
   });
 
   const [aboutMe, setAboutMe] = useState(null);
+  const [input, setInput] = useState(null);
 
   const toggleWindow = (window, input = null) => {
     setWindows({
@@ -31,11 +35,14 @@ function Main() {
       calculator: false,
       vscode: false,
       recycle: false,
+      app: false,
       [window]: !windows[window],
     });
 
     if (window === "explorer" && input !== null) {
       setAboutMe(input);
+    } else if (window === "app" && input !== null) {
+      setInput(input);
     }
   };
 
@@ -50,6 +57,7 @@ function Main() {
 
   return (
     <>
+      <Torch input={input} setInput={setInput}/>
       <div className="relative h-screen">
         <div className="relative h-full w-full top-0 left-0 z-10 text-white">
           <RightClick option={true} />
@@ -142,14 +150,46 @@ function Main() {
                 </div>
               </div>
             </div>
+            <div className="row-start-7">
+              <div
+                className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2 select-none"
+                onDoubleClick={() => toggleWindow("app", "emoji")}
+              >
+                <img
+                  src="https://raw.githubusercontent.com/MishanPoudel/Emoji-TicTacToe/main/public/favicon.ico"
+                  alt="emoji"
+                  className="w-10 h-10"
+                />
+                <div className="text-balance text-center text-sm pt-2">
+                  Emoji TicTacToe
+                </div>
+              </div>
+            </div>
+            <div className="row-start-8">
+              <div
+                className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2 select-none"
+                onDoubleClick={() => toggleWindow("app", "spotify")}
+              >
+                <img
+                  src="https://www.freepnglogos.com/uploads/spotify-logo-png/image-gallery-spotify-logo-21.png"
+                  alt="spotify"
+                  className="w-10 h-10"
+                />
+                <div className="text-balance text-center text-sm pt-2">
+                  Spotify
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div
           className={`absolute top-0 flex justify-center items-center w-full h-full`}
-        >
+          >
           <StartMenu
             isStartOpen={windows.start}
             toggleStart={() => toggleWindow("start")}
+            setInput={setInput}
+            input={input}
           />
           <Browser
             isAppOpen={windows.browser}
@@ -177,18 +217,24 @@ function Main() {
             toggleVsCode={() => toggleWindow("vscode")}
             bounds={bounds}
           />
+          <Apps
+            isAppOpen={windows.app}
+            toggleApp={(input) => toggleWindow("app", input)}
+            bounds={bounds}
+            input={input}
+            />
         </div>
         <Taskbar
           toggleStart={() => toggleWindow("start")}
           toggleExplorer={(input) => toggleWindow("explorer", input)}
           toggleBrowser={() => toggleWindow("browser")}
-        />
+          />
       </div>
       <Slider
         isMenuOpen={windows.menu}
         setIsMenuOpen={() => toggleWindow("menu")}
         toggleMenu={() => toggleWindow("menu")}
-      />
+        />
     </>
   );
 }
