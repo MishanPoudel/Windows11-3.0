@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Power({ toggleStart, isStartOpen }) {
+function Power({ toggleStart, setInput }) {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   function handleClick() {
     toggleStart();
     setIsDropdownOpen(false);
+    setInput("close");
   }
 
   function handleSleep() {
@@ -43,10 +44,10 @@ function Power({ toggleStart, isStartOpen }) {
             <button onClick={handleSleep}>Sleep</button>
           </li>
           <li>
-            <button onClick={handleClick}>Shut Down</button>
+            <button onClick={handleSleep}>Shut Down</button>
           </li>
           <li>
-            <button onClick={handleClick}>Restart</button>
+            <button onClick={handleClick}>Close The Window?</button>
           </li>
         </ul>
       )}
