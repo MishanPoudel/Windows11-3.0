@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import Explorer from "../components/Explorer";
-import Taskbar from "../components/Taskbar";
-import RightClick from "../components/RightClick";
-import StartMenu from "../components/StartMenu";
-import Browser from "../components/Browser";
-import Calculator from "../components/Calculator";
-import VsCode from "../components/VsCode";
-import Slider from "../components/Slider";
-import RecycleBin from "../components/RecycleBin";
-import Apps from "../components/Apps";
-import Torch from "../components/Torch";
+import Explorer from "../components/apps/Explorer";
+import Taskbar from "../components/layout/Taskbar";
+import RightClick from "../components/utilities/RightClick";
+import StartMenu from "../components/layout/StartMenu";
+import Browser from "../components/apps/Browser";
+import Calculator from "../components/apps/Calculator";
+import VsCode from "../components/apps/VsCode";
+import Slider from "../components/utilities/Slider";
+import RecycleBin from "../components/apps/RecycleBin";
+import Apps from "../components/apps/Apps";
+import Torch from "../components/apps/Torch";
 
 function Main() {
   const [windows, setWindows] = useState({
@@ -57,7 +57,7 @@ function Main() {
 
   return (
     <>
-      <Torch input={input} setInput={setInput}/>
+      <Torch input={input} setInput={setInput} />
       <div className="relative h-screen">
         <div className="relative h-full w-full top-0 left-0 z-10 text-white">
           <RightClick option={true} />
@@ -181,10 +181,25 @@ function Main() {
               </div>
             </div>
           </div>
+          <div className="absolute right-3 top-2">
+            <div
+              className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2 select-none"
+              onDoubleClick={() => toggleWindow("app", "terminal")}
+            >
+              <img
+                src="images/apps/terminal.png"
+                alt="terminal"
+                className="w-10 h-10"
+              />
+              <div className="text-balance text-center text-sm pt-2">
+                Terminal
+              </div>
+            </div>
+          </div>
         </div>
         <div
           className={`absolute top-0 flex justify-center items-center w-full h-full`}
-          >
+        >
           <StartMenu
             isStartOpen={windows.start}
             toggleStart={() => toggleWindow("start")}
@@ -222,19 +237,19 @@ function Main() {
             toggleApp={(input) => toggleWindow("app", input)}
             bounds={bounds}
             input={input}
-            />
+          />
         </div>
         <Taskbar
           toggleStart={() => toggleWindow("start")}
           toggleExplorer={(input) => toggleWindow("explorer", input)}
           toggleBrowser={() => toggleWindow("browser")}
-          />
+        />
       </div>
       <Slider
         isMenuOpen={windows.menu}
         setIsMenuOpen={() => toggleWindow("menu")}
         toggleMenu={() => toggleWindow("menu")}
-        />
+      />
     </>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Login from "../components/Login";
-import Slider from "../components/Slider";
+import Login from "../components/user/Login";
+import Slider from "../components/utilities/Slider";
 
 function Lockscreen() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
