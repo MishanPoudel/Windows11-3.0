@@ -1,10 +1,11 @@
 import React from "react";
+import { profileDescription } from "../../data/data";
 
 function AboutMe({ page }) {
   return (
     <main className="h-[100vh] w-full ml-2.5 mt-2">
       {page === "About Me" ? (
-        <div className="hero min-h-auto pr-6">
+        <div className="hero min-h-auto justify-start">
           <div className="hero-content flex-col lg:flex-row">
             <img
               src="https://i.pinimg.com/564x/05/6c/65/056c65643e34cb3927358b2c031b7c05.jpg"
@@ -12,9 +13,8 @@ function AboutMe({ page }) {
               alt="this"
             />
             <div>
-              <h1 className="text-5xl font-bold">MONKE</h1>
-              <p className="py-6">I LIKE MONKEs</p>
-              <button className="btn btn-primary">Get Started</button>
+              <h1 className="text-5xl font-bold">Mishan Poudel</h1>
+              <p className="py-6">{profileDescription}</p>
             </div>
           </div>
         </div>

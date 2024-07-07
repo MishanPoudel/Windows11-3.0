@@ -66,18 +66,18 @@ export default function Taskbar({
           <div className="material-symbols-outlined h-full w-8 flex justify-center items-center rounded-lg rotate-180 hover:bg-neutral-700 font-light">
             expand_more
           </div>
-          <div className="hover:bg-neutral-700 my-1 h-full flex justify-center items-center rounded-lg px-1">
-            <div className="material-symbols-outlined text-sm mx-[3.5px]">
+          <div className="hover:bg-neutral-700 my-1 h-full flex justify-center items-center rounded-lg gap-x-1.5 px-2">
+            <div className="material-symbols-outlined text-sm">
               wifi
             </div>
-            <div className="material-symbols-outlined text-lg mx-[3.5px]">
+            <div className="material-symbols-outlined text-lg">
               volume_up
             </div>
-            <div className="material-symbols-outlined text-lg mx-[3.5px] rotate-180">
+            <div className="material-symbols-outlined text-lg rotate-180">
               battery_low
             </div>
           </div>
-          <div className="flex justify-center items-center font-semibold text-sm hover:bg-neutral-700 my-1 h-full rounded-lg px-2.5">
+          <div className="flex justify-center items-center font-semibold text-sm hover:bg-neutral-700 my-1 h-full rounded-lg px-2">
             <div className="flex flex-col items-end text-[0.78em]">
               <div>{formatTime(currentTime)}</div>
               <div>{formatDate(currentTime)}</div>

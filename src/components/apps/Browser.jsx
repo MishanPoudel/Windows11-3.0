@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
 import Draggable from "react-draggable";
-import { generateInitials } from "./UserProfile";
+import { generateInitials } from "../user/UserProfile";
 import { useParams } from "react-router-dom";
-import RightClick from "./RightClick";
+import RightClick from "../utilities/RightClick";
 
 function Browser({ isAppOpen, toggleBrowser, bounds }) {
   const explorerRef = useRef(null);

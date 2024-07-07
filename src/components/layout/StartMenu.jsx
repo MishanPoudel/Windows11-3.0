@@ -1,6 +1,6 @@
 import React from "react";
-import Power from "./Power";
-import { generateInitials } from "./UserProfile";
+import Power from "../utilities/Power";
+import { generateInitials } from "../user/UserProfile";
 import { useParams } from "react-router-dom";
 
 function StartMenu({ toggleStart, toggleMenu, isStartOpen, setInput, input }) {

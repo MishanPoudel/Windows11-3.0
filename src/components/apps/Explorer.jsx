@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
-import AboutMe from "./AboutMe";
+import AboutMe from "../apps/AboutMe";
 
 const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds }) => {
   const [page, setPage] = useState("About Me");

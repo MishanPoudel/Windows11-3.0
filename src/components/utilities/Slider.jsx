@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-export default function Slider({ isMenuOpen, toggleMenu, setIsMenuOpen }) {
+export default function Slider({ isMenuOpen, toggleMenu }) {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [funFact, setFunFact] = useState("");
 

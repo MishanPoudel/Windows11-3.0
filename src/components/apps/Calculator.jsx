@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import Draggable from "react-draggable";
 
 const Calculator = ({ isAppOpen, toggleCalculator }) => {
-  const explorerRef = useRef(null);
+  const calculatorRef = useRef(null);
   const [submit, setSubmit] = useState(false);
   const [showResult, setShowResult] = useState(" Am I Right?");
   const [click, setClick] = useState(0);
@@ -77,10 +77,10 @@ const Calculator = ({ isAppOpen, toggleCalculator }) => {
   };
 
   return (
-    <div className={`${isAppOpen ? "" : "hidden"} z-30 absolute h-full w-full`}>
-      <Draggable handle=".title-bar" nodeRef={explorerRef} bounds={bounds}>
+    <div className={`${isAppOpen ? "" : "hidden"} z-30 absolute h-screen w-full`}>
+      <Draggable handle=".title-bar" nodeRef={calculatorRef} bounds={bounds}>
         <div
-          ref={explorerRef}
+          ref={calculatorRef}
           className="window bg-black w-[35em] h-[50em] rounded-xl overflow-hidden border-neutral-700 border-[1.5px] font-semibold"
         >
           <div className="title-bar">

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserProfile } from "./UserProfile";
+import { UserProfile } from "../user/UserProfile";
 
 function Login({ toggleLogin }) {
   const [name, setName] = useState("");
