@@ -20,7 +20,7 @@ export const githubProjectsURL =
 const githubLink = "https://github.com/MishanPoudel";
 
 export const profileDescription = [
-    "muhehehehe"
+  "Hello, I'm Mishan Poudel, an experienced front-end web developer specializing in crafting seamless and dynamic user experiences. With expertise in HTML, CSS, JavaScript, and modern frameworks like React and Next.js, I bring innovative designs to life and ensure they perform flawlessly across all devices. Let's create exceptional web experiences together!",
 ];
 
 export const workExperienceTemplate = [
