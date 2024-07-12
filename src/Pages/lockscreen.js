@@ -1,16 +1,31 @@
 import React, { useState } from "react";
 import Login from "../components/user/Login";
 import Slider from "../components/utilities/Slider";
+import MobileDetection from "../components/utilities/MobileDetection";
 
 function Lockscreen() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const handleMobileDetection = (mobile) => {
+    setIsMobile(mobile);
+  };
+
+  if (isMobile) {
+    return (
+      <div className="bg-black w-full h-screen text-center text-3xl px-7 overflow-hidden flex flex-col justify-center items-center">
+        😔<br/> Sorry, this app is not supported on mobile devices <div className="font-bold">YET.</div> 🙏
+      </div>
+    );
+  }
+
   return (
     <>
+      <MobileDetection onDetectMobile={handleMobileDetection} />
       <div
         className="absolute bg-black h-screen w-full blur-sm"
         style={{
