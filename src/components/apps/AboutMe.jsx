@@ -3,7 +3,9 @@ import {
   profileDescription,
   educationExperience,
   skills,
+  githubRepos,
 } from "../../data/data";
+import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 
 const SkillItem = ({ skillItem, isTechStack }) => (
   <div className="flex items-center ring-2 ring-neutral-700 bg-neutral-900 rounded-sm p-2 pl-3">
@@ -19,6 +21,37 @@ const SkillItem = ({ skillItem, isTechStack }) => (
 );
 
 function AboutMe({ page }) {
+  const renderProjectCard = (repo, index) => {
+    return (
+      <div
+        className="bg-neutral-900/80 rounded-md p-2 hover:translate-x-1 hover:-translate-y-1 duration-300 text-selection"
+        key={index}
+      >
+        <div className="flex items-center justify-between">
+          <a
+            href={repo.githubLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View GitHub repository"
+          >
+            <FaGithub size={30} />
+          </a>
+          <a
+            href={repo.liveURL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Visit live site"
+          >
+            <FaExternalLinkAlt size={15} />
+          </a>
+        </div>
+        <h3 className="font-bold mt-6">{repo.name}</h3>
+        <p className="text-neutral-700 mt-4 text-sm">{repo.description}</p>
+        <div className="flex items-center mt-4 gap-2 flex-wrap"></div>
+      </div>
+    );
+  };
+
   return (
     <main className="h-[100vh] w-full ml-2.5 mt-2">
       {page === "About Me" ? (
@@ -30,7 +63,7 @@ function AboutMe({ page }) {
               alt="Profile"
             />
             <div>
-              <h1 className="text-5xl font-bold">Mishan Poudel</h1>
+              <h1 className="text-5xl font-bold">About Me</h1>
               <p className="py-6">{profileDescription}</p>
             </div>
           </div>
@@ -100,9 +133,15 @@ function AboutMe({ page }) {
           ))}
         </div>
       ) : page === "Projects" ? (
-        <main>projects</main>
+        <main>
+          <div className="grid sm:grid-cols-2 gap-12 px-6 pt-4">
+            {githubRepos.map((repo, index) => renderProjectCard(repo, index))}
+          </div>
+        </main>
       ) : page === "Resume" ? (
-        <main>resume</main>
+        <main className="border-0 flex w-full justify-center opacity-75 mt-2 text-sm">
+          too bored to make a resume.
+        </main>
       ) : (
         "404 not found"
       )}
