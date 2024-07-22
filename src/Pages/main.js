@@ -183,7 +183,7 @@ function Main() {
           </div>
           <div className="absolute right-3 top-2">
             <div
-              className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2 select-none"
+              className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2 select-none hidden"
               onDoubleClick={() => toggleWindow("app", "terminal")}
             >
               <img
