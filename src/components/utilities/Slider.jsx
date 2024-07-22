@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-export default function Slider({ isMenuOpen, toggleMenu }) {
+export default function Slider({ isMenuOpen, toggleMenu, setIsMenuOpen }) {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [funFact, setFunFact] = useState("");
 
@@ -62,7 +62,7 @@ export default function Slider({ isMenuOpen, toggleMenu }) {
         y: "-100%",
       }}
       animate={{
-        y: isMenuOpen ? "0%" : "-100%",
+        y: isMenuOpen ? "0%" : "-110%",
       }}
       className="fixed inset-0 bg-black h-full w-full z-50"
       onClick={(e) => {
