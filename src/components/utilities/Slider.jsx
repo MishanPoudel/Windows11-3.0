@@ -19,19 +19,19 @@ export default function Slider({ isMenuOpen, toggleMenu, setIsMenuOpen }) {
     return () => clearInterval(intervalID);
   }, []);
 
-  // useEffect(() => {
-  //   const handleVisibilityChange = () => {
-  //     if (document.hidden) {
-  //       setIsMenuOpen(true);
-  //     }
-  //   };
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        setIsMenuOpen(true);
+      }
+    };
 
-  //   document.addEventListener("visibilitychange", handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
-  //   return () => {
-  //     document.removeEventListener("visibilitychange", handleVisibilityChange);
-  //   };
-  // }, [setIsMenuOpen]);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [setIsMenuOpen]);
 
   useEffect(() => {
     const intervalID = setInterval(() => {

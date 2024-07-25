@@ -72,16 +72,16 @@ const Calculator = ({ isAppOpen, toggleCalculator }) => {
   const bounds = {
     left: 0,
     top: 0,
-    right: screenWidth-560,
+    right: screenWidth-544,
     bottom: screenHeight-800,
   };
 
   return (
-    <div className={`${isAppOpen ? "" : "hidden"} z-30 absolute h-screen w-full`}>
+    <div className={`${isAppOpen ? "" : "hidden"} z-30 w-full h-screen pointer-events-none absolute`}>
       <Draggable handle=".title-bar" nodeRef={calculatorRef} bounds={bounds}>
         <div
           ref={calculatorRef}
-          className="window bg-black w-[35em] h-[50em] rounded-xl overflow-hidden border-neutral-700 border-[1.5px] font-semibold"
+          className="window bg-black w-[34em] h-[50em] rounded-xl overflow-hidden border-neutral-700 border-[1.5px] pointer-events-auto"
         >
           <div className="title-bar">
             <div className="text-white h-9 flex justify-between select-none">

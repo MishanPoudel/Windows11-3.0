@@ -82,7 +82,6 @@ export default function Torch({ input, setInput }) {
               height: cursorSize,
               width: cursorSize,
               position: "fixed",
-              // borderRadius: "50%",
               pointerEvents: "none",
               visibility: "visible",
               background:
