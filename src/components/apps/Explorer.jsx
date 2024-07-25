@@ -11,7 +11,7 @@ const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds }) => {
     if (aboutMe === true) setIcon("home");
     else if (page === "Education") setIcon("edu");
     else if (page === "Skills") setIcon("skills");
-    else if (page === "Projects") setIcon("projects");
+    else if (page === "My Stuffs") setIcon("projects");
     else if (page === "Resume") setIcon("resume");
     else setIcon("me");
   }, [page, aboutMe]);
@@ -498,20 +498,20 @@ const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds }) => {
                   </div>
                   <div
                     className={`flex items-center pl-2.5 mr-8 text-xs w-full h-8 rounded-sm ${
-                      page === "Projects"
+                      page === "My Stuffs"
                         ? "bg-gray-200 bg-opacity-80 text-neutral-900"
                         : "hover:bg-neutral-700 text-white"
                     }`}
                     onClick={() => {
-                      setPage("Projects");
+                      setPage("My Stuffs");
                     }}
                   >
                     <img
                       src="/images/folders/projects.png"
-                      alt="Projects"
+                      alt="My Stuffs"
                       className="w-5 h-5 mr-2.5"
                     />
-                    Projects
+                    My Stuffs
                   </div>
                   <div
                     className={`flex items-center pl-2.5 mr-8 text-xs w-full h-8 rounded-sm ${
