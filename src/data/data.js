@@ -39,7 +39,7 @@ export const workExperienceTemplate = [
 export const githubRepos = [
   {
     name: "Portfolio",
-    techUsed: ["Next.JS", "TailwindCSS"],
+    techUsed: ["Next.js", "TailwindCSS"],
     description: "Uncover deeper insights into my journey and capabilities.",
     githubLink: `${githubLink}/Portfolio`,
     liveURL: "https://portfolio-vert-one-79.vercel.app/",
