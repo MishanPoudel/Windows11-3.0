@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export default function Torch({ input, setInput }) {
-  const cursorSize = 5000;
+  const cursorSize = 7000;
   const mouse = {
     x: useMotionValue(0),
     y: useMotionValue(0),
@@ -22,7 +22,11 @@ export default function Torch({ input, setInput }) {
     left: "50%",
   });
 
+  const audio = useMemo(() => new Audio("/audio/switch.mp3"), []);
+
   useEffect(() => {
+    audio.load();
+
     const manageMouseMove = (e) => {
       const { clientX, clientY } = e;
       mouse.x.set(clientX - cursorSize / 2);
@@ -34,13 +38,12 @@ export default function Torch({ input, setInput }) {
     return () => {
       window.removeEventListener("mousemove", manageMouseMove);
     };
-  }, [mouse.x, mouse.y, cursorSize]);
+  }, [mouse.x, mouse.y, cursorSize, audio]);
 
   useEffect(() => {
-    let timeoutId1, timeoutId2;
+    let timeoutId1;
     if (input === "close") {
       setShowIntermediate(true);
-      // Generate random position for the img element
       const randomTop =
         Math.floor(Math.random() * (window.innerHeight - 50)) + "px";
       const randomLeft =
@@ -50,7 +53,7 @@ export default function Torch({ input, setInput }) {
       timeoutId1 = setTimeout(() => {
         setShowIntermediate(false);
         setShowTorch(true);
-      }, 3000); // Show torch after 3 seconds
+      }, 3000);
     } else {
       setShowIntermediate(false);
       setShowTorch(false);
@@ -58,9 +61,14 @@ export default function Torch({ input, setInput }) {
 
     return () => {
       clearTimeout(timeoutId1);
-      clearTimeout(timeoutId2);
     };
   }, [input]);
+
+  const playSound = () => {
+    audio.play().catch((error) => {
+      console.error("Failed to play audio:", error);
+    });
+  };
 
   return (
     <main className="cursor-custom w-full h-full">
@@ -95,7 +103,10 @@ export default function Torch({ input, setInput }) {
               alt="switch"
               className="h-10 w-10 z-50 absolute hover:cursor-pointer"
               style={{ top: randomPosition.top, left: randomPosition.left }}
-              onClick={() => setInput(null)}
+              onClick={() => {
+                playSound();
+                setInput(null);
+              }}
             />
           </div>
         </>

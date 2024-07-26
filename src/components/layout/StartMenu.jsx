@@ -3,7 +3,13 @@ import Power from "../utilities/Power";
 import { generateInitials } from "../user/UserProfile";
 import { useParams } from "react-router-dom";
 
-function StartMenu({ toggleStart, toggleMenu, isStartOpen, setInput, input }) {
+function StartMenu({
+  toggleStart,
+  isStartOpen,
+  setInput,
+  setIsSleeping,
+  setActionType
+}) {
   // const name = localStorage.getItem('name');
   const { name } = useParams();
   return (
@@ -234,10 +240,10 @@ function StartMenu({ toggleStart, toggleMenu, isStartOpen, setInput, input }) {
           </div>
           <div className="spegni-pc-start-section">
             <Power
-              toggleMenu={toggleMenu}
               toggleStart={toggleStart}
               setInput={setInput}
-              input={input}
+              setIsSleeping={setIsSleeping}
+              setActionType={setActionType}
             />
           </div>
         </div>

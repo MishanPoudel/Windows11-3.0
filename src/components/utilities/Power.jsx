@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Power({ toggleStart, setInput }) {
+function Power({ toggleStart, setInput, setIsSleeping, setActionType }) {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -11,10 +11,20 @@ function Power({ toggleStart, setInput }) {
     setInput("close");
   }
 
-  function handleSleep() {
+  function handleShut() {
+    setIsSleeping(true);
+    setActionType("shutdown");
+    toggleStart();
     setTimeout(() => {
       navigate("/");
-    }, 1000);
+    }, 2700);
+  }
+
+  function handleSleep() {
+    setIsSleeping(true);
+    toggleStart();
+    setActionType("sleep");
+    setIsDropdownOpen(!isDropdownOpen);
   }
 
   function toggleDropdown() {
@@ -44,7 +54,7 @@ function Power({ toggleStart, setInput }) {
             <button onClick={handleSleep}>Sleep</button>
           </li>
           <li>
-            <button onClick={handleSleep}>Shut Down</button>
+            <button onClick={handleShut}>Shut Down</button>
           </li>
           <li>
             <button onClick={handleClick}>Close The Window?</button>
