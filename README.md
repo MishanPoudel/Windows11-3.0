@@ -1,4 +1,4 @@
-# <div style="margin:10px 0px; font-size:50px; text-align: center;">🖥️ Windows 11
+# <div style="margin:10px 0px; font-size:50px;" align="center">🖥️ Windows 11</div>
 
 Welcome to the **Windows Clone** app built with **React.js**! 🎉 Dive into this interactive simulation of the Windows operating system, packed with apps and features to play around with. Let’s get started!
 
@@ -102,4 +102,4 @@ This project was slightly inspired by [Vivek Patel's portfolio](https://vivek9pa
   <img src="https://i.pinimg.com/originals/d8/55/a2/d855a216c91d7d79fec9ec14c12d9a9b.gif" alt="gif" width="100%">
 </p>
 
-## <div style="margin:20px; font-size:20px;">Enjoy exploring your Windows Clone app! 🎉💻🖱
+<div style="margin:20px; font-size:20px;"><strong>Enjoy exploring your Windows Clone app! 🎉💻🖱</strong>
