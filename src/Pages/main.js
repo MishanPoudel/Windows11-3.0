@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, useRef } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Explorer from "../components/apps/Explorer";
 import Taskbar from "../components/layout/Taskbar";
 import RightClick from "../components/utilities/RightClick";
@@ -11,6 +11,7 @@ import RecycleBin from "../components/apps/RecycleBin";
 import Apps from "../components/apps/Apps";
 import Torch from "../components/apps/Torch";
 import { motion } from "framer-motion";
+import { useRef } from "react";
 import appsData from "../data/data";
 
 function Main() {
@@ -20,6 +21,7 @@ function Main() {
   const [actionType, setActionType] = useState(null);
 
   const [windows, setWindows] = useState({
+    menu: false,
     start: false,
     explorer: false,
     browser: false,
@@ -29,25 +31,27 @@ function Main() {
     app: false,
   });
 
-  const [sliderOpen, setSliderOpen] = useState(false);
   const [aboutMe, setAboutMe] = useState(null);
   const [input, setInput] = useState(null);
 
   const toggleWindow = (window, input = null) => {
-    setWindows((prevWindows) => ({
-      ...prevWindows,
-      [window]: !prevWindows[window],
-    }));
+    setWindows({
+      menu: false,
+      start: false,
+      explorer: false,
+      browser: false,
+      calculator: false,
+      vscode: false,
+      recycle: false,
+      app: false,
+      [window]: !windows[window],
+    });
 
     if (window === "explorer" && input !== null) {
       setAboutMe(input);
     } else if (window === "app" && input !== null) {
       setInput(input);
     }
-  };
-
-  const toggleSlider = () => {
-    setSliderOpen((prevState) => !prevState);
   };
 
   const screenWidth = window.innerWidth;
@@ -86,7 +90,6 @@ function Main() {
 
     return () => clearInterval(interval);
   }, [images.length]);
-
   return (
     <>
       {isSleeping && (
@@ -221,9 +224,9 @@ function Main() {
         />
       </div>
       <Slider
-        isMenuOpen={sliderOpen}
-        setIsMenuOpen={() => toggleSlider()}
-        toggleMenu={() => toggleSlider()}
+        isMenuOpen={windows.menu}
+        setIsMenuOpen={() => toggleWindow("menu")}
+        toggleMenu={() => toggleWindow("menu")}
       />
     </>
   );
