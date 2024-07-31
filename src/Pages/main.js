@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useRef } from "react";
 import Explorer from "../components/apps/Explorer";
 import Taskbar from "../components/layout/Taskbar";
 import RightClick from "../components/utilities/RightClick";
@@ -11,7 +11,7 @@ import RecycleBin from "../components/apps/RecycleBin";
 import Apps from "../components/apps/Apps";
 import Torch from "../components/apps/Torch";
 import { motion } from "framer-motion";
-import { useRef } from "react";
+import appsData from "../data/data";
 
 function Main() {
   const constraintsRef = useRef(null);
@@ -20,7 +20,6 @@ function Main() {
   const [actionType, setActionType] = useState(null);
 
   const [windows, setWindows] = useState({
-    menu: false,
     start: false,
     explorer: false,
     browser: false,
@@ -30,27 +29,25 @@ function Main() {
     app: false,
   });
 
+  const [sliderOpen, setSliderOpen] = useState(false);
   const [aboutMe, setAboutMe] = useState(null);
   const [input, setInput] = useState(null);
 
   const toggleWindow = (window, input = null) => {
-    setWindows({
-      menu: false,
-      start: false,
-      explorer: false,
-      browser: false,
-      calculator: false,
-      vscode: false,
-      recycle: false,
-      app: false,
-      [window]: !windows[window],
-    });
+    setWindows((prevWindows) => ({
+      ...prevWindows,
+      [window]: !prevWindows[window],
+    }));
 
     if (window === "explorer" && input !== null) {
       setAboutMe(input);
     } else if (window === "app" && input !== null) {
       setInput(input);
     }
+  };
+
+  const toggleSlider = () => {
+    setSliderOpen((prevState) => !prevState);
   };
 
   const screenWidth = window.innerWidth;
@@ -89,6 +86,7 @@ function Main() {
 
     return () => clearInterval(interval);
   }, [images.length]);
+
   return (
     <>
       {isSleeping && (
@@ -127,175 +125,35 @@ function Main() {
       <div className="relative h-screen" ref={constraintsRef}>
         <div className="relative h-full w-full top-0 left-0 z-10 text-white">
           <RightClick option={true} />
-          <div className="grid grid-cols-2 h-[80vh] grid-rows-8 gap-2 absolute top-2 left-2">
-            <motion.div
-              drag
-              dragConstraints={constraintsRef}
-              dragMomentum={false}
-              className="row-start-1"
-            >
-              <div
-                className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2"
-                onDoubleClick={() => toggleWindow("browser")}
+          <div className="grid h-[80vh] grid-rows-8 gap-2 absolute top-2 left-2">
+            {appsData.map((app, index) => (
+              <motion.div
+                key={app.id}
+                drag
+                dragConstraints={constraintsRef}
+                dragMomentum={false}
+                className={`row-start-${index + 1}`}
               >
-                <img
-                  src="/images/apps/chrome.png"
-                  alt="edge"
-                  className="w-18 h-18"
-                  onDragStart={(e) => e.preventDefault()}
-                />
-                <div className="text-balance text-center text-sm ">
-                  Google Chrome
+                <div
+                  className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2"
+                  onDoubleClick={() => toggleWindow(app.action, app.subAction)}
+                >
+                  <img
+                    src={app.icon}
+                    alt={app.name}
+                    className={app.size}
+                    onDragStart={(e) => e.preventDefault()}
+                  />
+                  <div
+                    className={`text-balance text-center text-sm select-none ${
+                      app.name === "Recycle Bin" ? "pt-0" : "pt-2"
+                    }`}
+                  >
+                    {app.name}
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-            <motion.div
-              drag
-              dragConstraints={constraintsRef}
-              dragMomentum={false}
-              className="row-start-2"
-            >
-              <div
-                className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2"
-                onDoubleClick={() => toggleWindow("explorer", false)}
-              >
-                <img
-                  src="/images/apps/folder.png"
-                  alt="edge"
-                  className="w-18 h-18"
-                  onDragStart={(e) => e.preventDefault()}
-                />
-                <div className="text-balance text-center text-sm select-none">
-                  About Me
-                </div>
-              </div>
-            </motion.div>
-            <motion.div
-              drag
-              dragConstraints={constraintsRef}
-              dragMomentum={false}
-              className="row-start-3"
-            >
-              <div
-                className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2"
-                onDoubleClick={() => toggleWindow("recycle")}
-              >
-                <img
-                  src="/images/apps/recyclebin.png"
-                  alt="edge"
-                  className="w-16 h-16"
-                  onDragStart={(e) => e.preventDefault()}
-                />
-                <div className="text-balance text-center text-xs">
-                  Recycle Bin
-                </div>
-              </div>
-            </motion.div>
-            <motion.div
-              drag
-              dragConstraints={constraintsRef}
-              dragMomentum={false}
-              className="row-start-4"
-            >
-              <div
-                className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2"
-                onDoubleClick={() => toggleWindow("browser")}
-              >
-                <img
-                  src="/images/apps/edge.png"
-                  alt="edge"
-                  className="w-11 h-11"
-                  onDragStart={(e) => e.preventDefault()}
-                />
-                <div className="text-balance text-center text-sm select-none">
-                  Microsoft Edge
-                </div>
-              </div>
-            </motion.div>
-            <motion.div
-              drag
-              dragConstraints={constraintsRef}
-              dragMomentum={false}
-              className="row-start-5"
-            >
-              <div
-                className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2"
-                onDoubleClick={() => toggleWindow("calculator")}
-              >
-                <img
-                  src="/images/apps/calculator.png"
-                  alt="calc"
-                  className="w-11 h-11"
-                  onDragStart={(e) => e.preventDefault()}
-                />
-                <div className="text-balance text-center text-sm select-none pt-2">
-                  Calculator
-                </div>
-              </div>
-            </motion.div>
-            <motion.div
-              drag
-              dragConstraints={constraintsRef}
-              dragMomentum={false}
-              className="row-start-6"
-            >
-              <div
-                className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2"
-                onDoubleClick={() => toggleWindow("vscode")}
-              >
-                <img
-                  src="https://laaouatni.github.io/w11CSS/images/vs-code.ico"
-                  alt="vscode"
-                  className="w-8 h-8"
-                  onDragStart={(e) => e.preventDefault()}
-                />
-                <div className="text-balance text-center text-sm select-none pt-2">
-                  VS Code
-                </div>
-              </div>
-            </motion.div>
-            <motion.div
-              drag
-              dragConstraints={constraintsRef}
-              dragMomentum={false}
-              className="row-start-7"
-            >
-              <div
-                className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2"
-                onDoubleClick={() => toggleWindow("app", "emoji")}
-              >
-                <img
-                  src="https://raw.githubusercontent.com/MishanPoudel/Emoji-TicTacToe/main/public/favicon.ico"
-                  alt="emoji"
-                  className="w-10 h-10"
-                  onDragStart={(e) => e.preventDefault()}
-                />
-                <div className="text-balance text-center text-sm select-none pt-2">
-                  Emoji TicTacToe
-                </div>
-              </div>
-            </motion.div>
-            <motion.div
-              drag
-              dragConstraints={constraintsRef}
-              dragMomentum={false}
-              className="row-start-8"
-            >
-              <div
-                className="w-[5em] h-full flex flex-col justify-center items-center rounded-md hover:bg-white hover:bg-opacity-20 p-2"
-                onDoubleClick={() => toggleWindow("app", "spotify")}
-              >
-                <img
-                  src="https://www.freepnglogos.com/uploads/spotify-logo-png/image-gallery-spotify-logo-21.png"
-                  alt="spotify"
-                  className="w-10 h-10"
-                  onDragStart={(e) => e.preventDefault()}
-                />
-                <div className="text-balance text-center text-sm select-none pt-2">
-                  Spotify
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            ))}
           </div>
           <div className="absolute right-3 top-2">
             <div
@@ -363,9 +221,9 @@ function Main() {
         />
       </div>
       <Slider
-        isMenuOpen={windows.menu}
-        setIsMenuOpen={() => toggleWindow("menu")}
-        toggleMenu={() => toggleWindow("menu")}
+        isMenuOpen={sliderOpen}
+        setIsMenuOpen={() => toggleSlider()}
+        toggleMenu={() => toggleSlider()}
       />
     </>
   );
