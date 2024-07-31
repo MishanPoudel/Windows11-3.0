@@ -12,17 +12,23 @@ import {
   MongodbPlain,
   PostmanPlain,
   CPlain,
+  DjangoPlain,
+  MysqlOriginalWordmark,
+  PostgresqlOriginal,
+  PhotoshopOriginal,
+  FigmaOriginal,
+  BlenderOriginal,
 } from "devicons-react";
 
-export const githubProjectsURL =
-  "https://api.github.com/users/MishanPoudel/repos";
-
+// Constants
 const githubLink = "https://github.com/MishanPoudel";
 
+// Profile Description
 export const profileDescription = [
   "Hello, I'm Mishan Poudel, an experienced front-end web developer specializing in crafting seamless and dynamic user experiences. With expertise in HTML, CSS, JavaScript, and modern frameworks like React and Next.js, I bring innovative designs to life and ensure they perform flawlessly across all devices. Let's create exceptional web experiences together!",
 ];
 
+// Work Experience Template
 export const workExperienceTemplate = [
   {
     key: 1,
@@ -36,6 +42,7 @@ export const workExperienceTemplate = [
   },
 ];
 
+// GitHub Repositories
 export const githubRepos = [
   {
     name: "Portfolio",
@@ -56,7 +63,7 @@ export const githubRepos = [
     name: "GTA-VI(Early Access)",
     techUsed: ["Python"],
     description:
-      "Explore chaos in GTA VI(Early Access), a Python and Ursina-powered open-world adventure. Engage in a gripping narrative, experience dynamic gameplay, and unlock exclusive updates. Navigate the urban jungle and gear up for the thrill! ",
+      "Explore chaos in GTA VI(Early Access), a Python and Ursina-powered open-world adventure. Engage in a gripping narrative, experience dynamic gameplay, and unlock exclusive updates. Navigate the urban jungle and gear up for the thrill!",
     githubLink: `${githubLink}/GTA-VI-Early-Access-`,
     liveURL: `${githubLink}/GTA-VI-Early-Access-`,
   },
@@ -70,6 +77,7 @@ export const githubRepos = [
   },
 ];
 
+// Education Experience
 export const educationExperience = [
   {
     key: 1,
@@ -84,24 +92,6 @@ export const educationExperience = [
     graduation: "Aug 2021",
     degree: "X",
     type: "education",
-  },
-];
-
-export const navLinks = [
-  {
-    key: 1,
-    link: "home",
-    url: "/",
-  },
-  {
-    key: 2,
-    link: "experience",
-    url: "/experience",
-  },
-  {
-    key: 3,
-    link: "projects",
-    url: "/projects",
   },
 ];
 
@@ -166,7 +156,7 @@ export const skills = [
     ) : null,
   },
   {
-    key: 10,
+    key: 8,
     name: "Bootstrap",
     type: "framework",
     icon: BootstrapPlain ? (
@@ -174,7 +164,7 @@ export const skills = [
     ) : null,
   },
   {
-    key: 11,
+    key: 9,
     name: "Node.JS",
     type: "framework",
     icon: NodejsOriginal ? (
@@ -182,7 +172,7 @@ export const skills = [
     ) : null,
   },
   {
-    key: 12,
+    key: 10,
     name: "MongoDB",
     type: "database",
     icon: MongodbPlain ? (
@@ -190,7 +180,7 @@ export const skills = [
     ) : null,
   },
   {
-    key: 13,
+    key: 11,
     name: "Postman",
     type: "tool",
     icon: PostmanPlain ? (
@@ -198,20 +188,134 @@ export const skills = [
     ) : null,
   },
   {
-    key: 14,
+    key: 12,
     name: "C",
     type: "language",
     icon: CPlain ? <CPlain className={iconClass} size={iconSize} /> : null,
   },
   {
-    key: 15,
+    key: 13,
     name: "Express",
     type: "framework",
     icon: ExpressOriginal ? (
       <ExpressOriginal className={iconClass} size={iconSize} />
     ) : null,
   },
+  {
+    key: 14,
+    name: "Django",
+    type: "framework",
+    icon: DjangoPlain ? (
+      <DjangoPlain className={iconClass} size={iconSize} />
+    ) : null,
+  },
+  {
+    key: 15,
+    name: "MySQL",
+    type: "database",
+    icon: MysqlOriginalWordmark ? (
+      <MysqlOriginalWordmark className={iconClass} size={iconSize} />
+    ) : null,
+  },
+  {
+    key: 16,
+    name: "PostgreSQL",
+    type: "database",
+    icon: PostgresqlOriginal ? (
+      <PostgresqlOriginal className={iconClass} size={iconSize} />
+    ) : null,
+  },
+  {
+    key: 17,
+    name: "Blender",
+    type: "tool",
+    icon: BlenderOriginal ? (
+      <BlenderOriginal className={iconClass} size={iconSize} />
+    ) : null,
+  },
+  {
+    key: 18,
+    name: "Photoshop",
+    type: "tool",
+    icon: PhotoshopOriginal ? (
+      <PhotoshopOriginal className={iconClass} size={iconSize} />
+    ) : null,
+  },
+  {
+    key: 19,
+    name: "Figma",
+    type: "tool",
+    icon: FigmaOriginal ? (
+      <FigmaOriginal className={iconClass} size={iconSize} />
+    ) : null,
+  },
 ];
+
+const appsData = [
+  {
+    id: 1,
+    name: "Google Chrome",
+    icon: "/images/apps/chrome.png",
+    action: "browser",
+    size: "w-18 h-18",
+  },
+  {
+    id: 2,
+    name: "About Me",
+    icon: "/images/apps/folder.png",
+    action: "explorer",
+    size: "w-18 h-18",
+  },
+  {
+    id: 3,
+    name: "Recycle Bin",
+    icon: "/images/apps/recyclebin.png",
+    action: "recycle",
+    size: "w-14 h-14",
+  },
+  {
+    id: 4,
+    name: "Microsoft Edge",
+    icon: "/images/apps/edge.png",
+    action: "browser",
+    size: "w-11 h-11",
+  },
+  {
+    id: 5,
+    name: "Calculator",
+    icon: "/images/apps/calculator.png",
+    action: "calculator",
+    size: "w-11 h-11",
+  },
+  {
+    id: 6,
+    name: "VS Code",
+    icon: "https://laaouatni.github.io/w11CSS/images/vs-code.ico",
+    action: "vscode",
+    size: "w-8 h-8",
+  },
+  {
+    id: 7,
+    name: "Emoji TicTacToe",
+    icon: "https://raw.githubusercontent.com/MishanPoudel/Emoji-TicTacToe/main/public/favicon.ico",
+    action: "app",
+    subAction: "emoji",
+    size: "w-10 h-10",
+  },
+  {
+    id: 8,
+    name: "Spotify",
+    icon: "https://www.freepnglogos.com/uploads/spotify-logo-png/image-gallery-spotify-logo-21.png",
+    action: "app",
+    subAction: "spotify",
+    size: "w-10 h-10",
+  },
+];
+
+// Export default data
+export default appsData;
+
+// Social Media Links
 export const socialMediaLinks = {
   linkedin: "https://www.linkedin.com/in/mishanpoudel/",
   github: githubLink,
