@@ -6,6 +6,11 @@ const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds }) => {
   const [page, setPage] = useState("About Me");
   const [icon, setIcon] = useState(null);
   const explorerRef = useRef(null);
+  const [expandedDiv, setExpandedDiv] = useState(0);
+
+  const handleDivClick = (divNumber) => {
+    setExpandedDiv(divNumber === expandedDiv ? 0 : divNumber);
+  };
 
   useEffect(() => {
     if (aboutMe === true) setIcon("home");
@@ -64,9 +69,14 @@ const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds }) => {
             </div>
             <div className="bg-neutral-800 w-full h-12 border-neutral-700 border-b-[1.5px] mt-1 flex">
               <div className="flex justify-around w-48 py-2">
-                <div class="material-symbols-outlined font-extralight text-xl opacity-45">
+                <button
+                  class={`material-symbols-outlined font-extralight text-xl hover:bg-neutral-600 rounded-md hover:bg-opacity-50 ${
+                    handleDivClick === !0 ? "opacity-45" : "font-bold"
+                  }`}
+                  onClick={() => handleDivClick(0)}
+                >
                   arrow_back
-                </div>
+                </button>
                 <div class="material-symbols-outlined font-extralight text-xl opacity-45">
                   arrow_forward
                 </div>
@@ -87,6 +97,11 @@ const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds }) => {
                 <div> {aboutMe === true ? "Home" : page}</div>
                 <div class="material-symbols-outlined font-extralight">
                   navigate_next
+                </div>
+                <div>
+                  {expandedDiv === 1 && "Technical Skills"}
+                  {expandedDiv === 2 && "Soft Skills"}
+                  {expandedDiv === 3 && "Design Skills"}
                 </div>
               </div>
               <div className="flex justify-between bg-neutral-700 bg-opacity-50 my-1.5 rounded-md items-center text-sm px-4 mr-3 w-[19.3em]">
@@ -542,7 +557,11 @@ const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds }) => {
                     Sponser
                   </a>
                 </div>
-                <AboutMe page={page} />
+                <AboutMe
+                  page={page}
+                  expandedDiv={expandedDiv}
+                  handleDivClick={handleDivClick}
+                />
               </div>
             )}
           </div>
