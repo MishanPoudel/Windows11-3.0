@@ -8,7 +8,7 @@ function StartMenu({
   isStartOpen,
   setInput,
   setIsSleeping,
-  setActionType
+  setActionType,
 }) {
   // const name = localStorage.getItem('name');
   const { name } = useParams();

@@ -152,9 +152,7 @@ function Apps({ isAppOpen, toggleApp, bounds, input }) {
                 <div className="flex flex-col gap-3">
                   {output.map((line, index) => (
                     <div key={index}>
-                      <div className="">
-                        PS C:\ {line.commands}
-                      </div>
+                      <div className="">PS C:\ {line.commands}</div>
                       <div>{line.result}</div>
                     </div>
                   ))}

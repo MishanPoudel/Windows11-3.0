@@ -42,6 +42,8 @@ export default function Torch({ input, setInput }) {
 
   useEffect(() => {
     let timeoutId1;
+    let timeoutId2;
+
     if (input === "close") {
       setShowIntermediate(true);
       const randomTop =
@@ -61,6 +63,7 @@ export default function Torch({ input, setInput }) {
 
     return () => {
       clearTimeout(timeoutId1);
+      clearTimeout(timeoutId2);
     };
   }, [input]);
 
@@ -107,6 +110,8 @@ export default function Torch({ input, setInput }) {
                 playSound();
                 setInput(null);
               }}
+              role="button"
+              aria-label="Find the switch to reopen the window"
             />
           </div>
         </>

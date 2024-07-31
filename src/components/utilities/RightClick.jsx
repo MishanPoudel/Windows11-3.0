@@ -1,5 +1,19 @@
 import React, { useState } from "react";
 
+const MenuItem = ({ text, onClick, showArrow = false }) => (
+  <div
+    className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center justify-between px-1"
+    onClick={onClick}
+  >
+    <div className="justify-center">{text}</div>
+    {showArrow && (
+      <div className="material-symbols-outlined rotate-[-90deg] justify-end opacity-50 font-extralight">
+        expand_more
+      </div>
+    )}
+  </div>
+);
+
 function RightClick({ option }) {
   const [contextMenuPosition, setContextMenuPosition] = useState({
     x: 0,
@@ -11,8 +25,8 @@ function RightClick({ option }) {
     event.preventDefault();
     const x = event.clientX;
     const y = event.clientY;
-    const menuWidth = 240; 
-    const menuHeight = 290; 
+    const menuWidth = 240;
+    const menuHeight = 290;
 
     const newX =
       x + menuWidth > window.innerWidth ? window.innerWidth - menuWidth : x;
@@ -31,131 +45,35 @@ function RightClick({ option }) {
     <div>
       {showContextMenu && (
         <div
-          className="context-menu"
-          style={{
-            left: contextMenuPosition.x,
-            top: contextMenuPosition.y,
-            position: "absolute",
-          }}
+          className="context-menu z-10 menu p-2 shadow rounded-xl bg-neutral-800 border-neutral-700 border-2 absolute"
+          style={{ left: contextMenuPosition.x, top: contextMenuPosition.y }}
+          role="menu"
+          aria-labelledby="context-menu"
         >
-          <div className="w-[15rem] bg-neutral-800 border-[1px] border-neutral-700 rounded-xl p-1.5">
+          <div className="w-[15rem] text-gray-300">
             {option ? (
               <>
-                <div className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center justify-between px-1">
-                  <div>
-                    <div></div>
-                    <div className="justify-center">View</div>
-                  </div>
-                  <div className="material-symbols-outlined rotate-[-90deg] justify-end opacity-50 font-extralight">
-                    expand_more
-                  </div>
-                </div>
-                <div className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center justify-between px-1">
-                  <div>
-                    <div></div>
-                    <div className="justify-center">Sort by</div>
-                  </div>
-                  <div className="material-symbols-outlined rotate-[-90deg] justify-end opacity-50 font-extralight">
-                    expand_more
-                  </div>
-                </div>
-                <div
-                  className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center justify-between px-1"
-                  onClick={handleClick}
-                >
-                  <div>
-                    <div></div>
-                    <div className="justify-center">Refresh</div>
-                  </div>
-                </div>
+                <MenuItem text="View" showArrow />
+                <MenuItem text="Sort by" showArrow />
+                <MenuItem text="Refresh" onClick={handleClick} />
                 <div className="divider m-0"></div>
-                <div className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center justify-between px-1">
-                  <div>
-                    <div></div>
-                    <div className="justify-center">New</div>
-                  </div>
-                  <div className="material-symbols-outlined rotate-[-90deg] justify-end opacity-50 font-extralight">
-                    expand_more
-                  </div>
-                </div>
+                <MenuItem text="New" showArrow />
                 <div className="divider m-0"></div>
-                <div className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center justify-between px-1">
-                  <div>
-                    <div></div>
-                    <div className="justify-center">Display Settings</div>
-                  </div>
-                </div>
-                <div className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center justify-between px-1">
-                  <div>
-                    <div></div>
-                    <div className="justify-center">Personalize</div>
-                  </div>
-                </div>
-                <div className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center justify-between px-1">
-                  <div>
-                    <div></div>
-                    <div className="justify-center">Show More Options</div>
-                  </div>
-                </div>
+                <MenuItem text="Display Settings" />
+                <MenuItem text="Personalize" />
+                <MenuItem text="Show More Options" />
               </>
             ) : (
               <>
-                <div className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center justify-between px-1">
-                  <div>
-                    <div></div>
-                    <div className="justify-center">Meow</div>
-                  </div>
-                  <div className="material-symbols-outlined rotate-[-90deg] justify-end opacity-50 font-extralight">
-                    expand_more
-                  </div>
-                </div>
-                <div className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center justify-between px-1">
-                  <div>
-                    <div></div>
-                    <div className="justify-center">Meow</div>
-                  </div>
-                  <div className="material-symbols-outlined rotate-[-90deg] justify-end opacity-50 font-extralight">
-                    expand_more
-                  </div>
-                </div>
-                <div
-                  className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center justify-between px-1"
-                  onClick={handleClick}
-                >
-                  <div>
-                    <div></div>
-                    <div className="justify-center">Meow</div>
-                  </div>
-                </div>
+                <MenuItem text="Meow" showArrow />
+                <MenuItem text="Meow" showArrow />
+                <MenuItem text="Meow" onClick={handleClick} />
                 <div className="divider m-0"></div>
-                <div className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center justify-between px-1">
-                  <div>
-                    <div></div>
-                    <div className="justify-center">Meow</div>
-                  </div>
-                  <div className="material-symbols-outlined rotate-[-90deg] justify-end opacity-50 font-extralight">
-                    expand_more
-                  </div>
-                </div>
+                <MenuItem text="Meow" showArrow />
                 <div className="divider m-0"></div>
-                <div className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center justify-between px-1">
-                  <div>
-                    <div></div>
-                    <div className="justify-center">Meow</div>
-                  </div>
-                </div>
-                <div className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center justify-between px-1">
-                  <div>
-                    <div></div>
-                    <div className="justify-center">Meow</div>
-                  </div>
-                </div>
-                <div className="hover:bg-neutral-700 rounded-md whitespace-nowrap w-full h-7 select-none flex items-center justify-between px-1">
-                  <div>
-                    <div></div>
-                    <div className="justify-center">Show More Options</div>
-                  </div>
-                </div>
+                <MenuItem text="Meow" />
+                <MenuItem text="Meow" />
+                <MenuItem text="Meow" />
               </>
             )}
           </div>
