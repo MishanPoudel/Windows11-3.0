@@ -3,67 +3,63 @@ import Draggable from "react-draggable";
 
 const Calculator = ({ isAppOpen, toggleCalculator }) => {
   const calculatorRef = useRef(null);
-  const [submit, setSubmit] = useState(false);
+  const [display, setDisplay] = useState("");
   const [showResult, setShowResult] = useState(" Am I Right?");
-  const [click, setClick] = useState(0);
+  const [submit, setSubmit] = useState(false);
+  const [clickCount, setClickCount] = useState(0);
 
   const appendToDisplay = (value) => {
-    const display = document.getElementById("display");
-    display.value += value;
+    setDisplay((prevDisplay) => prevDisplay + value);
   };
 
   const calculate = () => {
-    const display = document.getElementById("display");
     try {
-      const result = eval(display.value);
-      setClick((prevClick) => prevClick + 1);
+      const result = eval(display);
+      setClickCount((prevClickCount) => prevClickCount + 1);
 
-      if (click === 0 || click === 4) {
-        display.value = "Hello World";
-        setClick(1);
+      if (clickCount === 0 || clickCount === 4) {
+        setDisplay("Hello World");
+        setClickCount(1);
       } else {
         if (result !== undefined && !isNaN(result)) {
-          display.value = result;
+          setDisplay(result.toString());
           setSubmit(true);
         } else {
-          display.value = "Enter Something Stoopid";
+          setDisplay("Enter Something Stoopid");
           setTimeout(() => {
-            display.value = "";
+            setDisplay("");
           }, 1000);
         }
       }
     } catch (error) {
-      display.value = "Error";
+      setDisplay("Error");
       setTimeout(() => {
-        display.value = "";
+        setDisplay("");
       }, 1000);
     }
   };
 
   const clearDisplay = () => {
-    const display = document.getElementById("display");
-    display.value = "";
+    setDisplay("");
     setShowResult(" Am I Right?");
     setSubmit(false);
   };
 
   const handleYesClick = () => {
-    const display = document.getElementById("display");
     setShowResult("Too Easy😎");
     setTimeout(() => {
       setSubmit(false);
       setShowResult(" Am I Right?");
-      display.value = "";
+      setDisplay("");
     }, 3000);
   };
 
   const handleNoClick = () => {
-    const display = document.getElementById("display");
     setShowResult("BRUH 💀");
     setTimeout(() => {
       setSubmit(false);
       setShowResult(" Am I Right?");
-      display.value = "";
+      setDisplay("");
     }, 3000);
   };
 
@@ -72,12 +68,16 @@ const Calculator = ({ isAppOpen, toggleCalculator }) => {
   const bounds = {
     left: 0,
     top: 0,
-    right: screenWidth-544,
-    bottom: screenHeight-800,
+    right: screenWidth - 544,
+    bottom: screenHeight - 800,
   };
 
   return (
-    <div className={`${isAppOpen ? "" : "hidden"} z-30 w-full h-screen pointer-events-none absolute`}>
+    <div
+      className={`${
+        isAppOpen ? "" : "hidden"
+      } z-30 w-full h-screen pointer-events-none absolute`}
+    >
       <Draggable handle=".title-bar" nodeRef={calculatorRef} bounds={bounds}>
         <div
           ref={calculatorRef}
@@ -109,7 +109,7 @@ const Calculator = ({ isAppOpen, toggleCalculator }) => {
             <div className="top-[10px] bg-neutral-900 mx-auto p-20 shadow-lg text-white h-screen">
               <input
                 type="text"
-                id="display"
+                value={display}
                 className="w-full mb-10 px-4 py-3 text-3xl rounded-lg bg-transparent shadow-inner text-right"
                 placeholder="0"
                 disabled
@@ -139,7 +139,7 @@ const Calculator = ({ isAppOpen, toggleCalculator }) => {
                   NO
                 </button>
                 <button
-                  onClick={() => clearDisplay()}
+                  onClick={clearDisplay}
                   className="p-6 text-center bg-gray-300 rounded-full hover:bg-opacity-60 focus:outline-none bg-opacity-65"
                 >
                   AC
@@ -247,7 +247,7 @@ const Calculator = ({ isAppOpen, toggleCalculator }) => {
                   .
                 </button>
                 <button
-                  onClick={() => calculate()}
+                  onClick={calculate}
                   className="p-6 text-center bg-yellow-600 rounded-full hover:bg-opacity-60 focus:outline-none"
                 >
                   =
