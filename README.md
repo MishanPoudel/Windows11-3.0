@@ -30,7 +30,7 @@ To get this project running on your local machine, follow these simple steps:
 2. **Navigate to the project directory:**
 
    ```bash
-   cd windows-clone-react
+   cd Windows11-3.0
    ```
 
 3. **Install the dependencies:**
