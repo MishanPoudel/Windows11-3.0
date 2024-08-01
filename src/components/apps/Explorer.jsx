@@ -549,7 +549,7 @@ const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds }) => {
                     href="https://youtube.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center pl-2.5 mr-8 text-xs w-full h-10 rounded-sm hover:bg-neutral-700 text-white bg-neutral-800 border border-black text-center border-opacity-30 gap-2 group hidden"
+                    className="flex items-center pl-2.5 mr-8 text-xs w-full h-10 rounded-sm hover:bg-neutral-700 text-white bg-neutral-800 border border-black text-center border-opacity-30 gap-2 group"
                   >
                     <span className="material-symbols-outlined text-sm ml-5 group-hover:text-red-700">
                       favorite
