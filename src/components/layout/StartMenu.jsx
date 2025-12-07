@@ -16,9 +16,10 @@ function StartMenu({
     <>
       <section
         id="w11-start-section"
-        className={`z-50 bg-neutral-800 ${
+        className={`fixed left-1/2 transform -translate-x-1/2 z-50 bg-neutral-800 w-[92%] max-w-4xl rounded-md shadow-lg ${
           isStartOpen ? "bottom-16" : "bottom-[-800px]"
         }`}
+        style={{ transition: "bottom 300ms ease" }}
       >
         <div className="input-div-start">
           <input
