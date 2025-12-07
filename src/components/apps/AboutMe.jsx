@@ -1,37 +1,23 @@
 import React from "react";
+import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 import {
   profileDescription,
   educationExperience,
-  skills,
   githubRepos,
+  skills,
 } from "../../data/data";
-import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
-
-const SkillItem = ({ skillItem, isTechStack = false, iconSize = 15 }) => {
-  if (!skillItem || !skillItem.icon) {
-    return null;
-  }
-
-  return (
-    <div className="flex items-center ring-2 ring-neutral-700 bg-neutral-900 rounded-sm p-2 pl-3">
-      {React.cloneElement(skillItem.icon, { size: iconSize })}
-      <span
-        className={`ml-2 text-neutral-400 text-selection hover:text-neutral-200 duration-150 ease-in-out cursor-pointer ${
-          isTechStack ? "text-xs" : "text-sm"
-        }`}
-      >
-        {skillItem.name}
-      </span>
-    </div>
-  );
-};
 
 const ProjectCard = ({ repo }) => {
-  const renderSkills = () =>
-    repo.techUsed.map((tech, index) => {
-      const techSkill = skills.find((skill) => skill.name === tech);
-      return <SkillItem skillItem={techSkill} isTechStack={true} key={index} />;
-    });
+  const renderSkills = () => {
+    return repo.techUsed.map((tech, index) => (
+      <div
+        key={index}
+        className="bg-white bg-opacity-20 rounded-md px-2 py-1 text-xs"
+      >
+        {tech}
+      </div>
+    ));
+  };
 
   return (
     <div className="bg-neutral-900/80 rounded-md px-4 pt-3 hover:translate-x-1 hover:-translate-y-1 duration-300 text-selection">
@@ -86,6 +72,33 @@ const SkillsList = ({ x, y }) => (
 );
 
 const AboutMe = ({ page, handleDivClick, expandedDiv }) => {
+  const [resumeUrl, setResumeUrl] = React.useState(null);
+
+  React.useEffect(() => {
+    // Probe possible resume locations and pick the first that exists.
+    const candidates = ["/docs/resume.pdf"];
+    let cancelled = false;
+
+    (async () => {
+      for (const p of candidates) {
+        try {
+          const res = await fetch(p, { method: "HEAD" });
+          if (!cancelled && res && res.ok) {
+            setResumeUrl(p);
+            return;
+          }
+        } catch (err) {
+          // ignore and try next
+        }
+      }
+      if (!cancelled) setResumeUrl(null);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const renderPageContent = () => {
     switch (page) {
       case "About Me":
@@ -272,7 +285,7 @@ const AboutMe = ({ page, handleDivClick, expandedDiv }) => {
         );
       case "My Stuffs":
         return (
-          <div>
+          <div className="w-full h-full overflow-y-auto p-2" style={{ scrollbarWidth: 'thin', scrollbarColor: '#666 transparent' }}>
             <div className="grid sm:grid-cols-2 gap-2">
               {githubRepos.map((repo, index) => (
                 <ProjectCard key={index} repo={repo} />
@@ -282,8 +295,31 @@ const AboutMe = ({ page, handleDivClick, expandedDiv }) => {
         );
       case "Resume":
         return (
-          <main className="border-0 flex w-full justify-center opacity-75 mt-2 text-sm">
-            too bored to make a resume.
+          <main className="w-full flex flex-col items-center justify-center p-6 overflow-auto">
+            <div className="text-center mb-6">
+              <p className="text-sm">please hire me😭🙏</p>
+              {resumeUrl && <p className="text-xs text-neutral-500">Click to view full resume</p>}
+            </div>
+            {resumeUrl ? (
+              <a
+                href={resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full max-w-sm aspect-[8.5/11] rounded-lg overflow-hidden shadow-2xl hover:shadow-3xl transition-shadow"
+              >
+                <iframe
+                  title="Resume Preview"
+                  src={`${resumeUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
+                  className="w-full h-full border-none bg-white"
+                  style={{ pointerEvents: "none" }}
+                />
+              </a>
+            ) : (
+              <div className="text-center text-sm text-neutral-400 p-8 border border-dashed border-neutral-700 rounded-lg">
+                <p>📄 Resume not found</p>
+                <p className="mt-2 text-xs">Place your PDF at <code className="bg-neutral-800 px-2 py-1 rounded">/docs/resume.pdf</code></p>
+              </div>
+            )}
           </main>
         );
       default:
@@ -292,7 +328,9 @@ const AboutMe = ({ page, handleDivClick, expandedDiv }) => {
   };
 
   return (
-    <main className="h-[100vh] w-full ml-2.5 mt-2">{renderPageContent()}</main>
+    <main className="h-[100vh] w-full ml-2.5 mt-2">
+      {renderPageContent()}
+    </main>
   );
 };
 

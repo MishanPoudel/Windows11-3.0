@@ -1,52 +1,195 @@
 import React, { useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
 import AboutMe from "../apps/AboutMe";
+import {
+  MdMinimize,
+  MdCheckBoxOutlineBlank,
+  MdClose,
+  MdAdd,
+  MdArrowBack,
+  MdArrowForward,
+  MdArrowUpward,
+  MdRefresh,
+  MdHome,
+  MdNavigateNext,
+  MdSearch,
+  MdExpandMore,
+  MdFavorite,
+  MdChevronRight,
+  MdPushPin,
+} from "react-icons/md";
 
-const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds }) => {
+const NAVIGATION_ITEMS = [
+  { id: 'About Me', label: 'About Me', icon: 'me.png' },
+  { id: 'Education', label: 'Education', icon: 'edu.png' },
+  { id: 'Skills', label: 'Skills', icon: 'skills.png' },
+  { id: 'My Stuffs', label: 'My Stuffs', icon: 'projects.png' },
+  { id: 'Resume', label: 'Resume', icon: 'resume.png' },
+];
+
+const QUICK_ACCESS_FOLDERS = [
+  { name: 'Desktop', icon: 'Desktop.ico' },
+  { name: 'Downloads', icon: 'Downloads.ico' },
+  { name: 'Documents', icon: 'Documents.ico' },
+  { name: 'Pictures', icon: 'Photos.ico' },
+  { name: 'Music', icon: 'Music.ico' },
+  { name: 'Videos', icon: 'Videos.ico' },
+];
+
+const TOOLBAR_ACTIONS = [
+  { icon: 'cut.png', alt: 'cut' },
+  { icon: 'copy.png', alt: 'copy' },
+  { icon: 'paste.png', alt: 'paste' },
+  { icon: 'rename.png', alt: 'rename' },
+  { icon: 'share.png', alt: 'share' },
+  { icon: 'delete.png', alt: 'delete' },
+];
+
+const NavButton = ({ onClick, disabled, icon: Icon, title, className = "" }) => (
+  <button
+    type="button"
+    className={`w-8 h-8 flex items-center justify-center hover:bg-neutral-700 rounded text-lg ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${className}`}
+    disabled={disabled}
+    onClick={onClick}
+    title={title}
+  >
+    <Icon />
+  </button>
+);
+
+const SidebarItem = ({ icon, label, isActive, onClick, isPinned = false, hasChevron = false }) => (
+  <div
+    className={`flex items-center ${hasChevron ? 'pl-12' : 'pl-2.5'} mr-8 text-xs w-full h-8 rounded-sm relative ${
+      isActive
+        ? "bg-gray-200 bg-opacity-80 text-neutral-900"
+        : "hover:bg-neutral-700 text-white"
+    } ${onClick ? 'cursor-pointer' : ''}`}
+    onClick={onClick}
+  >
+    <img src={`/images/folders/${icon}`} alt={label} className={`${hasChevron ? 'w-4 h-4' : 'w-5 h-5'} mr-${hasChevron ? '1' : '2.5'}`} />
+    {label}
+    {isPinned && (
+      <div className="absolute right-1 text-sm opacity-40 rotate-45">
+        <MdPushPin />
+      </div>
+    )}
+    {hasChevron && (
+      <div className="absolute left-2 text-lg opacity-30">
+        <MdChevronRight />
+      </div>
+    )}
+  </div>
+);
+
+const FolderCard = ({ folder }) => (
+  <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
+    <img src={`/images/folders/${folder.icon}`} alt={folder.name} className="w-14 h-14 mr-4" />
+    <div className="text-xs">
+      {folder.name}
+      <div>
+        <div className="font-light opacity-50">Stored Locally</div>
+        <div className="text-sm opacity-40 rotate-45">
+          <MdPushPin />
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds, isActive = false, bringToFront, isMinimized = false, minimizeWindow }) => {
   const [page, setPage] = useState("About Me");
   const [icon, setIcon] = useState(null);
   const explorerRef = useRef(null);
   const [expandedDiv, setExpandedDiv] = useState(0);
+  const [history, setHistory] = useState([{ page: "About Me", expandedDiv: 0 }]);
+  const [historyIndex, setHistoryIndex] = useState(0);
 
   const handleDivClick = (divNumber) => {
-    setExpandedDiv(divNumber === expandedDiv ? 0 : divNumber);
+    const newExpandedDiv = divNumber === expandedDiv ? 0 : divNumber;
+    // Add to history when expanding/collapsing folders
+    const newHistory = history.slice(0, historyIndex + 1);
+    newHistory.push({ page, expandedDiv: newExpandedDiv });
+    setHistory(newHistory);
+    setHistoryIndex(newHistory.length - 1);
+    setExpandedDiv(newExpandedDiv);
+  };
+
+  const navigateToPage = (newPage) => {
+    // Add to history and update current position
+    const newHistory = history.slice(0, historyIndex + 1);
+    newHistory.push({ page: newPage, expandedDiv: 0 });
+    setHistory(newHistory);
+    setHistoryIndex(newHistory.length - 1);
+    setPage(newPage);
+    setExpandedDiv(0);
+  };
+
+  const goBack = () => {
+    if (historyIndex > 0) {
+      const newIndex = historyIndex - 1;
+      setHistoryIndex(newIndex);
+      setPage(history[newIndex].page);
+      setExpandedDiv(history[newIndex].expandedDiv);
+    }
+  };
+
+  const goForward = () => {
+    if (historyIndex < history.length - 1) {
+      const newIndex = historyIndex + 1;
+      setHistoryIndex(newIndex);
+      setPage(history[newIndex].page);
+      setExpandedDiv(history[newIndex].expandedDiv);
+    }
   };
 
   useEffect(() => {
-    if (aboutMe === true) setIcon("home");
-    else if (page === "Education") setIcon("edu");
-    else if (page === "Skills") setIcon("skills");
-    else if (page === "My Stuffs") setIcon("projects");
-    else if (page === "Resume") setIcon("resume");
-    else setIcon("me");
+    if (aboutMe) {
+      setIcon("home");
+      return;
+    }
+    const iconMap = {
+      "Education": "edu",
+      "Skills": "skills",
+      "My Stuffs": "projects",
+      "Resume": "resume",
+      "About Me": "me"
+    };
+    setIcon(iconMap[page] || "me");
   }, [page, aboutMe]);
+
+  if (!isExplorerOpen || isMinimized) return null;
 
   return (
     <div
-      className={`${
-        isExplorerOpen ? "" : "hidden"
-      } z-30 w-full h-screen pointer-events-none absolute`}
+      className={`${isActive ? 'z-40' : 'z-30'} w-full h-screen pointer-events-none absolute transition-none`}
     >
       <Draggable handle=".title-bar" nodeRef={explorerRef} bounds={bounds}>
         <div
           ref={explorerRef}
           className="window bg-black h-[39rem] w-[70.5rem] rounded-xl overflow-hidden border-neutral-700 border-[1.5px] pointer-events-auto"
+          onMouseDown={bringToFront}
         >
-          <div className="title-bar">
-            <div className="text-white h-9 w-full flex justify-end select-none">
-              <div className="material-symbols-outlined hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-xl">
-                minimize
-              </div>
-              <div className="material-symbols-outlined hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-sm">
-                check_box_outline_blank
-              </div>
-              <div
-                className="material-symbols-outlined hover:bg-red-700 mb-2 w-12 flex justify-center items-center text-xl"
-                onClick={toggleExplorer}
-              >
-                close
-              </div>
-            </div>
+          <div className="title-bar bg-neutral-900 text-white h-8 w-full flex justify-end items-center select-none" onMouseDown={bringToFront}>
+            <button
+              type="button"
+              className="hover:bg-neutral-800 transition-colors duration-150 w-10 h-8 flex justify-center items-center text-base"
+              onClick={minimizeWindow}
+            >
+              <MdMinimize />
+            </button>
+            <button
+              type="button"
+              className="hover:bg-neutral-800 transition-colors duration-150 w-10 h-8 flex justify-center items-center text-xs"
+            >
+              <MdCheckBoxOutlineBlank />
+            </button>
+            <button
+              type="button"
+              className="hover:bg-red-700 transition-colors duration-150 w-10 h-8 flex justify-center items-center text-base"
+              onClick={toggleExplorer}
+            >
+              <MdClose />
+            </button>
           </div>
           <div className="content text-white select-none">
             <div className="absolute bg-neutral-800 top-[6.5px] h-[2em] left-[6px] w-60 rounded-t-lg flex">
@@ -59,58 +202,42 @@ const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds }) => {
                   />
                   {aboutMe === true ? "Home" : page}
                 </div>
-                <div className="material-symbols-outlined hover:bg-neutral-800 m-0.5 w-6 rounded-md flex justify-center items-center text-lg">
-                  close
-                </div>
+                <button
+                  type="button"
+                  className="hover:bg-neutral-800 m-0.5 w-6 rounded-md flex justify-center items-center text-lg"
+                >
+                  <MdClose />
+                </button>
               </div>
-              <div className="material-symbols-outlined absolute left-60 ml-0.5 h-7 w-8 flex justify-center hover:bg-neutral-800 rounded-md items-center text-xl">
-                add
+              <div className="absolute left-60 ml-0.5 h-7 w-8 flex justify-center hover:bg-neutral-800 rounded-md items-center text-xl">
+                <MdAdd />
               </div>
             </div>
-            <div className="bg-neutral-800 w-full h-12 border-neutral-700 border-b-[1.5px] mt-1 flex">
-              <div className="flex justify-around w-48 py-2">
-                <button
-                  class={`material-symbols-outlined font-extralight text-xl hover:bg-neutral-600 rounded-md hover:bg-opacity-50 ${
-                    handleDivClick === !0 ? "opacity-45" : "font-bold"
-                  }`}
-                  onClick={() => handleDivClick(0)}
-                >
-                  arrow_back
-                </button>
-                <div class="material-symbols-outlined font-extralight text-xl opacity-45">
-                  arrow_forward
-                </div>
-                <div class="material-symbols-outlined font-extralight text-xl hover:bg-neutral-600 rounded-md hover:bg-opacity-50">
-                  arrow_upward
-                </div>
-                <div class="material-symbols-outlined font-extralight text-xl hover:bg-neutral-600 rounded-md hover:bg-opacity-50">
-                  refresh
-                </div>
+            <div className="bg-neutral-800 w-full h-12 border-neutral-700 border-b-[1.5px] mt-1 flex items-center px-3 gap-1">
+              <div className="flex items-center gap-1">
+                <NavButton onClick={goBack} disabled={historyIndex === 0} icon={MdArrowBack} title="Back" />
+                <NavButton onClick={goForward} disabled={historyIndex === history.length - 1} icon={MdArrowForward} title="Forward" />
+                <NavButton icon={MdArrowUpward} title="Up" className="ml-1" />
+                <NavButton icon={MdRefresh} title="Refresh" />
               </div>
-              <div className="flex bg-neutral-700 bg-opacity-50 my-1.5 rounded-md items-center text-sm px-2 mx-2 flex-grow gap-2 font-extralight">
-                <div class="material-symbols-outlined font-extralight">
-                  home
-                </div>
-                <div class="material-symbols-outlined font-extralight">
-                  navigate_next
-                </div>
-                <div> {aboutMe === true ? "Home" : page}</div>
-                <div class="material-symbols-outlined font-extralight">
-                  navigate_next
-                </div>
-                <div>
-                  {expandedDiv === 1 && "Technical Skills"}
-                  {expandedDiv === 2 && "Soft Skills"}
-                  {expandedDiv === 3 && "Design Skills"}
-                </div>
+              <div className="flex bg-neutral-700 bg-opacity-50 h-8 rounded items-center text-sm px-3 mx-2 flex-grow gap-2">
+                <MdHome className="text-base opacity-70" />
+                <MdNavigateNext className="text-base opacity-50" />
+                <span>{aboutMe === true ? "Home" : page}</span>
+                {(expandedDiv === 1 || expandedDiv === 2 || expandedDiv === 3) && (
+                  <>
+                    <MdNavigateNext className="text-base opacity-50" />
+                    <span>
+                      {expandedDiv === 1 && "Technical Skills"}
+                      {expandedDiv === 2 && "Soft Skills"}
+                      {expandedDiv === 3 && "Design Skills"}
+                    </span>
+                  </>
+                )}
               </div>
-              <div className="flex justify-between bg-neutral-700 bg-opacity-50 my-1.5 rounded-md items-center text-sm px-4 mr-3 w-[19.3em]">
-                <div className="opacity-80">
-                  Search {aboutMe === true ? "Home" : page}
-                </div>
-                <div class="material-symbols-outlined font-extralight text-sm">
-                  search
-                </div>
+              <div className="flex items-center bg-neutral-700 bg-opacity-50 h-8 rounded text-sm px-3 gap-2 w-64">
+                <MdSearch className="text-base opacity-70" />
+                <span className="opacity-60">Search {aboutMe === true ? "Home" : page}</span>
               </div>
             </div>
             <div className="bg-neutral-900 w-full h-[3.4rem] border-neutral-700 border-b-[1.5px] flex justify-between">
@@ -122,41 +249,19 @@ const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds }) => {
                     className="w-5 h-5"
                   />
                   New
-                  <div className="material-symbols-outlined text-sm">
-                    expand_more
+                  <div className="text-sm">
+                    <MdExpandMore />
                   </div>
                 </div>
                 <div className="flex h-full w-72 justify-around items-center border-neutral-700 border-r-[1.5px] opacity-45">
-                  <img
-                    src="/images/options/cut.png"
-                    alt="cut"
-                    className="h-5 w-5"
-                  />
-                  <img
-                    src="/images/options/copy.png"
-                    alt="copy"
-                    className="h-5 w-5"
-                  />
-                  <img
-                    src="/images/options/paste.png"
-                    alt="paste"
-                    className="h-7 w-7"
-                  />
-                  <img
-                    src="/images/options/rename.png"
-                    alt="rename"
-                    className="h-5 w-5"
-                  />
-                  <img
-                    src="/images/options/share.png"
-                    alt="share"
-                    className="h-5 w-5"
-                  />
-                  <img
-                    src="/images/options/delete.png"
-                    alt="delete"
-                    className="h-5 w-5"
-                  />
+                  {TOOLBAR_ACTIONS.map((action) => (
+                    <img
+                      key={action.alt}
+                      src={`/images/options/${action.icon}`}
+                      alt={action.alt}
+                      className={action.alt === 'paste' ? 'h-7 w-7' : 'h-5 w-5'}
+                    />
+                  ))}
                 </div>
                 <div className="flex h-full items-center w-72 justify-around border-neutral-700 border-r-[1.5px]">
                   <div className="flex items-center justify-center h-full text-xs gap-1 opacity-45">
@@ -166,8 +271,8 @@ const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds }) => {
                       className="w-5 h-5"
                     />
                     Sort
-                    <div className="material-symbols-outlined text-sm">
-                      expand_more
+                    <div className="text-sm">
+                      <MdExpandMore />
                     </div>
                   </div>
                   <div className="flex items-center justify-center h-full text-xs gap-1 opacity-80">
@@ -177,8 +282,8 @@ const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds }) => {
                       className="w-5 h-5"
                     />
                     View
-                    <div className="material-symbols-outlined text-sm">
-                      expand_more
+                    <div className="text-sm">
+                      <MdExpandMore />
                     </div>
                   </div>
                   <div className="flex items-center justify-center h-full text-xs gap-1 opacity-80">
@@ -188,8 +293,8 @@ const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds }) => {
                       className="w-5 h-5"
                     />
                     Filter
-                    <div className="material-symbols-outlined text-sm">
-                      expand_more
+                    <div className="text-sm">
+                      <MdExpandMore />
                     </div>
                   </div>
                 </div>
@@ -231,218 +336,36 @@ const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds }) => {
                       </div>
                     </div>
                     <div className="mt-3.5 border-b-[1.5px] border-neutral-700 h-52">
-                      <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
-                        <img
-                          src="/images/folders/Desktop.ico"
-                          alt="details"
-                          className="w-5 h-5 mr-1"
-                        />
-                        Desktop
-                        <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
-                          keep
+                      {QUICK_ACCESS_FOLDERS.map((folder) => (
+                        <div key={folder.name} className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
+                          <img src={`/images/folders/${folder.icon}`} alt={folder.name} className="w-5 h-5 mr-1" />
+                          {folder.name}
+                          <div className="absolute right-1 text-sm opacity-40 rotate-45">
+                            <MdPushPin />
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
-                        <img
-                          src="/images/folders/Downloads.ico"
-                          alt="details"
-                          className="w-5 h-5 mr-1"
-                        />
-                        Downloads
-                        <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
-                          keep
-                        </div>
-                      </div>
-                      <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
-                        <img
-                          src="/images/folders/Documents.ico"
-                          alt="details"
-                          className="w-5 h-5 mr-1"
-                        />
-                        <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
-                          keep
-                        </div>
-                        Documents
-                      </div>
-                      <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
-                        <img
-                          src="/images/folders/Photos.ico"
-                          alt="details"
-                          className="w-5 h-5 mr-1"
-                        />
-                        Pictures
-                        <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
-                          keep
-                        </div>
-                      </div>
-                      <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
-                        <img
-                          src="/images/folders/Music.ico"
-                          alt="details"
-                          className="w-5 h-5 mr-1"
-                        />
-                        Music
-                        <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
-                          keep
-                        </div>
-                      </div>
-                      <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
-                        <img
-                          src="/images/folders/Videos.ico"
-                          alt="details"
-                          className="w-5 h-5 mr-1"
-                        />
-                        Videos
-                        <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
-                          keep
-                        </div>
-                      </div>
+                      ))}
                     </div>
                     <div className="mt-3.5 border-b-[1.5px] border-neutral-700 h-52">
-                      <div className="flex items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm relative">
-                        <img
-                          src="/images/folders/Computer.ico"
-                          alt="details"
-                          className="w-4 h-4 mr-1"
-                        />
-                        This PC
-                        <div class="material-symbols-outlined absolute left-2 text-lg opacity-30">
-                          chevron_right
-                        </div>
-                      </div>
-                      <div className="flex items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm relative">
-                        <img
-                          src="/images/folders/Network.ico"
-                          alt="details"
-                          className="w-4 h-4 mr-1"
-                        />
-                        Network
-                        <div class="material-symbols-outlined absolute left-2 text-lg opacity-30">
-                          chevron_right
-                        </div>
-                      </div>
+                      <SidebarItem icon="Computer.ico" label="This PC" hasChevron />
+                      <SidebarItem icon="Network.ico" label="Network" hasChevron />
                     </div>
                   </div>
                   <div className="border-0 ml-5 mt-2">
                     <div className="flex items-center hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
-                      <div className="material-symbols-outlined text-2xl font-extralight">
-                        expand_more
+                      <div className="text-2xl font-extralight">
+                        <MdExpandMore />
                       </div>
                       <div className="text-xs ml-3 mr-4">Quick access</div>
                     </div>
                     <div className="h-32 w-[87vh] mr-32 grid grid-cols-3 grid-rows-2">
-                      <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
-                        <img
-                          src="/images/folders/Desktop.ico"
-                          alt="Desktop"
-                          className="w-14 h-14 mr-4"
-                        />
-                        <div className="text-xs">
-                          Desktop
-                          <div>
-                            <div className="font-light opacity-50">
-                              Stored Locally
-                            </div>
-                            <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
-                              keep
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
-                        <img
-                          src="/images/folders/Downloads.ico"
-                          alt="Downloads"
-                          className="w-14 h-14 mr-4"
-                        />
-                        <div className="text-xs">
-                          Downloads
-                          <div>
-                            <div className="font-light opacity-50">
-                              Stored Locally
-                            </div>
-                            <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
-                              keep
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
-                        <img
-                          src="/images/folders/Documents.ico"
-                          alt="Documents"
-                          className="w-14 h-14 mr-4"
-                        />
-                        <div className="text-xs">
-                          Documents
-                          <div>
-                            <div className="font-light opacity-50">
-                              Stored Locally
-                            </div>
-                            <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
-                              keep
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
-                        <img
-                          src="/images/folders/Photos.ico"
-                          alt="Pictures"
-                          className="w-14 h-14 mr-4"
-                        />
-                        <div className="text-xs">
-                          Pictures
-                          <div>
-                            <div className="font-light opacity-50">
-                              Stored Locally
-                            </div>
-                            <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
-                              keep
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
-                        <img
-                          src="/images/folders/Music.ico"
-                          alt="Music"
-                          className="w-14 h-14 mr-4"
-                        />
-                        <div className="text-xs">
-                          Music
-                          <div>
-                            <div className="font-light opacity-50">
-                              Stored Locally
-                            </div>
-                            <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
-                              keep
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex justify-center items-center h-16 w-full hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
-                        <img
-                          src="/images/folders/Videos.ico"
-                          alt="Videos"
-                          className="w-14 h-14 mr-4"
-                        />
-                        <div className="text-xs">
-                          Videos
-                          <div>
-                            <div className="font-light opacity-50">
-                              Stored Locally
-                            </div>
-                            <div class="material-symbols-outlined text-sm opacity-40 rotate-45">
-                              keep
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      {QUICK_ACCESS_FOLDERS.map((folder) => (
+                        <FolderCard key={folder.name} folder={folder} />
+                      ))}
                     </div>
                     <div className="flex items-center hover:bg-neutral-700 rounded-md hover:bg-opacity-30">
-                      <div className="material-symbols-outlined text-2xl font-extralight">
-                        expand_more
+                      <div className="text-2xl font-extralight">
+                        <MdExpandMore />
                       </div>
                       <div className="text-xs ml-3 mr-4">Favourites</div>
                     </div>
@@ -460,101 +383,25 @@ const Explorer = ({ isExplorerOpen, toggleExplorer, aboutMe, bounds }) => {
             ) : (
               <div className="flex flex-row h-full bg-neutral-900">
                 <div className="w-40 h-[100vh] pt-2 border-neutral-700 border-r-[1.5px] px-[2px]">
-                  <div
-                    className={`flex items-center pl-2.5 mr-8 text-xs w-full h-8 rounded-sm ${
-                      page === "About Me"
-                        ? "bg-gray-200 bg-opacity-80 text-neutral-900"
-                        : "hover:bg-neutral-700 text-white"
-                    }`}
-                    onClick={() => {
-                      setPage("About Me");
-                    }}
-                  >
-                    <img
-                      src="/images/folders/me.png"
-                      alt="me"
-                      className="w-5 h-5 mr-2.5"
+                  {NAVIGATION_ITEMS.map((item) => (
+                    <SidebarItem
+                      key={item.id}
+                      icon={item.icon}
+                      label={item.label}
+                      isActive={page === item.id}
+                      onClick={() => navigateToPage(item.id)}
                     />
-                    About Me
-                  </div>
-                  <div
-                    className={`flex items-center pl-2.5 mr-8 text-xs w-full h-8 rounded-sm ${
-                      page === "Education"
-                        ? "bg-gray-200 bg-opacity-80 text-neutral-900"
-                        : "hover:bg-neutral-700 text-white"
-                    }`}
-                    onClick={() => {
-                      setPage("Education");
-                    }}
-                  >
-                    <img
-                      src="/images/folders/edu.png"
-                      alt="edu"
-                      className="w-5 h-5 mr-2.5"
-                    />
-                    Education
-                  </div>
-                  <div
-                    className={`flex items-center pl-2.5 mr-8 text-xs w-full h-8 rounded-sm ${
-                      page === "Skills"
-                        ? "bg-gray-200 bg-opacity-80 text-neutral-900"
-                        : "hover:bg-neutral-700 text-white"
-                    }`}
-                    onClick={() => {
-                      setPage("Skills");
-                    }}
-                  >
-                    <img
-                      src="/images/folders/skills.png"
-                      alt="skills"
-                      className="w-5 h-5 mr-2.5"
-                    />
-                    Skills
-                  </div>
-                  <div
-                    className={`flex items-center pl-2.5 mr-8 text-xs w-full h-8 rounded-sm ${
-                      page === "My Stuffs"
-                        ? "bg-gray-200 bg-opacity-80 text-neutral-900"
-                        : "hover:bg-neutral-700 text-white"
-                    }`}
-                    onClick={() => {
-                      setPage("My Stuffs");
-                    }}
-                  >
-                    <img
-                      src="/images/folders/projects.png"
-                      alt="My Stuffs"
-                      className="w-5 h-5 mr-2.5"
-                    />
-                    My Stuffs
-                  </div>
-                  <div
-                    className={`flex items-center pl-2.5 mr-8 text-xs w-full h-8 rounded-sm ${
-                      page === "Resume"
-                        ? "bg-gray-200 bg-opacity-80 text-neutral-900"
-                        : "hover:bg-neutral-700 text-white"
-                    }`}
-                    onClick={() => {
-                      setPage("Resume");
-                    }}
-                  >
-                    <img
-                      src="/images/folders/resume.png"
-                      alt="Resume"
-                      className="w-5 h-5 mr-2.5"
-                    />
-                    Resume
-                  </div>
+                  ))}
                   <a
-                    href="https://youtube.com"
+                    href="https://github.com/sponsors/MishanPoudel"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center pl-2.5 mr-8 text-xs w-full h-10 rounded-sm hover:bg-neutral-700 text-white bg-neutral-800 border border-black text-center border-opacity-30 gap-2 group"
                   >
-                    <span className="material-symbols-outlined text-sm ml-5 group-hover:text-red-700">
-                      favorite
+                    <span className="text-sm ml-5 group-hover:text-red-700">
+                      <MdFavorite />
                     </span>
-                    Sponser
+                    Sponsor
                   </a>
                 </div>
                 <AboutMe

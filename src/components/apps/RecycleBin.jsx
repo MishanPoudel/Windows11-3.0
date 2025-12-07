@@ -1,33 +1,57 @@
 import React, { useRef } from "react";
 import Draggable from "react-draggable";
+import {
+  MdMinimize,
+  MdCheckBoxOutlineBlank,
+  MdClose,
+  MdAdd,
+  MdArrowBack,
+  MdArrowForward,
+  MdArrowUpward,
+  MdRefresh,
+  MdHome,
+  MdNavigateNext,
+  MdSearch,
+  MdExpandMore,
+  MdChevronRight,
+  MdPushPin,
+} from "react-icons/md";
 
-const RecycleBin = ({ isRecycleOpen, toggleRecycle, bounds }) => {
+const RecycleBin = ({ isRecycleOpen, toggleRecycle, bounds, isActive = false, bringToFront, isMinimized = false, minimizeWindow }) => {
   const explorerRef = useRef(null);
 
   return (
     <div
       className={`${
-        isRecycleOpen ? "" : "hidden"
-      } z-30 w-full h-screen pointer-events-none absolute`}
+        isRecycleOpen && !isMinimized ? "" : "hidden"
+      } ${isActive ? 'z-40' : 'z-30'} w-full h-screen pointer-events-none absolute transition-none`}
     >
       <Draggable handle=".title-bar" nodeRef={explorerRef} bounds={bounds}>
         <div
           ref={explorerRef}
           className="window bg-black h-[39rem] w-[70.5rem] rounded-xl overflow-hidden border-neutral-700 border-[1.5px] pointer-events-auto"
+          onMouseDown={bringToFront}
         >
-          <div className="title-bar">
+          <div className="title-bar" onMouseDown={bringToFront}>
             <div className="text-white h-9 w-full flex justify-end select-none">
-              <div className="material-symbols-outlined hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-xl">
-                minimize
-              </div>
-              <div className="material-symbols-outlined hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-sm">
-                check_box_outline_blank
-              </div>
+              <button
+                type="button"
+                className="hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-xl"
+                onClick={() => minimizeWindow && minimizeWindow()}
+              >
+                <MdMinimize />
+              </button>
+              <button
+                type="button"
+                className="hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-sm"
+              >
+                <MdCheckBoxOutlineBlank />
+              </button>
               <div
-                className="material-symbols-outlined hover:bg-red-700 mb-2 w-12 flex justify-center items-center text-xl"
+                className="hover:bg-red-700 mb-2 w-12 flex justify-center items-center text-xl"
                 onClick={toggleRecycle}
               >
-                close
+                <MdClose />
               </div>
             </div>
           </div>
@@ -42,45 +66,48 @@ const RecycleBin = ({ isRecycleOpen, toggleRecycle, bounds }) => {
                   />
                   Recycle Bin
                 </div>
-                <div className="material-symbols-outlined hover:bg-neutral-800 m-0.5 w-6 rounded-md flex justify-center items-center text-lg">
-                  close
-                </div>
+                <button
+                  type="button"
+                  className="hover:bg-neutral-800 m-0.5 w-6 rounded-md flex justify-center items-center text-lg"
+                >
+                  <MdClose />
+                </button>
               </div>
-              <div className="material-symbols-outlined absolute left-60 ml-0.5 h-7 w-8 flex justify-center hover:bg-neutral-800 rounded-md items-center text-xl">
-                add
+              <div className="absolute left-60 ml-0.5 h-7 w-8 flex justify-center hover:bg-neutral-800 rounded-md items-center text-xl">
+                <MdAdd />
               </div>
             </div>
             <div className="bg-neutral-800 w-full h-12 border-neutral-700 border-b-[1.5px] mt-1 flex">
               <div className="flex justify-around w-48 py-2">
-                <div class="material-symbols-outlined font-extralight text-xl opacity-45">
-                  arrow_back
+                <div className="font-extralight text-xl opacity-45">
+                  <MdArrowBack />
                 </div>
-                <div class="material-symbols-outlined font-extralight text-xl opacity-45">
-                  arrow_forward
+                <div className="font-extralight text-xl opacity-45">
+                  <MdArrowForward />
                 </div>
-                <div class="material-symbols-outlined font-extralight text-xl hover:bg-neutral-600 rounded-md hover:bg-opacity-50">
-                  arrow_upward
+                <div className="font-extralight text-xl hover:bg-neutral-600 rounded-md hover:bg-opacity-50">
+                  <MdArrowUpward />
                 </div>
-                <div class="material-symbols-outlined font-extralight text-xl hover:bg-neutral-600 rounded-md hover:bg-opacity-50">
-                  refresh
+                <div className="font-extralight text-xl hover:bg-neutral-600 rounded-md hover:bg-opacity-50">
+                  <MdRefresh />
                 </div>
               </div>
               <div className="flex bg-neutral-700 bg-opacity-50 my-1.5 rounded-md items-center text-sm px-2 mx-2 flex-grow gap-2 font-extralight">
-                <div class="material-symbols-outlined font-extralight">
-                  home
+                <div className="font-extralight">
+                  <MdHome />
                 </div>
-                <div class="material-symbols-outlined font-extralight">
-                  navigate_next
+                <div className="font-extralight">
+                  <MdNavigateNext />
                 </div>
                 <div>Recycle Bin</div>
-                <div class="material-symbols-outlined font-extralight">
-                  navigate_next
+                <div className="font-extralight">
+                  <MdNavigateNext />
                 </div>
               </div>
               <div className="flex justify-between bg-neutral-700 bg-opacity-50 my-1.5 rounded-md items-center text-sm px-4 mr-3 w-[19.3em]">
                 <div className="opacity-80">Search Recycle Bin</div>
-                <div class="material-symbols-outlined font-extralight text-sm">
-                  search
+                <div className="font-extralight text-sm">
+                  <MdSearch />
                 </div>
               </div>
             </div>
@@ -93,8 +120,8 @@ const RecycleBin = ({ isRecycleOpen, toggleRecycle, bounds }) => {
                     className="w-5 h-5"
                   />
                   New
-                  <div className="material-symbols-outlined text-sm">
-                    expand_more
+                  <div className="text-sm">
+                    <MdExpandMore />
                   </div>
                 </div>
                 <div className="flex h-full w-72 justify-around items-center border-neutral-700 border-r-[1.5px] opacity-45">
@@ -137,8 +164,8 @@ const RecycleBin = ({ isRecycleOpen, toggleRecycle, bounds }) => {
                       className="w-5 h-5"
                     />
                     Sort
-                    <div className="material-symbols-outlined text-sm">
-                      expand_more
+                    <div className="text-sm">
+                      <MdExpandMore />
                     </div>
                   </div>
                   <div className="flex items-center justify-center h-full text-xs gap-1 opacity-80">
@@ -148,8 +175,8 @@ const RecycleBin = ({ isRecycleOpen, toggleRecycle, bounds }) => {
                       className="w-5 h-5"
                     />
                     View
-                    <div className="material-symbols-outlined text-sm">
-                      expand_more
+                    <div className="text-sm">
+                      <MdExpandMore />
                     </div>
                   </div>
                   <div className="flex items-center justify-center h-full text-xs gap-1 opacity-80">
@@ -159,8 +186,8 @@ const RecycleBin = ({ isRecycleOpen, toggleRecycle, bounds }) => {
                       className="w-5 h-5"
                     />
                     Filter
-                    <div className="material-symbols-outlined text-sm">
-                      expand_more
+                    <div className="text-sm">
+                      <MdExpandMore />
                     </div>
                   </div>
                 </div>
@@ -207,8 +234,8 @@ const RecycleBin = ({ isRecycleOpen, toggleRecycle, bounds }) => {
                       className="w-5 h-5 mr-1"
                     />
                     Desktop
-                    <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
-                      keep
+                    <div className="absolute right-1 text-sm opacity-40 rotate-45">
+                      <MdPushPin />
                     </div>
                   </div>
                   <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
@@ -218,8 +245,8 @@ const RecycleBin = ({ isRecycleOpen, toggleRecycle, bounds }) => {
                       className="w-5 h-5 mr-1"
                     />
                     Downloads
-                    <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
-                      keep
+                    <div className="absolute right-1 text-sm opacity-40 rotate-45">
+                      <MdPushPin />
                     </div>
                   </div>
                   <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
@@ -228,8 +255,8 @@ const RecycleBin = ({ isRecycleOpen, toggleRecycle, bounds }) => {
                       alt="details"
                       className="w-5 h-5 mr-1"
                     />
-                    <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
-                      keep
+                    <div className="absolute right-1 text-sm opacity-40 rotate-45">
+                      <MdPushPin />
                     </div>
                     Documents
                   </div>
@@ -240,8 +267,8 @@ const RecycleBin = ({ isRecycleOpen, toggleRecycle, bounds }) => {
                       className="w-5 h-5 mr-1"
                     />
                     Pictures
-                    <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
-                      keep
+                    <div className="absolute right-1 text-sm opacity-40 rotate-45">
+                      <MdPushPin />
                     </div>
                   </div>
                   <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
@@ -251,8 +278,8 @@ const RecycleBin = ({ isRecycleOpen, toggleRecycle, bounds }) => {
                       className="w-5 h-5 mr-1"
                     />
                     Music
-                    <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
-                      keep
+                    <div className="absolute right-1 text-sm opacity-40 rotate-45">
+                      <MdPushPin />
                     </div>
                   </div>
                   <div className="flex relative items-center pl-6 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm">
@@ -262,8 +289,8 @@ const RecycleBin = ({ isRecycleOpen, toggleRecycle, bounds }) => {
                       className="w-5 h-5 mr-1"
                     />
                     Videos
-                    <div class="material-symbols-outlined absolute right-1 text-sm opacity-40 rotate-45">
-                      keep
+                    <div className="absolute right-1 text-sm opacity-40 rotate-45">
+                      <MdPushPin />
                     </div>
                   </div>
                 </div>
@@ -275,8 +302,8 @@ const RecycleBin = ({ isRecycleOpen, toggleRecycle, bounds }) => {
                       className="w-4 h-4 mr-1"
                     />
                     This PC
-                    <div class="material-symbols-outlined absolute left-2 text-lg opacity-30">
-                      chevron_right
+                    <div className="absolute left-2 text-lg opacity-30">
+                      <MdChevronRight />
                     </div>
                   </div>
                   <div className="flex items-center pl-12 mr-8 text-xs hover:bg-neutral-700 w-full h-8 rounded-sm relative">
@@ -286,8 +313,8 @@ const RecycleBin = ({ isRecycleOpen, toggleRecycle, bounds }) => {
                       className="w-4 h-4 mr-1"
                     />
                     Network
-                    <div class="material-symbols-outlined absolute left-2 text-lg opacity-30">
-                      chevron_right
+                    <div className="absolute left-2 text-lg opacity-30">
+                      <MdChevronRight />
                     </div>
                   </div>
                 </div>

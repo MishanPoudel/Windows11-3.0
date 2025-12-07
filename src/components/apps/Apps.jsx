@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Draggable from "react-draggable";
+import { MdMinimize, MdCheckBoxOutlineBlank, MdClose, MdAdd } from "react-icons/md";
 
-function Apps({ isAppOpen, toggleApp, bounds, input }) {
+function Apps({ isAppOpen, toggleApp, bounds, input, isActive = false, bringToFront, isMinimized = false, minimizeWindow }) {
   const [contentLoaded, setContentLoaded] = useState(false);
   const [commands, setCommands] = useState("");
   const [output, setOutput] = useState([]);
+  const windowRef = React.useRef(null);
 
   const handleInput = (e) => {
     if (e.key === "Enter") {
@@ -27,30 +29,34 @@ function Apps({ isAppOpen, toggleApp, bounds, input }) {
     <>
       <div
         className={`${
-          isAppOpen ? "" : "hidden"
-        } z-30 w-full h-screen pointer-events-none absolute`}
+          isAppOpen && !isMinimized ? "" : "hidden"
+        } ${isActive ? 'z-40' : 'z-30'} w-full h-screen pointer-events-none absolute transition-none`}
       >
-        <Draggable handle=".title-bar" bounds={bounds}>
+        <Draggable handle=".title-bar" nodeRef={windowRef} bounds={bounds}>
           {input === "emoji" ? (
-            <div className="window bg-black h-[45rem] w-[70.5rem] rounded-xl overflow-hidden border-neutral-700 border-[1.5px] font-semibold pointer-events-auto">
+            <div
+              ref={windowRef}
+              className="window bg-black h-[45rem] w-[70.5rem] rounded-xl overflow-hidden border-neutral-700 border-[1.5px] font-semibold pointer-events-auto"
+              onMouseDown={bringToFront}
+            >
               <div className="title-bar">
                 <div className="text-white h-9 flex justify-between select-none">
-                  <div className="m-1 ml-4 font-normal">Emoji TicTacToe</div>
+                    <div className="m-1 ml-4 font-normal">Emoji TicTacToe</div>
                   <div className="flex">
                     <div
-                      className="material-symbols-outlined hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-xl"
-                      onClick={toggleApp}
+                      className="hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-xl"
+                      onClick={() => minimizeWindow && minimizeWindow(input)}
                     >
-                      minimize
+                      <MdMinimize />
                     </div>
-                    <div className="material-symbols-outlined hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-sm">
-                      check_box_outline_blank
+                    <div className="hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-sm">
+                      <MdCheckBoxOutlineBlank />
                     </div>
                     <div
-                      className="material-symbols-outlined hover:bg-red-700 mb-2 w-12 flex justify-center items-center text-xl"
-                      onClick={toggleApp}
+                      className="hover:bg-red-700 mb-2 w-12 flex justify-center items-center text-xl"
+                      onClick={() => toggleApp(input)}
                     >
-                      close
+                      <MdClose />
                     </div>
                   </div>
                 </div>
@@ -66,25 +72,29 @@ function Apps({ isAppOpen, toggleApp, bounds, input }) {
               </div>
             </div>
           ) : input === "spotify" ? (
-            <div className="window bg-black h-[45rem] w-[70.5rem] rounded-xl overflow-hidden border-neutral-700 border-[1.5px] font-semibold pointer-events-auto">
+            <div
+              ref={windowRef}
+              className="window bg-black h-[45rem] w-[70.5rem] rounded-xl overflow-hidden border-neutral-700 border-[1.5px] font-semibold pointer-events-auto"
+              onMouseDown={bringToFront}
+            >
               <div className="title-bar">
                 <div className="text-white h-9 flex justify-between select-none">
                   <div className="m-1 ml-4 font-normal">Spotify</div>
                   <div className="flex">
                     <div
-                      className="material-symbols-outlined hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-xl"
-                      onClick={toggleApp}
+                      className="hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-xl"
+                      onClick={() => minimizeWindow && minimizeWindow(input)}
                     >
-                      minimize
+                      <MdMinimize />
                     </div>
-                    <div className="material-symbols-outlined hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-sm">
-                      check_box_outline_blank
+                    <div className="hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-sm">
+                      <MdCheckBoxOutlineBlank />
                     </div>
                     <div
-                      className="material-symbols-outlined hover:bg-red-700 mb-2 w-12 flex justify-center items-center text-xl"
-                      onClick={toggleApp}
+                      className="hover:bg-red-700 mb-2 w-12 flex justify-center items-center text-xl"
+                      onClick={() => toggleApp(input)}
                     >
-                      close
+                      <MdClose />
                     </div>
                   </div>
                 </div>
@@ -105,36 +115,40 @@ function Apps({ isAppOpen, toggleApp, bounds, input }) {
               </div>
             </div>
           ) : input === "terminal" ? (
-            <div className="window bg-neutral-800 h-[45rem] w-[70.5rem] rounded-xl overflow-hidden border-neutral-700 border-[1.5px] pointer-events-auto">
+            <div
+              ref={windowRef}
+              className="window bg-neutral-800 h-[45rem] w-[70.5rem] rounded-xl overflow-hidden border-neutral-700 border-[1.5px] pointer-events-auto"
+              onMouseDown={bringToFront}
+            >
               <div className="title-bar">
                 <div className="text-white h-9 w-full flex justify-end select-none">
                   <div className="h-full w-full"></div>
                   <div
-                    className="material-symbols-outlined hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-xl"
+                    className="hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-xl"
                     onClick={toggleApp}
                   >
-                    minimize
+                    <MdMinimize />
                   </div>
-                  <div className="material-symbols-outlined hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-sm">
-                    check_box_outline_blank
+                  <div className="hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-sm">
+                    <MdCheckBoxOutlineBlank />
                   </div>
                   <div
-                    className="material-symbols-outlined hover:bg-red-700 mb-2 w-12 flex justify-center items-center text-xl"
+                    className="hover:bg-red-700 mb-2 w-12 flex justify-center items-center text-xl"
                     onClick={toggleApp}
                   >
-                    close
+                    <MdClose />
                   </div>
                 </div>
               </div>
               <div className="absolute bg-black top-[6.5px] h-[2em] left-[6px] w-60 rounded-t-lg flex">
                 <div className="flex justify-between items-center w-full">
                   <div className="pl-2 text-sm">Windows Powershell</div>
-                  <div className="material-symbols-outlined hover:bg-neutral-800 m-0.5 w-6 rounded-md flex justify-center items-center text-lg">
-                    close
+                  <div className="hover:bg-neutral-800 m-0.5 w-6 rounded-md flex justify-center items-center text-lg">
+                    <MdClose />
                   </div>
                 </div>
-                <div className="material-symbols-outlined absolute left-60 ml-0.5 h-7 w-8 flex justify-center hover:bg-neutral-800 rounded-md items-center text-xl">
-                  add
+                <div className="absolute left-60 ml-0.5 h-7 w-8 flex justify-center hover:bg-neutral-800 rounded-md items-center text-xl">
+                  <MdAdd />
                 </div>
               </div>
               <div className="bg-black text-white h-screen p-4 font-mono">

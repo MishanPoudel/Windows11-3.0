@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserProfile } from "../user/UserProfile";
+import { MdWifi, MdAccessibilityNew, MdPowerSettingsNew } from "react-icons/md";
 
 function Login({ toggleLogin }) {
   const [name, setName] = useState("");
@@ -31,13 +32,6 @@ function Login({ toggleLogin }) {
 
   return (
     <>
-      {loading && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 top-36">
-          <div className="inline-block animate-spin rounded-full border-4 border-solid border-current border-e-transparent h-8 w-8">
-            <span className="sr-only">Loading...</span>
-          </div>
-        </div>
-      )}
       {!loading && error && (
         <div
           role="alert"
@@ -61,12 +55,12 @@ function Login({ toggleLogin }) {
         </div>
       )}
       <form onSubmit={login}>
-        <div className="relative left-0 top-72 h-screen w-full flex flex-col items-center z-10">
-          <div className="aspect-square w-32 h-36">
+        <div className="flex flex-col items-center z-10">
+          <div className="aspect-square w-24 h-28 sm:w-28 sm:h-32 md:w-32 md:h-36 -ml-3">
             <UserProfile name={name} />
           </div>
           <input
-            className="my-5 text-3xl text-white bg-transparent text-center outline-none"
+            className="my-3 sm:my-4 md:my-5 text-xl sm:text-2xl md:text-3xl text-white bg-transparent text-center outline-none w-64 sm:w-80 md:w-96"
             type="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -75,14 +69,20 @@ function Login({ toggleLogin }) {
             required
           />
 
-          {!loading && (
+          {loading ? (
+            <div className="mt-4">
+              <div className="inline-block animate-spin rounded-full border-4 border-solid border-white border-e-transparent h-8 w-8">
+                <span className="sr-only">Loading...</span>
+              </div>
+            </div>
+          ) : (
             <>
               <input
                 type="password"
                 id="password"
                 name="password"
                 placeholder="Password"
-                className="input bg-opacity-30 w-full max-w-xs focus:outline-none border-[0.5px] border-b-white mt-4 placeholder-white opacity-100::placeholder"
+                className="input bg-opacity-30 w-full max-w-xs focus:outline-none border-[0.5px] border-b-white mt-2 sm:mt-3 md:mt-4 placeholder-white opacity-100::placeholder text-sm sm:text-base"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
                 required
@@ -106,13 +106,15 @@ function Login({ toggleLogin }) {
           </button>
         </div>
       </form>
-      <div className="absolute flex gap-9 text-white bottom-5 right-12 select-none">
-        <span className="material-symbols-outlined text-3xl">wifi</span>
-        <span className="material-symbols-outlined text-3xl">
-          accessibility
+      <div className="absolute flex gap-4 sm:gap-6 md:gap-9 text-white bottom-3 sm:bottom-4 md:bottom-5 right-6 sm:right-9 md:right-12 select-none">
+        <span className="text-xl sm:text-2xl md:text-3xl">
+          <MdWifi />
         </span>
-        <span className="material-symbols-outlined text-3xl">
-          power_settings_new
+        <span className="text-xl sm:text-2xl md:text-3xl">
+          <MdAccessibilityNew />
+        </span>
+        <span className="text-xl sm:text-2xl md:text-3xl">
+          <MdPowerSettingsNew />
         </span>
       </div>
     </>

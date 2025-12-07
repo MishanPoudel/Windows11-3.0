@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { MdExpandMore } from "react-icons/md";
 
 const MenuItem = ({ text, onClick, showArrow = false }) => (
   <div
@@ -7,8 +8,8 @@ const MenuItem = ({ text, onClick, showArrow = false }) => (
   >
     <div className="justify-center">{text}</div>
     {showArrow && (
-      <div className="material-symbols-outlined rotate-[-90deg] justify-end opacity-50 font-extralight">
-        expand_more
+      <div className="rotate-[-90deg] justify-end opacity-50 font-extralight">
+        <MdExpandMore />
       </div>
     )}
   </div>

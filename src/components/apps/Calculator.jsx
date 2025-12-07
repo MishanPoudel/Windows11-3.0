@@ -1,264 +1,162 @@
-import React, { useState, useRef } from "react";
-import Draggable from "react-draggable";
+import React, { useState, useRef, useCallback, useMemo } from "react";
+import PropTypes from "prop-types";
+import { Parser } from "expr-eval";
+import DraggableWindow from "../shared/DraggableWindow";
+import CalculatorButton from "../shared/CalculatorButton";
+import { CALCULATOR, WINDOW_SIZES } from "../../utils/constants";
+import { calculateWindowBounds } from "../../utils/helpers";
 
-const Calculator = ({ isAppOpen, toggleCalculator }) => {
+const Calculator = ({ isAppOpen, toggleCalculator, isActive, bringToFront, minimizeWindow, isMinimized }) => {
   const calculatorRef = useRef(null);
   const [display, setDisplay] = useState("");
-  const [showResult, setShowResult] = useState(" Am I Right?");
-  const [submit, setSubmit] = useState(false);
   const [clickCount, setClickCount] = useState(0);
+  const [lastWasResult, setLastWasResult] = useState(false);
 
-  const appendToDisplay = (value) => {
-    setDisplay((prevDisplay) => prevDisplay + value);
-  };
+  // Memoize bounds calculation
+  const bounds = useMemo(
+    () => calculateWindowBounds(WINDOW_SIZES.CALCULATOR.width, WINDOW_SIZES.CALCULATOR.height),
+    []
+  );
 
-  const calculate = () => {
-    try {
-      const result = eval(display);
-      setClickCount((prevClickCount) => prevClickCount + 1);
+  // Memoized callback for appending to display
+  const appendToDisplay = useCallback((value) => {
+    // If the last action produced a result, and the next input is a number or dot,
+    // replace the display with that number (typical calculator behavior).
+    const isSingleNumberOrDot = /^[0-9.]$/;
 
-      if (clickCount === 0 || clickCount === 4) {
-        setDisplay("Hello World");
-        setClickCount(1);
-      } else {
-        if (result !== undefined && !isNaN(result)) {
-          setDisplay(result.toString());
-          setSubmit(true);
-        } else {
-          setDisplay("Enter Something Stoopid");
-          setTimeout(() => {
-            setDisplay("");
-          }, 1000);
-        }
+    setDisplay((prevDisplay) => {
+      if (lastWasResult && isSingleNumberOrDot.test(value)) {
+        return value;
       }
-    } catch (error) {
-      setDisplay("Error");
-      setTimeout(() => {
-        setDisplay("");
-      }, 1000);
+      // otherwise append as normal
+      return prevDisplay + value;
+    });
+
+    // Any explicit input following a result should clear the "result" state
+    setLastWasResult(false);
+  }, [lastWasResult]);
+
+  // Memoized callback for calculation with easter egg
+  const calculate = useCallback(() => {
+    // Try to evaluate if there's input
+    let result;
+    if (display && display.trim() !== "") {
+      try {
+        result = Parser.evaluate(display);
+      } catch (err) {
+        // evaluation will be handled below
+        result = undefined;
+      }
     }
-  };
 
-  const clearDisplay = () => {
+    // Increment usage counter (we rely on the previous clickCount value in this call)
+    setClickCount((prev) => prev + 1);
+
+    // Every first calculation (clickCount === 0) and the 5th (clickCount === 4) show the easter egg
+    if (clickCount === 0 || clickCount === 4) {
+      setDisplay(CALCULATOR.EASTER_EGG_MESSAGE);
+      setLastWasResult(true);
+      // reset to 1 so the next sequence continues
+      setClickCount(1);
+      return;
+    }
+
+    // Normal result handling
+    if (result !== undefined && !isNaN(result)) {
+      setDisplay(result.toString());
+      setLastWasResult(true);
+    } else {
+      // Show invalid/error message briefly
+      setDisplay(CALCULATOR.INVALID_INPUT_MESSAGE);
+      setLastWasResult(false);
+      setTimeout(() => setDisplay(""), CALCULATOR.MESSAGE_DURATION);
+    }
+  }, [display, clickCount]);
+
+  // Memoized clear display callback
+  const clearDisplay = useCallback(() => {
     setDisplay("");
-    setShowResult(" Am I Right?");
-    setSubmit(false);
-  };
+  }, []);
 
-  const handleYesClick = () => {
-    setShowResult("Too Easy😎");
-    setTimeout(() => {
-      setSubmit(false);
-      setShowResult(" Am I Right?");
-      setDisplay("");
-    }, 3000);
-  };
+  // Simplified calculator: no extra result UI handlers
 
-  const handleNoClick = () => {
-    setShowResult("BRUH 💀");
-    setTimeout(() => {
-      setSubmit(false);
-      setShowResult(" Am I Right?");
-      setDisplay("");
-    }, 3000);
-  };
-
-  const screenWidth = window.innerWidth;
-  const screenHeight = window.innerHeight;
-  const bounds = {
-    left: 0,
-    top: 0,
-    right: screenWidth - 544,
-    bottom: screenHeight - 800,
-  };
+  // Calculator button configuration
+  const buttons = useMemo(() => [
+    { label: "AC", onClick: clearDisplay, variant: "function" },
+    { label: "x2", onClick: () => appendToDisplay("*2"), variant: "function" },
+    { label: "%", onClick: () => appendToDisplay("%"), variant: "function" },
+    { label: "/", onClick: () => appendToDisplay("/"), variant: "operator" },
+    { label: "7", onClick: () => appendToDisplay("7"), variant: "number" },
+    { label: "8", onClick: () => appendToDisplay("8"), variant: "number" },
+    { label: "9", onClick: () => appendToDisplay("9"), variant: "number" },
+    { label: "x", onClick: () => appendToDisplay("*"), variant: "operator" },
+    { label: "4", onClick: () => appendToDisplay("4"), variant: "number" },
+    { label: "5", onClick: () => appendToDisplay("5"), variant: "number" },
+    { label: "6", onClick: () => appendToDisplay("6"), variant: "number" },
+    { label: "-", onClick: () => appendToDisplay("-"), variant: "operator" },
+    { label: "1", onClick: () => appendToDisplay("1"), variant: "number" },
+    { label: "2", onClick: () => appendToDisplay("2"), variant: "number" },
+    { label: "3", onClick: () => appendToDisplay("3"), variant: "number" },
+    { label: "+", onClick: () => appendToDisplay("+"), variant: "operator" },
+    { label: "0", onClick: () => appendToDisplay("0"), variant: "number", colSpan: 2 },
+    { label: ".", onClick: () => appendToDisplay("."), variant: "number" },
+    { label: "=", onClick: calculate, variant: "operator" },
+  ], [appendToDisplay, calculate, clearDisplay]);
 
   return (
-    <div
-      className={`${
-        isAppOpen ? "" : "hidden"
-      } z-30 w-full h-screen pointer-events-none absolute`}
+    <DraggableWindow
+      isOpen={isAppOpen}
+      isMinimized={isMinimized}
+      title="Calculator"
+      onClose={toggleCalculator}
+      onMinimize={minimizeWindow}
+      bounds={bounds}
+      windowRef={calculatorRef}
+      className="w-[34em] h-[50em]"
+      isActive={isActive}
+      bringToFront={bringToFront}
     >
-      <Draggable handle=".title-bar" nodeRef={calculatorRef} bounds={bounds}>
-        <div
-          ref={calculatorRef}
-          className="window bg-black w-[34em] h-[50em] rounded-xl overflow-hidden border-neutral-700 border-[1.5px] pointer-events-auto"
-        >
-          <div className="title-bar">
-            <div className="text-white h-9 flex justify-between select-none">
-              <div className="m-1 ml-4 font-normal">Calculator</div>
-              <div className="flex">
-                <div
-                  className="material-symbols-outlined hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-xl"
-                  onClick={toggleCalculator}
-                >
-                  minimize
-                </div>
-                <div className="material-symbols-outlined hover:bg-neutral-800 mb-2 w-11 flex justify-center items-center text-sm">
-                  check_box_outline_blank
-                </div>
-                <div
-                  className="material-symbols-outlined hover:bg-red-700 mb-2 w-12 flex justify-center items-center text-xl"
-                  onClick={toggleCalculator}
-                >
-                  close
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="content text-white select-none text-center flex justify-center">
-            <div className="top-[10px] bg-neutral-900 mx-auto p-20 shadow-lg text-white h-screen">
-              <input
-                type="text"
-                value={display}
-                className="w-full mb-10 px-4 py-3 text-3xl rounded-lg bg-transparent shadow-inner text-right"
-                placeholder="0"
-                disabled
+      <div className="select-none text-center flex justify-center">
+        <div className="top-[10px] bg-neutral-900 mx-auto p-20 shadow-lg text-white h-screen">
+          <input
+            type="text"
+            value={display}
+            className="w-full mb-10 px-4 py-3 text-3xl rounded-lg bg-transparent shadow-inner text-right"
+            placeholder="0"
+            disabled
+            aria-label="Calculator display"
+          />
+          
+          <div className="grid grid-cols-4 gap-3 text-2xl font-light">
+            {/* Calculator buttons */}
+            {buttons.map((button, index) => (
+              <CalculatorButton
+                key={`${button.label}-${index}`}
+                label={button.label}
+                onClick={button.onClick}
+                variant={button.variant}
+                colSpan={button.colSpan}
               />
-              <div className="grid grid-cols-4 gap-3 text-2xl font-light">
-                <div
-                  className={`text-white text-center text-4l col-span-2 ${
-                    submit ? "" : "hidden"
-                  }`}
-                >
-                  {showResult}
-                </div>
-                <button
-                  className={`btn btn-success text-white p-3 ${
-                    submit ? "" : "hidden"
-                  }`}
-                  onClick={handleYesClick}
-                >
-                  YES
-                </button>
-                <button
-                  className={`btn btn-error text-white p-3 ${
-                    submit ? "" : "hidden"
-                  }`}
-                  onClick={handleNoClick}
-                >
-                  NO
-                </button>
-                <button
-                  onClick={clearDisplay}
-                  className="p-6 text-center bg-gray-300 rounded-full hover:bg-opacity-60 focus:outline-none bg-opacity-65"
-                >
-                  AC
-                </button>
-                <button
-                  onClick={() => appendToDisplay("*2")}
-                  className="p-6 text-center bg-gray-300 rounded-full hover:bg-opacity-60 focus:outline-none bg-opacity-65"
-                >
-                  x2
-                </button>
-                <button
-                  onClick={() => appendToDisplay("%")}
-                  className="p-6 text-center bg-gray-300 rounded-full hover:bg-opacity-60 focus:outline-none bg-opacity-65"
-                >
-                  %
-                </button>
-                <button
-                  onClick={() => appendToDisplay("/")}
-                  className="p-6 text-center bg-yellow-600 rounded-full hover:bg-opacity-60 focus:outline-none"
-                >
-                  /
-                </button>
-                <button
-                  onClick={() => appendToDisplay("7")}
-                  className="p-6 text-center bg-neutral-600 rounded-full hover:bg-opacity-60 focus:outline-none"
-                >
-                  7
-                </button>
-                <button
-                  onClick={() => appendToDisplay("8")}
-                  className="p-6 text-center bg-neutral-600 rounded-full hover:bg-opacity-60 focus:outline-none"
-                >
-                  8
-                </button>
-                <button
-                  onClick={() => appendToDisplay("9")}
-                  className="p-6 text-center bg-neutral-600 rounded-full hover:bg-opacity-60 focus:outline-none"
-                >
-                  9
-                </button>
-                <button
-                  onClick={() => appendToDisplay("*")}
-                  className="p-6 text-center bg-yellow-600 rounded-full hover:bg-opacity-60 focus:outline-none"
-                >
-                  x
-                </button>
-                <button
-                  onClick={() => appendToDisplay("4")}
-                  className="p-6 text-center bg-neutral-600 rounded-full hover:bg-opacity-60 focus:outline-none"
-                >
-                  4
-                </button>
-                <button
-                  onClick={() => appendToDisplay("5")}
-                  className="p-6 text-center bg-neutral-600 rounded-full hover:bg-opacity-60 focus:outline-none"
-                >
-                  5
-                </button>
-                <button
-                  onClick={() => appendToDisplay("6")}
-                  className="p-6 text-center bg-neutral-600 rounded-full hover:bg-opacity-60 focus:outline-none"
-                >
-                  6
-                </button>
-                <button
-                  onClick={() => appendToDisplay("-")}
-                  className="p-6 text-center bg-yellow-600 rounded-full hover:bg-opacity-60 focus:outline-none"
-                >
-                  -
-                </button>
-                <button
-                  onClick={() => appendToDisplay("1")}
-                  className="p-6 text-center bg-neutral-600 rounded-full hover:bg-opacity-60 focus:outline-none"
-                >
-                  1
-                </button>
-                <button
-                  onClick={() => appendToDisplay("2")}
-                  className="p-6 text-center bg-neutral-600 rounded-full hover:bg-opacity-60 focus:outline-none"
-                >
-                  2
-                </button>
-                <button
-                  onClick={() => appendToDisplay("3")}
-                  className="p-6 text-center bg-neutral-600 rounded-full hover:bg-opacity-60 focus:outline-none"
-                >
-                  3
-                </button>
-                <button
-                  onClick={() => appendToDisplay("+")}
-                  className="p-6 text-center bg-yellow-600 rounded-full hover:bg-opacity-60 focus:outline-none"
-                >
-                  +
-                </button>
-                <button
-                  onClick={() => appendToDisplay("0")}
-                  className="p-6 text-center bg-neutral-600 rounded-full hover:bg-opacity-60 focus:outline-none col-span-2"
-                >
-                  0
-                </button>
-                <button
-                  onClick={() => appendToDisplay(".")}
-                  className="p-6 text-center bg-neutral-600 rounded-full hover:bg-opacity-60 focus:outline-none"
-                >
-                  .
-                </button>
-                <button
-                  onClick={calculate}
-                  className="p-6 text-center bg-yellow-600 rounded-full hover:bg-opacity-60 focus:outline-none"
-                >
-                  =
-                </button>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
-      </Draggable>
-    </div>
+      </div>
+    </DraggableWindow>
   );
 };
 
-export default Calculator;
+Calculator.defaultProps = {
+  minimizeWindow: null,
+  isMinimized: false,
+};
+
+Calculator.propTypes = {
+  isAppOpen: PropTypes.bool.isRequired,
+  toggleCalculator: PropTypes.func.isRequired,
+  isActive: PropTypes.bool,
+  bringToFront: PropTypes.func,
+  minimizeWindow: PropTypes.func,
+  isMinimized: PropTypes.bool,
+};
+
+export default React.memo(Calculator);

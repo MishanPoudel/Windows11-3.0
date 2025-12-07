@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Draggable from "react-draggable";
+import { MdMinimize, MdCheckBoxOutlineBlank, MdClose } from "react-icons/md";
 
-function VsCode({ isAppOpen, toggleVsCode, bounds }) {
+function VsCode({ isAppOpen, toggleVsCode, bounds, isActive = false, bringToFront, isMinimized = false, minimizeWindow }) {
   const [contentLoaded, setContentLoaded] = useState(false);
+  const windowRef = React.useRef(null);
 
   useEffect(() => {
     if (isAppOpen && !contentLoaded) {
@@ -11,31 +13,35 @@ function VsCode({ isAppOpen, toggleVsCode, bounds }) {
   }, [isAppOpen, contentLoaded]);
 
   return (
-    <div className={`${isAppOpen ? "" : "hidden"} z-30 w-full h-screen pointer-events-none absolute`}>
-      <Draggable handle=".title-bar" bounds={bounds}>
-        <div className="window bg-black h-[45rem] w-[70.5rem] rounded-xl overflow-hidden border-neutral-700 border-[1.5px] font-semibold pointer-events-auto">
+    <div className={`${isAppOpen && !isMinimized ? "" : "hidden"} ${isActive ? 'z-40' : 'z-30'} w-full h-screen pointer-events-none absolute transition-none`}>
+      <Draggable handle=".title-bar" nodeRef={windowRef} bounds={bounds}>
+        <div
+          ref={windowRef}
+          className="window bg-black h-[45rem] w-[70.5rem] rounded-xl overflow-hidden border-neutral-700 border-[1.5px] font-semibold pointer-events-auto"
+          onMouseDown={bringToFront}
+        >
           <div className="title-bar flex justify-between items-center bg-neutral-800 text-white h-9 select-none">
-            <div className="m-1 ml-4 font-normal">Visual Studio Code</div>
+            <div className="ml-4 font-normal">Visual Studio Code</div>
             <div className="flex">
               <button
-                className="material-symbols-outlined hover:bg-neutral-700 mb-2 w-11 flex justify-center items-center text-xl"
-                onClick={toggleVsCode}
+                className="hover:bg-neutral-700 w-11 h-9 flex justify-center items-center text-xl"
+                onClick={minimizeWindow}
                 aria-label="Minimize"
               >
-                minimize
+                <MdMinimize />
               </button>
               <button
-                className="material-symbols-outlined hover:bg-neutral-700 mb-2 w-11 flex justify-center items-center text-sm"
+                className="hover:bg-neutral-700 w-11 h-9 flex justify-center items-center text-sm"
                 aria-label="Maximize"
               >
-                check_box_outline_blank
+                <MdCheckBoxOutlineBlank />
               </button>
               <button
-                className="material-symbols-outlined hover:bg-red-700 mb-2 w-12 flex justify-center items-center text-xl"
+                className="hover:bg-red-700 w-12 h-9 flex justify-center items-center text-xl"
                 onClick={toggleVsCode}
                 aria-label="Close"
               >
-                close
+                <MdClose />
               </button>
             </div>
           </div>
