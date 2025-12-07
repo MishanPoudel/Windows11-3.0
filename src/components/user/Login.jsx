@@ -61,11 +61,10 @@ function Login({ toggleLogin }) {
           </div>
           <input
             className="my-3 sm:my-4 md:my-5 text-xl sm:text-2xl md:text-3xl text-white bg-transparent text-center outline-none w-64 sm:w-80 md:w-96"
-            type="name"
+            type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Enter your name"
-            style={{ caretColor: "transparent" }}
+            placeholder="Enter username here"
             required
           />
 
