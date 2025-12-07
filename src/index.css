@@ -2,12 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Performance optimizations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+}
+
+img {
+  content-visibility: auto;
+}
+
 body {
   background-image: url("https://images5.alphacoders.com/115/1159855.jpg");
   background-repeat: no-repeat;
   overflow: hidden;
   background-size: cover;
-  font-family: "Segoe UI", Arial, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* GPU acceleration for smooth animations */
+.window,
+.title-bar,
+[class*="motion-"],
+[draggable="true"] {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 .context-menu {
   position: fixed;
@@ -304,4 +335,22 @@ label input {
   top: auto;
   transform-origin: bottom;
   left: -110px;
+}
+
+/* Chainsaw shake animation */
+@keyframes chainsaw-shake {
+  0%, 100% { transform: translate(-10%, -20%) rotate(0deg); }
+  10% { transform: translate(-9%, -21%) rotate(-1deg); }
+  20% { transform: translate(-11%, -19%) rotate(1deg); }
+  30% { transform: translate(-9%, -21%) rotate(-1deg); }
+  40% { transform: translate(-11%, -19%) rotate(1deg); }
+  50% { transform: translate(-10%, -20%) rotate(0deg); }
+  60% { transform: translate(-11%, -21%) rotate(1deg); }
+  70% { transform: translate(-9%, -19%) rotate(-1deg); }
+  80% { transform: translate(-11%, -21%) rotate(1deg); }
+  90% { transform: translate(-9%, -19%) rotate(-1deg); }
+}
+
+.chainsaw-shake {
+  animation: chainsaw-shake 0.1s infinite;
 }

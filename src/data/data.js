@@ -25,7 +25,7 @@ const githubLink = "https://github.com/MishanPoudel";
 
 // Profile Description
 export const profileDescription = [
-  "Hello, I'm Mishan Poudel, an experienced front-end web developer specializing in crafting seamless and dynamic user experiences. With expertise in HTML, CSS, JavaScript, and modern frameworks like React and Next.js, I bring innovative designs to life and ensure they perform flawlessly across all devices. Let's create exceptional web experiences together!",
+  "Hey! I'm Mishan Poudel, and I love making websites. There's something satisfying about building stuff on the web and watching it come to life. I enjoy playing around with React, Next.js, TailwindCSS, and other cool tools to create interactive and visually appealing sites. I'm not a professional or anything, just someone who genuinely enjoys coding, learning new things, and bringing creative ideas to the screen. If you're into web dev or just want to chat about projects, feel free to reach out!",
 ];
 
 // Work Experience Template
@@ -50,6 +50,13 @@ export const githubRepos = [
     description: "Uncover deeper insights into my journey and capabilities.",
     githubLink: `${githubLink}/Portfolio`,
     liveURL: "https://portfolio-vert-one-79.vercel.app/",
+  },
+  {
+    name: "KaraCoro: Online Karaoke Platform",
+    techUsed: ["Next.js", "TailwindCSS"],
+    description: "Create magical karaoke moments with friends across the globe. Real-time sync, crystal-clear voice chat, and millions of songs at your fingertips.",
+    // githubLink: `${githubLink}/Portfolio`,
+    liveURL: "https://karacoro.vercel.app/",
   },
   {
     name: "Emoji-TicTacToe",
@@ -91,6 +98,13 @@ export const educationExperience = [
     institution: "Little Angels' School",
     graduation: "Aug 2021",
     degree: "X",
+    type: "education",
+  },
+  {
+    key: 3,
+    institution: "University Of The People",
+    graduation: "Aug 2021",
+    degree: "Bachelor in Computer Science",
     type: "education",
   },
 ];
@@ -257,6 +271,7 @@ const appsData = [
     name: "Google Chrome",
     icon: "/images/apps/chrome.png",
     action: "browser",
+    subAction: "chrome",
     size: "w-18 h-18",
   },
   {
@@ -278,6 +293,7 @@ const appsData = [
     name: "Microsoft Edge",
     icon: "/images/apps/edge.png",
     action: "browser",
+    subAction: "edge",
     size: "w-11 h-11",
   },
   {
@@ -309,6 +325,20 @@ const appsData = [
     action: "app",
     subAction: "spotify",
     size: "w-10 h-10",
+  },
+  {
+    id: 9,
+    name: "Desktop Destroyer",
+    icon: "https://em-content.zobj.net/thumbs/120/microsoft/319/hammer_1f528.png",
+    action: "destroyer",
+    size: "w-11 h-11",
+  },
+  {
+    id: 10,
+    name: "Help Me Earn",
+    icon: "https://em-content.zobj.net/thumbs/120/microsoft/319/money-bag_1f4b0.png",
+    action: "helpmeearn",
+    size: "w-11 h-11",
   },
 ];
 
