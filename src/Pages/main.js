@@ -7,9 +7,9 @@ import Torch from "../components/apps/Torch";
 import LoadingSpinner from "../components/shared/LoadingSpinner";
 import { motion } from "framer-motion";
 import appsData from "../data/data";
-import { calculateWindowBounds } from "../utils/helpers";
+// bounds are computed locally using viewport dims; no helper import needed
 import { WINDOW_SIZES } from "../utils/constants";
-import { useImagePreloader, useMediaPreloader } from "../hooks";
+import { useImagePreloader, useMediaPreloader, useWindowSize } from "../hooks";
 
 // Lazy load heavy components
 const Explorer = lazy(() => import("../components/apps/Explorer"));
@@ -277,20 +277,33 @@ function Main() {
     setSelectionBox(null);
   }, []);
 
-  // Memoized bounds for different window types
-  const bounds = useMemo(
-    () => ({
-      browser: calculateWindowBounds(WINDOW_SIZES.BROWSER.width, WINDOW_SIZES.BROWSER.height),
-      explorer: calculateWindowBounds(WINDOW_SIZES.EXPLORER.width, WINDOW_SIZES.EXPLORER.height),
-      calculator: calculateWindowBounds(WINDOW_SIZES.CALCULATOR.width, WINDOW_SIZES.CALCULATOR.height),
-      vscode: calculateWindowBounds(WINDOW_SIZES.VSCODE.width, WINDOW_SIZES.VSCODE.height),
-      recycle: calculateWindowBounds(WINDOW_SIZES.RECYCLE_BIN.width, WINDOW_SIZES.RECYCLE_BIN.height),
-      app: calculateWindowBounds(WINDOW_SIZES.APP.width, WINDOW_SIZES.APP.height),
-      destroyer: calculateWindowBounds(400, 500),
-      helpmeearn: calculateWindowBounds(800, 600),
-    }),
-    []
-  );
+  // Recompute bounds when the viewport size changes (handles fullscreen/resizes)
+  const { width: viewportWidth, height: viewportHeight } = useWindowSize();
+
+  const bounds = useMemo(() => {
+    // Local helper uses the latest viewport dims rather than window.innerWidth
+    const makeBounds = (w, h) => {
+      const screenWidth = typeof viewportWidth === 'number' ? viewportWidth : window.innerWidth;
+      const screenHeight = typeof viewportHeight === 'number' ? viewportHeight : window.innerHeight;
+      return {
+        left: 0,
+        top: 0,
+        right: screenWidth - w,
+        bottom: screenHeight - h - 40,
+      };
+    };
+
+    return {
+      browser: makeBounds(WINDOW_SIZES.BROWSER.width, WINDOW_SIZES.BROWSER.height),
+      explorer: makeBounds(WINDOW_SIZES.EXPLORER.width, WINDOW_SIZES.EXPLORER.height),
+      calculator: makeBounds(WINDOW_SIZES.CALCULATOR.width, WINDOW_SIZES.CALCULATOR.height),
+      vscode: makeBounds(WINDOW_SIZES.VSCODE.width, WINDOW_SIZES.VSCODE.height),
+      recycle: makeBounds(WINDOW_SIZES.RECYCLE_BIN.width, WINDOW_SIZES.RECYCLE_BIN.height),
+      app: makeBounds(WINDOW_SIZES.APP.width, WINDOW_SIZES.APP.height),
+      destroyer: makeBounds(400, 500),
+      helpmeearn: makeBounds(800, 600),
+    };
+  }, [viewportWidth, viewportHeight]);
 
   const handleFadeOutClick = useCallback(() => {
     setFadeOut(true);
