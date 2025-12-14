@@ -3,7 +3,7 @@ import Taskbar from "../components/layout/Taskbar";
 import RightClick from "../components/utilities/RightClick";
 import StartMenu from "../components/layout/StartMenu";
 import Slider from "../components/utilities/Slider";
-import Torch from "../components/apps/Torch";
+const Torch = lazy(() => import("../components/apps/Torch"));
 import LoadingSpinner from "../components/shared/LoadingSpinner";
 import { motion } from "framer-motion";
 import appsData from "../data/data";
@@ -282,7 +282,7 @@ function Main() {
 
   const bounds = useMemo(() => {
     // Local helper uses the latest viewport dims rather than window.innerWidth
-    const makeBounds = (w, h) => {
+    const makeBounds = (w, h) => {  
       const screenWidth = typeof viewportWidth === 'number' ? viewportWidth : window.innerWidth;
       const screenHeight = typeof viewportHeight === 'number' ? viewportHeight : window.innerHeight;
       return {
@@ -405,7 +405,9 @@ function Main() {
           )}
         </div>
       )}
-      <Torch input={input} setInput={setInput} />
+      <Suspense fallback={null}>
+        <Torch input={input} setInput={setInput} />
+      </Suspense>
       <div 
         className="relative h-screen desktop-background" 
         ref={constraintsRef}
