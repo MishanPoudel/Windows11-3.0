@@ -3,7 +3,6 @@ import Taskbar from "../components/layout/Taskbar";
 import RightClick from "../components/utilities/RightClick";
 import StartMenu from "../components/layout/StartMenu";
 import Slider from "../components/utilities/Slider";
-const Torch = lazy(() => import("../components/apps/Torch"));
 import LoadingSpinner from "../components/shared/LoadingSpinner";
 import { motion } from "framer-motion";
 import appsData from "../data/data";
@@ -20,6 +19,7 @@ const RecycleBin = lazy(() => import("../components/apps/RecycleBin"));
 const Apps = lazy(() => import("../components/apps/Apps"));
 const DesktopDestroyer = lazy(() => import("../components/apps/DesktopDestroyer"));
 const HelpMeEarn = lazy(() => import("../components/apps/HelpMeEarn"));
+const Torch = lazy(() => import("../components/apps/Torch"));
 
 function Main() {
   const constraintsRef = useRef(null);
