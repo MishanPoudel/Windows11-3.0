@@ -22,7 +22,6 @@ const HelpMeEarn = lazy(() => import("../components/apps/HelpMeEarn"));
 const Torch = lazy(() => import("../components/apps/Torch"));
 
 function Main() {
-  const constraintsRef = useRef(null);
   const [isSleeping, setIsSleeping] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
   const [actionType, setActionType] = useState(null);
@@ -51,6 +50,10 @@ function Main() {
   const [input, setInput] = useState(null);
   const [selectionBox, setSelectionBox] = useState(null);
   const [isSelecting, setIsSelecting] = useState(false);
+  // Video wallpaper toggle (renders a full-screen video when true)
+  const [videoWallpaper, setVideoWallpaper] = useState(false);
+  // Stable toggle callback to avoid unnecessary re-renders when passed to children
+  const toggleVideo = useCallback(() => setVideoWallpaper((v) => !v), []);
 
   // Preload critical app icons - only local ones
   const iconUrls = useMemo(
@@ -183,7 +186,6 @@ function Main() {
       <motion.div
         key={app.id}
         drag
-        dragConstraints={constraintsRef}
         dragMomentum={false}
         style={{ willChange: "transform" }}
       >
@@ -198,13 +200,13 @@ function Main() {
             onDragStart={(e) => e.preventDefault()}
             style={{ imageRendering: "crisp-edges" }}
           />
-          <div className="text-center text-[11px] leading-tight select-none pt-1 w-full break-words overflow-hidden">
+          <div className={`text-center text-[11px] leading-tight select-none pt-1 w-full break-words overflow-hidden ${videoWallpaper ? 'text-black' : ''}`}>
             {app.name}
           </div>
         </div>
       </motion.div>
     ));
-  }, [toggleWindow]);
+  }, [toggleWindow, videoWallpaper]);
 
   // Pre-bind bringToFront and minimize handlers for commonly used windows
   const bringers = useMemo(() => {
@@ -333,6 +335,18 @@ function Main() {
     return () => clearInterval(interval);
   }, [images.length]);
 
+  // When video wallpaper is enabled, add a body class to hide the background image
+  useEffect(() => {
+    if (videoWallpaper) {
+      document.body.classList.add("video-wallpaper-active");
+    } else {
+      document.body.classList.remove("video-wallpaper-active");
+    }
+    return () => {
+      document.body.classList.remove("video-wallpaper-active");
+    };
+  }, [videoWallpaper]);
+
   // Try to enter fullscreen once when the main page loads and
   // again on the first user click for a more immersive experience.
   useEffect(() => {
@@ -410,12 +424,22 @@ function Main() {
       </Suspense>
       <div 
         className="relative h-screen desktop-background" 
-        ref={constraintsRef}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
       >
+        {/* Video wallpaper (covers entire desktop when enabled) */}
+        {videoWallpaper && (
+          <video
+            src="/videos/messi.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute top-0 left-0 w-full h-full object-cover z-0 pointer-events-none"
+          />
+        )}
         <div className="relative h-full w-full top-0 left-0 z-10 text-white pointer-events-none">
           <div className="pointer-events-auto">
             <RightClick option={true} />
@@ -564,6 +588,8 @@ function Main() {
           toggleWindow={toggleWindow}
           minimizeWindow={minimizeWindow}
           minimizedWindows={minimizedWindows}
+          toggleVideo={toggleVideo}
+          videoOn={videoWallpaper}
         />
       </div>
       {!windows.destroyer && (
