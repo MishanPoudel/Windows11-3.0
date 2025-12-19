@@ -95,10 +95,6 @@ const Taskbar = ({ toggleStart, toggleExplorer, toggleBrowser, windows = {}, tog
     minimizeWindow && minimizeWindow('destroyer');
   }, [minimizeWindow]);
 
-  const handleHelpMeEarnClick = useCallback(() => {
-    minimizeWindow && minimizeWindow('helpmeearn');
-  }, [minimizeWindow]);
-
   return (
     <div className="fixed bottom-0 flex justify-between w-full h-12 bg-[#202020] border-t border-neutral-700 select-none pointer-events-auto text-white z-40 py-0.5">
       {/* Left spacer for centering (responsive) */}
@@ -179,14 +175,7 @@ const Taskbar = ({ toggleStart, toggleExplorer, toggleBrowser, windows = {}, tog
             isActive={true}
           />
         )}
-        {windows.helpmeearn && (
-          <TaskbarButton
-            onClick={handleHelpMeEarnClick}
-            icon="https://em-content.zobj.net/thumbs/120/microsoft/319/money-bag_1f4b0.png"
-            alt="Help Me Earn"
-            isActive={true}
-          />
-        )}
+        {/* HelpMeEarn removed */}
       </nav>
 
       {/* Right - System tray */}

@@ -333,13 +333,7 @@ const appsData = [
     action: "destroyer",
     size: "w-11 h-11",
   },
-  {
-    id: 10,
-    name: "Help Me Earn",
-    icon: "https://em-content.zobj.net/thumbs/120/microsoft/319/money-bag_1f4b0.png",
-    action: "helpmeearn",
-    size: "w-11 h-11",
-  },
+  // Help Me Earn removed
 ];
 
 // Export default data

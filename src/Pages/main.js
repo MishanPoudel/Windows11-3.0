@@ -18,7 +18,6 @@ const VsCode = lazy(() => import("../components/apps/VsCode"));
 const RecycleBin = lazy(() => import("../components/apps/RecycleBin"));
 const Apps = lazy(() => import("../components/apps/Apps"));
 const DesktopDestroyer = lazy(() => import("../components/apps/DesktopDestroyer"));
-const HelpMeEarn = lazy(() => import("../components/apps/HelpMeEarn"));
 const Torch = lazy(() => import("../components/apps/Torch"));
 
 function Main() {
@@ -40,7 +39,6 @@ function Main() {
     emoji: false,
     spotify: false,
     destroyer: false,
-    helpmeearn: false,
   });
 
   const [activeWindow, setActiveWindow] = useState(null);
@@ -210,7 +208,7 @@ function Main() {
 
   // Pre-bind bringToFront and minimize handlers for commonly used windows
   const bringers = useMemo(() => {
-    const names = ["explorer", "recycle", "calculator", "vscode", "destroyer", "helpmeearn"];
+    const names = ["explorer", "recycle", "calculator", "vscode", "destroyer"];
     const map = {};
     names.forEach((n) => {
       map[n] = () => bringToFront(n);
@@ -219,7 +217,7 @@ function Main() {
   }, [bringToFront]);
 
   const minimizers = useMemo(() => {
-    const names = ["explorer", "recycle", "calculator", "vscode", "destroyer", "helpmeearn"];
+    const names = ["explorer", "recycle", "calculator", "vscode", "destroyer"];
     const map = {};
     names.forEach((n) => {
       map[n] = () => minimizeWindow(n);
@@ -303,7 +301,6 @@ function Main() {
       recycle: makeBounds(WINDOW_SIZES.RECYCLE_BIN.width, WINDOW_SIZES.RECYCLE_BIN.height),
       app: makeBounds(WINDOW_SIZES.APP.width, WINDOW_SIZES.APP.height),
       destroyer: makeBounds(400, 500),
-      helpmeearn: makeBounds(800, 600),
     };
   }, [viewportWidth, viewportHeight]);
 
@@ -567,17 +564,7 @@ function Main() {
                 minimizeWindow={minimizers.destroyer}
               />
             )}
-            {windows.helpmeearn && (
-              <HelpMeEarn
-                isAppOpen={windows.helpmeearn}
-                toggleHelpMeEarn={() => toggleWindow("helpmeearn")}
-                bounds={bounds.helpmeearn}
-                isActive={activeWindow === "helpmeearn"}
-                bringToFront={bringers.helpmeearn}
-                isMinimized={minimizedWindows.has("helpmeearn")}
-                minimizeWindow={minimizers.helpmeearn}
-              />
-            )}
+            {/* HelpMeEarn app removed */}
           </Suspense>
         </div>
         <Taskbar
