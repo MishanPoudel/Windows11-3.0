@@ -1,4 +1,5 @@
 import React, { useCallback } from "react";
+import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 import { useCurrentTime } from "../../hooks";
 import { formatDate, formatTime } from "../../utils/helpers";
@@ -47,7 +48,7 @@ SystemTrayIcon.propTypes = {
   className: PropTypes.string,
 };
 
-const Taskbar = ({ toggleStart, toggleExplorer, toggleBrowser, windows = {}, toggleWindow, minimizeWindow, minimizedWindows = new Set() }) => {
+const Taskbar = ({ toggleStart, toggleExplorer, toggleBrowser, windows = {}, toggleWindow, minimizeWindow, minimizedWindows = new Set(), toggleVideo, videoOn = false }) => {
   const currentTime = useCurrentTime();
 
   const handleExplorerClick = useCallback(() => {
@@ -100,11 +101,11 @@ const Taskbar = ({ toggleStart, toggleExplorer, toggleBrowser, windows = {}, tog
 
   return (
     <div className="fixed bottom-0 flex justify-between w-full h-12 bg-[#202020] border-t border-neutral-700 select-none pointer-events-auto text-white z-40 py-0.5">
-      {/* Left spacer for centering */}
-      <div className="w-[15%]" aria-hidden="true" />
+      {/* Left spacer for centering (responsive) */}
+      <div className="w-12 sm:w-[15%]" aria-hidden="true" />
 
       {/* Center - App icons */}
-      <nav className="flex justify-center items-center gap-1" role="navigation" aria-label="Taskbar applications">
+      <nav className="flex justify-center items-center gap-1 sm:gap-2" role="navigation" aria-label="Taskbar applications">
         <TaskbarButton
           onClick={toggleStart}
           icon="/images/apps/windows.png"
@@ -200,7 +201,7 @@ const Taskbar = ({ toggleStart, toggleExplorer, toggleBrowser, windows = {}, tog
         </button>
 
         {/* Network, volume, battery icons */}
-        <div className="flex items-center h-full px-3 hover:bg-white/10 transition-colors duration-150 gap-3 rounded-lg">
+        <div className="flex items-center h-full px-2 sm:px-3 hover:bg-white/10 transition-colors duration-150 gap-3 rounded-lg">
           <SystemTrayIcon icon={FaWifi} />
           <SystemTrayIcon icon={FaVolumeUp} />
           <SystemTrayIcon icon={FaBatteryFull} />
@@ -209,7 +210,7 @@ const Taskbar = ({ toggleStart, toggleExplorer, toggleBrowser, windows = {}, tog
         {/* Clock and notifications */}
         <button
           type="button"
-          className="flex items-center h-full px-3 hover:bg-white/10 transition-colors duration-150 rounded-lg cursor-pointer"
+          className="flex items-center h-full px-2 sm:px-3 hover:bg-white/10 transition-colors duration-150 rounded-lg cursor-pointer"
           aria-label="Notifications and calendar"
         >
           <time className="flex flex-col items-end text-[11px] leading-tight mr-2">
@@ -230,6 +231,33 @@ const Taskbar = ({ toggleStart, toggleExplorer, toggleBrowser, windows = {}, tog
           </span>
         </button>
       </div>
+
+      <div className="absolute right-2 bottom-16 sm:right-5 sm:bottom-14 z-50">
+        <motion.div
+          drag
+          dragMomentum={false}
+          style={{ willChange: "transform" }}
+          className="inline-block"
+        >
+          <img
+            src="/images/apps/messi.png"
+            alt="Messi wallpaper toggle"
+            draggable="false"
+            role="button"
+            tabIndex={0}
+            onClick={typeof toggleVideo === 'function' ? toggleVideo : undefined}
+            onKeyDown={(e) => {
+              if (typeof toggleVideo === 'function' && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault();
+                toggleVideo();
+              }
+            }}
+            className={`messi-toggle w-8 h-8 sm:w-12 sm:h-12 rounded-full shadow-md select-none ${
+              videoOn ? 'messi-active ring-2 ring-blue-500' : 'opacity-90 hover:scale-105'
+            }`}
+          />
+        </motion.div>
+      </div>
     </div>
   );
 };
@@ -240,8 +268,19 @@ Taskbar.propTypes = {
   toggleBrowser: PropTypes.func.isRequired,
   windows: PropTypes.object,
   toggleWindow: PropTypes.func,
+  toggleVideo: PropTypes.func,
+  videoOn: PropTypes.bool,
   minimizeWindow: PropTypes.func,
   minimizedWindows: PropTypes.instanceOf(Set),
+};
+
+Taskbar.defaultProps = {
+  windows: {},
+  minimizedWindows: new Set(),
+  toggleWindow: undefined,
+  minimizeWindow: undefined,
+  toggleVideo: undefined,
+  videoOn: false,
 };
 
 export default React.memo(Taskbar);
