@@ -31,6 +31,47 @@ body {
   perspective: 1000px;
 }
 
+/* When a video wallpaper is active, hide the body background image cleanly */
+.video-wallpaper-active {
+  background-image: none !important;
+}
+
+/* Messi toggle image styles */
+.messi-toggle {
+  transition: transform 220ms cubic-bezier(.2,.9,.2,1), opacity 180ms ease-in-out;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+.messi-toggle:hover {
+  transform: scale(1.06) rotate(-6deg);
+}
+.messi-active {
+  animation: messi-pulse 1.6s ease-in-out infinite;
+}
+@keyframes messi-pulse {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.08) rotate(-4deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+/* Responsive adjustments for small screens */
+@media (max-width: 640px) {
+  .messi-toggle {
+    transition: transform 180ms cubic-bezier(.2,.9,.2,1), opacity 150ms ease-in-out;
+  }
+  .messi-toggle:hover {
+    transform: scale(1.03) rotate(-4deg);
+  }
+  .messi-active {
+    animation: messi-pulse-mobile 1.2s ease-in-out infinite;
+  }
+  @keyframes messi-pulse-mobile {
+    0% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.04) rotate(-3deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+}
+
 /* GPU acceleration for smooth animations */
 .window,
 .title-bar,
